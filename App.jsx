@@ -370,6 +370,8 @@ function Onboarding({ onFinish }) {
 
 function Home({ target, total, remaining, recommendations, todayEntries, onAdd, onProfile, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
+  const [activePlan, setActivePlan] = useState(0)
+  const selectedPlan = recommendations[activePlan] || recommendations[0]
 
   return (
     <main className="appShell">
@@ -395,38 +397,53 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
         <button className="primary wide" onClick={onAdd}>＋ Protein Ekle</button>
       </section>
 
-      <section className="section">
+      <section className="section compactRecommendation">
         <div className="sectionTitle recommendationHeader">
           <div>
-            <h2>Kalan proteini tamamla</h2>
-            {remaining > 0 && <p>{Math.round(remaining)} g için birkaç farklı yol.</p>}
+            <h2>Kalan proteinini nasıl tamamlayabilirsin?</h2>
+            {remaining > 0 && <p>{Math.round(remaining)} g kaldı. Sana uygun birkaç seçenek.</p>}
           </div>
         </div>
 
-        {remaining > 0 ? (
-          <div className="planList">
-            {recommendations.map((plan) => (
-              <div className="planCard" key={plan.id}>
+        {remaining > 0 && recommendations.length > 0 ? (
+          <>
+            <div className="planTabs">
+              {recommendations.map((plan, index) => (
+                <button
+                  key={plan.id}
+                  type="button"
+                  className={activePlan === index ? 'planTab selected' : 'planTab'}
+                  onClick={() => setActivePlan(index)}
+                >
+                  {plan.title.replace(' seçenek', '')}
+                </button>
+              ))}
+            </div>
+
+            {selectedPlan && (
+              <div className="planCard featuredPlan">
                 <div className="planTop">
                   <div>
-                    <strong>{plan.title}</strong>
-                    <span>{plan.subtitle}</span>
+                    <strong>{selectedPlan.title}</strong>
+                    <span>{selectedPlan.subtitle}</span>
                   </div>
-                  <b>≈ {plan.total.toFixed(1)} g</b>
+                  <b>≈ {selectedPlan.total.toFixed(1)} g</b>
                 </div>
 
                 <div className="planFoods">
-                  {plan.items.map((item) => (
-                    <div className="planFoodRow" key={`${plan.id}-${item.food_id}`}>
+                  {selectedPlan.items.map((item) => (
+                    <div className="planFoodRow" key={`${selectedPlan.id}-${item.food_id}`}>
                       <span>{item.label}</span>
                       <small>{item.protein.toFixed(1)} g</small>
                     </div>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        ) : <div className="successBox">Bugünkü hedefini tamamladın. 🎉</div>}
+            )}
+          </>
+        ) : remaining <= 0 ? (
+          <div className="successBox">Bugünkü hedefini tamamladın. 🎉</div>
+        ) : null}
       </section>
 
       <section className="section">
@@ -799,17 +816,46 @@ function buildCompletionPlans(foods, remaining) {
 
       if (currentGap <= 0) break
 
-      // Son ürünü gerektiğinde daha küçük bir porsiyona ölçekle.
+      // Son ürünü gerektiğinde porsiyona göre küçült.
       if (protein > currentGap && currentGap >= 5) {
         const ratio = currentGap / protein
+        const discreteUnits = ['adet', 'ölçek', 'kase', 'şişe']
+        const isDiscrete = discreteUnits.includes(food.default_unit)
+
+        if (isDiscrete) {
+          const defaultAmount = Number(food.default_portion)
+
+          // 2 yumurta gibi bir porsiyon varsa 1 adede düşebilir.
+          if (defaultAmount > 1) {
+            const amount = Math.max(1, Math.min(defaultAmount, Math.round(defaultAmount * ratio)))
+            const scaledProtein = food.base_unit === food.default_unit
+              ? (amount / Number(food.base_amount)) * Number(food.protein_per_base)
+              : protein * (amount / defaultAmount)
+
+            // Hedefe makul yaklaşmıyorsa bu ürünü atla ve sıradakine geç.
+            if (scaledProtein <= currentGap + 5) {
+              items.push({
+                food_id: food.food_id,
+                label: `${amount} ${food.default_unit} ${food.name}`,
+                protein: scaledProtein,
+              })
+              total += scaledProtein
+              break
+            }
+          }
+
+          // 1 kase / 1 şişe gibi bölünemeyen porsiyonu zorla büyütme.
+          continue
+        }
+
         const amount = Math.max(
-          food.default_unit === 'adet' || food.default_unit === 'ölçek' ? 1 : 10,
+          10,
           Math.round(Number(food.default_portion) * ratio)
         )
 
         const scaledProtein = food.base_unit === food.default_unit
           ? (amount / Number(food.base_amount)) * Number(food.protein_per_base)
-          : protein
+          : protein * ratio
 
         items.push({
           food_id: food.food_id,

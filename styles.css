@@ -315,3 +315,36 @@ button{cursor:pointer}
   font-weight:800;
   white-space:nowrap;
 }
+
+
+/* v0.9 - daha kısa ana ekran + güvenli öneri porsiyonları */
+.compactRecommendation{
+  padding-bottom:16px;
+}
+.planTabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:12px;
+}
+.planTab{
+  border:1px solid #e0d4e8;
+  background:#fff;
+  color:#5d5266;
+  border-radius:12px;
+  padding:9px 7px;
+  font-size:12px;
+  font-weight:800;
+}
+.planTab.selected{
+  background:#54208C;
+  color:#fff;
+  border-color:#54208C;
+}
+.featuredPlan{
+  padding:14px;
+}
+.featuredPlan .planFoods{
+  margin-top:10px;
+  padding-top:9px;
+}
