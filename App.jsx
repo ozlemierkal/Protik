@@ -272,10 +272,18 @@ function Onboarding({ onFinish }) {
               <p className="muted">Kilon, hareket düzeyin ve hedefine göre hesaplandı.</p>
             </div>
             <div className="targetSummaryCard warmCard">
+              
               <div className="targetPreviewCircle">
-                <span>{target}</span>
-                <small>g / gün</small>
-              </div>
+  <div className="targetPreviewContent">
+    <span>{target}</span>
+    <small>g / gün</small>
+  </div>
+</div>
+                
+                
+           
+
+              
               <p className="muted">İstersen şimdi değiştirebilirsin.</p>
               <input
                 className="range"
