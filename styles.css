@@ -147,3 +147,113 @@ button{cursor:pointer}
   .entryRow{flex-direction:column}
   .entryActions{justify-content:flex-start}
 }
+
+
+/* v0.4 - daha anlaşılır öğün seçimi ve ana ekran öğün özeti */
+.mealChooser{
+  margin:22px 0 14px;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(180deg,#fffaf2 0%,#fff 100%);
+  border:1px solid #efe2f5;
+  box-shadow:0 8px 24px rgba(64,31,82,.05);
+}
+.mealChooserTitle{
+  font-weight:900;
+  font-size:19px;
+  margin-bottom:12px;
+  color:#2d1941;
+}
+.mealChooserGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.mealChoice{
+  border:1px solid #ddd1e7;
+  background:#fff;
+  color:#4d4256;
+  border-radius:14px;
+  padding:12px 10px;
+  font-weight:800;
+}
+.mealChoice.selected{
+  background:#54208C;
+  border-color:#54208C;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(84,32,140,.16);
+}
+.selectedMealNote{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:12px 0 18px;
+  padding:13px 14px;
+  background:#faf5ff;
+  border:1px solid #e5d8ef;
+  border-radius:14px;
+}
+.selectedMealNote span{
+  color:#796f83;
+  font-size:14px;
+}
+.selectedMealNote strong{
+  color:#54208C;
+}
+.mealSummaryList{
+  display:grid;
+  gap:10px;
+}
+.mealSummaryCard{
+  width:100%;
+  border:1px solid #eee4f3;
+  background:#fff;
+  border-radius:16px;
+  padding:14px 15px;
+  text-align:left;
+  color:#21152f;
+}
+.mealSummaryTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.mealSummaryTop > strong{
+  font-size:17px;
+}
+.mealSummaryRight{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.mealSummaryRight b{
+  color:#54208C;
+}
+.mealFoods{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid #f0e9f3;
+  display:grid;
+  gap:6px;
+}
+.mealFoodLine{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:14px;
+  color:#665d6d;
+}
+.mealFoodLine small{
+  font-size:13px;
+  color:#54208C;
+  font-weight:800;
+  white-space:nowrap;
+}
+.mealMore,
+.mealEmptyText{
+  margin-top:8px;
+  color:#8a8191;
+  font-size:13px;
+}

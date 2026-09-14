@@ -420,17 +420,37 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
       </section>
 
       <section className="section">
-        <div className="sectionTitle"><h2>Bugünkü öğünler</h2></div>
-        <div className="mealList">
+        <div className="sectionTitle"><h2>Bugünkü öğünlerin</h2></div>
+        <div className="mealSummaryList">
           {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
-            const sum = todayEntries
-              .filter((e) => e.meal === meal)
-              .reduce((s, e) => s + Number(e.protein), 0)
+            const mealEntries = todayEntries.filter((e) => e.meal === meal)
+            const sum = mealEntries.reduce((s, e) => s + Number(e.protein), 0)
+
             return (
-              <button className="mealRow mealButton" key={meal} onClick={() => onMeal(meal)}>
-                <span>{meal}</span>
-                <b>{sum ? `${Math.round(sum)} g` : '—'}</b>
-                <span className="mealChevron">›</span>
+              <button className="mealSummaryCard" key={meal} onClick={() => onMeal(meal)}>
+                <div className="mealSummaryTop">
+                  <strong>{meal}</strong>
+                  <div className="mealSummaryRight">
+                    <b>{sum ? `${sum.toFixed(1)} g` : '—'}</b>
+                    <span className="mealChevron">›</span>
+                  </div>
+                </div>
+
+                {mealEntries.length > 0 ? (
+                  <div className="mealFoods">
+                    {mealEntries.slice(0, 3).map((entry) => (
+                      <div className="mealFoodLine" key={entry.id}>
+                        <span>{entry.name}</span>
+                        <small>{Number(entry.protein).toFixed(1)} g</small>
+                      </div>
+                    ))}
+                    {mealEntries.length > 3 && (
+                      <div className="mealMore">+{mealEntries.length - 3} kayıt daha</div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mealEmptyText">Henüz eklenmedi</div>
+                )}
               </button>
             )
           })}
@@ -513,6 +533,22 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
         <span />
       </header>
 
+      <section className="mealChooser">
+        <div className="mealChooserTitle">Hangi öğüne ekliyorsun?</div>
+        <div className="mealChooserGrid">
+          {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((option) => (
+            <button
+              key={option}
+              type="button"
+              className={meal === option ? 'mealChoice selected' : 'mealChoice'}
+              onClick={() => setMeal(option)}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </section>
+
       <input
         className="search"
         placeholder="Yiyecek ara veya yaz..."
@@ -565,21 +601,17 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
             <b>{protein.toFixed(1)} g</b>
           </div>
 
-          <Field label="Öğün">
-            <select value={meal} onChange={(e) => setMeal(e.target.value)}>
-              <option>Kahvaltı</option>
-              <option>Öğle Yemeği</option>
-              <option>Ara Öğün</option>
-              <option>Akşam Yemeği</option>
-            </select>
-          </Field>
+          <div className="selectedMealNote">
+            <span>Seçilen öğün</span>
+            <strong>{meal}</strong>
+          </div>
 
           <button
             className="primary wide"
             disabled={Number(amount) <= 0}
             onClick={saveEntry}
           >
-            {editingEntry ? 'Değişiklikleri Kaydet' : 'Kaydet'}
+            {editingEntry ? 'Değişiklikleri Kaydet' : addButtonLabel(meal)}
           </button>
         </section>
       )}
@@ -722,6 +754,14 @@ function getProteinMultiplier(activity, goal) {
   if (activity === 'Orta') return 1.2
   if (activity === 'Düşük') return 1.0
   return 0
+}
+
+function addButtonLabel(meal) {
+  if (meal === 'Kahvaltı') return 'Kahvaltıya Ekle'
+  if (meal === 'Öğle Yemeği') return 'Öğle Yemeğine Ekle'
+  if (meal === 'Ara Öğün') return 'Ara Öğüne Ekle'
+  if (meal === 'Akşam Yemeği') return 'Akşam Yemeğine Ekle'
+  return 'Öğüne Ekle'
 }
 
 function autoMeal() {
