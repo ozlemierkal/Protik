@@ -259,37 +259,59 @@ button{cursor:pointer}
 }
 
 
-/* v0.6 - Protein Ekle başlangıç ekranı */
-.quickStart{
-  margin-top:22px;
-  padding:18px;
-  border-radius:20px;
-  background:#fffaf3;
-  border:1px solid #f0e4f5;
+/* v0.8 - kalan protein için kombinasyon planları */
+.recommendationHeader p{
+  margin:4px 0 14px;
+  color:#807687;
+  font-size:14px;
 }
-.quickStartTitle{
-  font-weight:900;
-  color:#2d1941;
-  margin-bottom:12px;
+.planList{
+  display:grid;
+  gap:12px;
 }
-.quickChips{
+.planCard{
+  border:1px solid #eadff0;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff 0%,#fffaf2 100%);
+  padding:15px;
+}
+.planTop{
   display:flex;
-  flex-wrap:wrap;
-  gap:10px;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
 }
-.quickChip{
-  border:1px solid #ded1e8;
-  background:#fff;
-  color:#54208C;
-  border-radius:999px;
-  padding:10px 13px;
-  font-weight:800;
+.planTop strong{
+  display:block;
+  font-size:17px;
+  color:#2d1941;
 }
-.quickChip:active{
-  background:#f5effa;
-}
-.quickHint{
-  margin-top:12px;
-  color:#817789;
+.planTop span{
+  display:block;
+  color:#807687;
   font-size:13px;
+  margin-top:3px;
+}
+.planTop b{
+  color:#54208C;
+  white-space:nowrap;
+}
+.planFoods{
+  display:grid;
+  gap:7px;
+  margin-top:12px;
+  padding-top:11px;
+  border-top:1px solid #f0e8f3;
+}
+.planFoodRow{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  color:#5f5568;
+  font-size:14px;
+}
+.planFoodRow small{
+  color:#54208C;
+  font-weight:800;
+  white-space:nowrap;
 }

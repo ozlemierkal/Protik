@@ -37,13 +37,7 @@ function App() {
 
   const recommendations = useMemo(() => {
     if (remaining <= 0) return []
-    return foods
-      .map((f) => {
-        const portionProtein = Number(f.protein_per_default_portion || 0)
-        return { ...f, distance: Math.abs(portionProtein - remaining) }
-      })
-      .sort((a, b) => a.distance - b.distance)
-      .slice(0, 3)
+    return buildCompletionPlans(foods, remaining)
   }, [remaining])
 
   function finishOnboarding(nextProfile) {
@@ -402,18 +396,34 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
       </section>
 
       <section className="section">
-        <div className="sectionTitle">
-          <h2>Kalan proteini tamamla</h2>
+        <div className="sectionTitle recommendationHeader">
+          <div>
+            <h2>Kalan proteini tamamla</h2>
+            {remaining > 0 && <p>{Math.round(remaining)} g için birkaç farklı yol.</p>}
+          </div>
         </div>
+
         {remaining > 0 ? (
-          <div className="recommendGrid">
-            {recommendations.map((f) => (
-              <button className="foodMini" key={f.food_id} onClick={onAdd}>
-                <div className="foodIcon">{iconFor(f.icon_name)}</div>
-                <strong>{f.name}</strong>
-                <span>{f.default_portion} {f.default_unit}</span>
-                <b>{f.protein_per_default_portion} g protein</b>
-              </button>
+          <div className="planList">
+            {recommendations.map((plan) => (
+              <div className="planCard" key={plan.id}>
+                <div className="planTop">
+                  <div>
+                    <strong>{plan.title}</strong>
+                    <span>{plan.subtitle}</span>
+                  </div>
+                  <b>≈ {plan.total.toFixed(1)} g</b>
+                </div>
+
+                <div className="planFoods">
+                  {plan.items.map((item) => (
+                    <div className="planFoodRow" key={`${plan.id}-${item.food_id}`}>
+                      <span>{item.label}</span>
+                      <small>{item.protein.toFixed(1)} g</small>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         ) : <div className="successBox">Bugünkü hedefini tamamladın. 🎉</div>}
@@ -569,25 +579,6 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
           ) : (
             <div className="emptySearch">Bu yiyecek henüz listede yok.</div>
           )}
-        </div>
-      )}
-
-      {!query && !selected && !editingEntry && (
-        <div className="quickStart">
-          <div className="quickStartTitle">Hızlı ara</div>
-          <div className="quickChips">
-            {['Yumurta', 'Tavuk göğsü', 'Süzme yoğurt', 'Ton balığı'].map((item) => (
-              <button
-                key={item}
-                type="button"
-                className="quickChip"
-                onClick={() => handleQueryChange(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-          <div className="quickHint">Ya da yukarıdaki alana yediğin yiyeceği yaz.</div>
         </div>
       )}
 
@@ -767,6 +758,78 @@ function getProteinMultiplier(activity, goal) {
   if (activity === 'Orta') return 1.2
   if (activity === 'Düşük') return 1.0
   return 0
+}
+
+function buildCompletionPlans(foods, remaining) {
+  const byName = (needle) =>
+    foods.find((food) => food.name.toLocaleLowerCase('tr').includes(needle.toLocaleLowerCase('tr')))
+
+  const presets = [
+    {
+      id: 'balanced',
+      title: 'Dengeli seçenek',
+      subtitle: 'Ana öğün + süt ürünü + yumurta',
+      names: ['Tavuk göğsü', 'Süzme yoğurt', 'Yumurta', 'Kaşar peyniri'],
+    },
+    {
+      id: 'practical',
+      title: 'Pratik seçenek',
+      subtitle: 'Hazırlaması kolay proteinler',
+      names: ['Whey protein', 'Ton balığı', 'Proteinli yoğurt', 'Yumurta'],
+    },
+    {
+      id: 'vegetarian',
+      title: 'Vejetaryen seçenek',
+      subtitle: 'Et olmadan tamamla',
+      names: ['Tofu', 'Yeşil mercimek', 'Süzme yoğurt', 'Edamame'],
+    },
+  ]
+
+  return presets.map((preset) => {
+    const pool = preset.names.map(byName).filter(Boolean)
+    const items = []
+    let total = 0
+
+    for (const food of pool) {
+      if (items.length >= 4) break
+      const protein = Number(food.protein_per_default_portion || 0)
+      if (!protein) continue
+
+      const currentGap = Math.max(remaining - total, 0)
+
+      if (currentGap <= 0) break
+
+      // Son ürünü gerektiğinde daha küçük bir porsiyona ölçekle.
+      if (protein > currentGap && currentGap >= 5) {
+        const ratio = currentGap / protein
+        const amount = Math.max(
+          food.default_unit === 'adet' || food.default_unit === 'ölçek' ? 1 : 10,
+          Math.round(Number(food.default_portion) * ratio)
+        )
+
+        const scaledProtein = food.base_unit === food.default_unit
+          ? (amount / Number(food.base_amount)) * Number(food.protein_per_base)
+          : protein
+
+        items.push({
+          food_id: food.food_id,
+          label: `${amount} ${food.default_unit} ${food.name}`,
+          protein: scaledProtein,
+        })
+        total += scaledProtein
+        break
+      }
+
+      items.push({
+        food_id: food.food_id,
+        label: `${food.default_portion} ${food.default_unit} ${food.name}`,
+        protein,
+      })
+      total += protein
+    }
+
+    return { ...preset, items, total }
+  }).filter((plan) => plan.items.length > 0)
 }
 
 function addButtonLabel(meal) {
