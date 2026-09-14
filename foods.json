@@ -1,0 +1,1424 @@
+[
+  {
+    "food_id": 1,
+    "name": "Tavuk göğsü, pişmiş",
+    "category": "Et & Tavuk",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 31.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 46.5,
+    "portion_type": "gram",
+    "icon_name": "chicken",
+    "is_custom": false,
+    "aliases": [
+      "tavuk",
+      "tavuk göğsü",
+      "ızgara tavuk"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "200 g",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 2,
+    "name": "Hindi göğsü, pişmiş",
+    "category": "Et & Tavuk",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 29.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 43.5,
+    "portion_type": "gram",
+    "icon_name": "turkey",
+    "is_custom": false,
+    "aliases": [
+      "hindi",
+      "hindi göğsü"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 3,
+    "name": "Dana eti, yağsız, pişmiş",
+    "category": "Et & Tavuk",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 26.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 39.0,
+    "portion_type": "gram",
+    "icon_name": "beef",
+    "is_custom": false,
+    "aliases": [
+      "dana",
+      "dana eti",
+      "kırmızı et"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 4,
+    "name": "Köfte, pişmiş",
+    "category": "Et & Tavuk",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 23.0,
+    "default_portion": 120,
+    "default_unit": "g",
+    "protein_per_default_portion": 27.6,
+    "portion_type": "gram",
+    "icon_name": "meatball",
+    "is_custom": false,
+    "aliases": [
+      "köfte",
+      "ızgara köfte"
+    ],
+    "alternative_portions": [
+      {
+        "label": "3 adet (~90 g)",
+        "amount": 90,
+        "unit": "g"
+      },
+      {
+        "label": "4 adet (~120 g)",
+        "amount": 120,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 5,
+    "name": "Kuzu eti, pişmiş",
+    "category": "Et & Tavuk",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 25.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 37.5,
+    "portion_type": "gram",
+    "icon_name": "lamb",
+    "is_custom": false,
+    "aliases": [
+      "kuzu",
+      "kuzu eti"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 6,
+    "name": "Ton balığı, süzülmüş",
+    "category": "Balık & Deniz Ürünleri",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 25.0,
+    "default_portion": 120,
+    "default_unit": "g",
+    "protein_per_default_portion": 30.0,
+    "portion_type": "gram",
+    "icon_name": "tuna",
+    "is_custom": false,
+    "aliases": [
+      "ton balığı",
+      "ton",
+      "konserve ton balığı"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 küçük kutu (~80 g)",
+        "amount": 80,
+        "unit": "g"
+      },
+      {
+        "label": "1 kutu (~120 g)",
+        "amount": 120,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 7,
+    "name": "Somon, pişmiş",
+    "category": "Balık & Deniz Ürünleri",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 22.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 33.0,
+    "portion_type": "gram",
+    "icon_name": "salmon",
+    "is_custom": false,
+    "aliases": [
+      "somon",
+      "ızgara somon"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 8,
+    "name": "Levrek, pişmiş",
+    "category": "Balık & Deniz Ürünleri",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 23.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 34.5,
+    "portion_type": "gram",
+    "icon_name": "seabass",
+    "is_custom": false,
+    "aliases": [
+      "levrek"
+    ],
+    "alternative_portions": [
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "200 g",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 9,
+    "name": "Çipura, pişmiş",
+    "category": "Balık & Deniz Ürünleri",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 21.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 31.5,
+    "portion_type": "gram",
+    "icon_name": "seabream",
+    "is_custom": false,
+    "aliases": [
+      "çipura"
+    ],
+    "alternative_portions": [
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "200 g",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 10,
+    "name": "Karides, pişmiş",
+    "category": "Balık & Deniz Ürünleri",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 24.0,
+    "default_portion": 120,
+    "default_unit": "g",
+    "protein_per_default_portion": 28.8,
+    "portion_type": "gram",
+    "icon_name": "shrimp",
+    "is_custom": false,
+    "aliases": [
+      "karides"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "120 g",
+        "amount": 120,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 11,
+    "name": "Yumurta",
+    "category": "Yumurta & Süt",
+    "base_amount": 1,
+    "base_unit": "adet",
+    "protein_per_base": 6.5,
+    "default_portion": 2,
+    "default_unit": "adet",
+    "protein_per_default_portion": 13.0,
+    "portion_type": "piece",
+    "icon_name": "egg",
+    "is_custom": false,
+    "aliases": [
+      "yumurta",
+      "haşlanmış yumurta"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 adet",
+        "amount": 1,
+        "unit": "adet"
+      },
+      {
+        "label": "2 adet",
+        "amount": 2,
+        "unit": "adet"
+      },
+      {
+        "label": "3 adet",
+        "amount": 3,
+        "unit": "adet"
+      }
+    ]
+  },
+  {
+    "food_id": 12,
+    "name": "Yumurta beyazı",
+    "category": "Yumurta & Süt",
+    "base_amount": 1,
+    "base_unit": "adet",
+    "protein_per_base": 3.6,
+    "default_portion": 3,
+    "default_unit": "adet",
+    "protein_per_default_portion": 10.8,
+    "portion_type": "piece",
+    "icon_name": "egg_white",
+    "is_custom": false,
+    "aliases": [
+      "yumurta beyazı"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 adet",
+        "amount": 1,
+        "unit": "adet"
+      },
+      {
+        "label": "3 adet",
+        "amount": 3,
+        "unit": "adet"
+      },
+      {
+        "label": "5 adet",
+        "amount": 5,
+        "unit": "adet"
+      }
+    ]
+  },
+  {
+    "food_id": 13,
+    "name": "İnek sütü",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "ml",
+    "protein_per_base": 3.3,
+    "default_portion": 200,
+    "default_unit": "ml",
+    "protein_per_default_portion": 6.6,
+    "portion_type": "ml",
+    "icon_name": "milk",
+    "is_custom": false,
+    "aliases": [
+      "süt",
+      "inek sütü"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 bardak (200 ml)",
+        "amount": 200,
+        "unit": "ml"
+      },
+      {
+        "label": "1 büyük bardak (250 ml)",
+        "amount": 250,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "food_id": 14,
+    "name": "Kefir",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "ml",
+    "protein_per_base": 3.3,
+    "default_portion": 200,
+    "default_unit": "ml",
+    "protein_per_default_portion": 6.6,
+    "portion_type": "ml",
+    "icon_name": "kefir",
+    "is_custom": false,
+    "aliases": [
+      "kefir"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 bardak (200 ml)",
+        "amount": 200,
+        "unit": "ml"
+      },
+      {
+        "label": "1 şişe (250 ml)",
+        "amount": 250,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "food_id": 15,
+    "name": "Yoğurt",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 4.5,
+    "default_portion": 200,
+    "default_unit": "g",
+    "protein_per_default_portion": 9.0,
+    "portion_type": "gram",
+    "icon_name": "yogurt",
+    "is_custom": false,
+    "aliases": [
+      "yoğurt",
+      "yoğurt sade"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 küçük kase (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 16,
+    "name": "Süzme yoğurt",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 9.0,
+    "default_portion": 200,
+    "default_unit": "g",
+    "protein_per_default_portion": 18.0,
+    "portion_type": "gram",
+    "icon_name": "strained_yogurt",
+    "is_custom": false,
+    "aliases": [
+      "süzme yoğurt",
+      "greek yogurt",
+      "yunan yoğurdu"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 küçük kase (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 17,
+    "name": "Lor peyniri",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 18.0,
+    "default_portion": 50,
+    "default_unit": "g",
+    "protein_per_default_portion": 9.0,
+    "portion_type": "gram",
+    "icon_name": "lor",
+    "is_custom": false,
+    "aliases": [
+      "lor",
+      "lor peyniri"
+    ],
+    "alternative_portions": [
+      {
+        "label": "2 yemek kaşığı (~50 g)",
+        "amount": 50,
+        "unit": "g"
+      },
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 18,
+    "name": "Beyaz peynir",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 15.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 4.5,
+    "portion_type": "gram",
+    "icon_name": "feta",
+    "is_custom": false,
+    "aliases": [
+      "beyaz peynir",
+      "peynir"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 dilim (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "label": "2 dilim (~60 g)",
+        "amount": 60,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 19,
+    "name": "Kaşar peyniri",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 25.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 7.5,
+    "portion_type": "gram",
+    "icon_name": "cheese",
+    "is_custom": false,
+    "aliases": [
+      "kaşar",
+      "kaşar peyniri"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 dilim (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "label": "2 dilim (~60 g)",
+        "amount": 60,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 20,
+    "name": "Cottage cheese",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 12.0,
+    "default_portion": 100,
+    "default_unit": "g",
+    "protein_per_default_portion": 12.0,
+    "portion_type": "gram",
+    "icon_name": "cottage_cheese",
+    "is_custom": false,
+    "aliases": [
+      "cottage cheese"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 21,
+    "name": "Yeşil mercimek, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 9.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 13.5,
+    "portion_type": "gram",
+    "icon_name": "lentil",
+    "is_custom": false,
+    "aliases": [
+      "yeşil mercimek",
+      "mercimek"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 22,
+    "name": "Kırmızı mercimek, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 8.5,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 12.8,
+    "portion_type": "gram",
+    "icon_name": "red_lentil",
+    "is_custom": false,
+    "aliases": [
+      "kırmızı mercimek"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 23,
+    "name": "Nohut, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 8.5,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 12.8,
+    "portion_type": "gram",
+    "icon_name": "chickpea",
+    "is_custom": false,
+    "aliases": [
+      "nohut"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 24,
+    "name": "Kuru fasulye, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 8.5,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 12.8,
+    "portion_type": "gram",
+    "icon_name": "beans",
+    "is_custom": false,
+    "aliases": [
+      "kuru fasulye",
+      "fasulye"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 25,
+    "name": "Barbunya, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 8.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 12.0,
+    "portion_type": "gram",
+    "icon_name": "kidney_beans",
+    "is_custom": false,
+    "aliases": [
+      "barbunya"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "label": "1 kase (~200 g)",
+        "amount": 200,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 26,
+    "name": "Bezelye, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 5.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 7.5,
+    "portion_type": "gram",
+    "icon_name": "peas",
+    "is_custom": false,
+    "aliases": [
+      "bezelye"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 27,
+    "name": "Tofu",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 13.0,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 19.5,
+    "portion_type": "gram",
+    "icon_name": "tofu",
+    "is_custom": false,
+    "aliases": [
+      "tofu"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 28,
+    "name": "Edamame, pişmiş",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 11.5,
+    "default_portion": 100,
+    "default_unit": "g",
+    "protein_per_default_portion": 11.5,
+    "portion_type": "gram",
+    "icon_name": "edamame",
+    "is_custom": false,
+    "aliases": [
+      "edamame"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 29,
+    "name": "Tempeh",
+    "category": "Bakliyat & Bitkisel",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 19.0,
+    "default_portion": 100,
+    "default_unit": "g",
+    "protein_per_default_portion": 19.0,
+    "portion_type": "gram",
+    "icon_name": "tempeh",
+    "is_custom": false,
+    "aliases": [
+      "tempeh"
+    ],
+    "alternative_portions": [
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "label": "150 g",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 30,
+    "name": "Yulaf",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 13.0,
+    "default_portion": 50,
+    "default_unit": "g",
+    "protein_per_default_portion": 6.5,
+    "portion_type": "gram",
+    "icon_name": "oats",
+    "is_custom": false,
+    "aliases": [
+      "yulaf",
+      "yulaf ezmesi"
+    ],
+    "alternative_portions": [
+      {
+        "label": "5 yemek kaşığı (~50 g)",
+        "amount": 50,
+        "unit": "g"
+      },
+      {
+        "label": "100 g",
+        "amount": 100,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 31,
+    "name": "Bulgur, pişmiş",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 3.1,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 4.7,
+    "portion_type": "gram",
+    "icon_name": "bulgur",
+    "is_custom": false,
+    "aliases": [
+      "bulgur",
+      "bulgur pilavı"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 32,
+    "name": "Kinoa, pişmiş",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 4.4,
+    "default_portion": 150,
+    "default_unit": "g",
+    "protein_per_default_portion": 6.6,
+    "portion_type": "gram",
+    "icon_name": "quinoa",
+    "is_custom": false,
+    "aliases": [
+      "kinoa"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~150 g)",
+        "amount": 150,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 33,
+    "name": "Tam buğday ekmeği",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 10.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 3.0,
+    "portion_type": "gram",
+    "icon_name": "bread",
+    "is_custom": false,
+    "aliases": [
+      "tam buğday ekmeği",
+      "esmer ekmek"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 dilim (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "label": "2 dilim (~60 g)",
+        "amount": 60,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 34,
+    "name": "Beyaz ekmek",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 8.5,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 2.6,
+    "portion_type": "gram",
+    "icon_name": "white_bread",
+    "is_custom": false,
+    "aliases": [
+      "beyaz ekmek",
+      "ekmek"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 dilim (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "label": "2 dilim (~60 g)",
+        "amount": 60,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 35,
+    "name": "Makarna, pişmiş",
+    "category": "Tahıl & Kahvaltılık",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 5.5,
+    "default_portion": 180,
+    "default_unit": "g",
+    "protein_per_default_portion": 9.9,
+    "portion_type": "gram",
+    "icon_name": "pasta",
+    "is_custom": false,
+    "aliases": [
+      "makarna"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 porsiyon (~180 g)",
+        "amount": 180,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 36,
+    "name": "Badem",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 21.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 6.3,
+    "portion_type": "gram",
+    "icon_name": "almond",
+    "is_custom": false,
+    "aliases": [
+      "badem"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 37,
+    "name": "Fındık",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 15.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 4.5,
+    "portion_type": "gram",
+    "icon_name": "hazelnut",
+    "is_custom": false,
+    "aliases": [
+      "fındık"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 38,
+    "name": "Ceviz",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 15.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 4.5,
+    "portion_type": "gram",
+    "icon_name": "walnut",
+    "is_custom": false,
+    "aliases": [
+      "ceviz"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 39,
+    "name": "Antep fıstığı",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 20.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 6.0,
+    "portion_type": "gram",
+    "icon_name": "pistachio",
+    "is_custom": false,
+    "aliases": [
+      "antep fıstığı",
+      "fıstık"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 40,
+    "name": "Yer fıstığı",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 25.5,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 7.7,
+    "portion_type": "gram",
+    "icon_name": "peanut",
+    "is_custom": false,
+    "aliases": [
+      "yer fıstığı"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 41,
+    "name": "Fıstık ezmesi",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 25.0,
+    "default_portion": 20,
+    "default_unit": "g",
+    "protein_per_default_portion": 5.0,
+    "portion_type": "gram",
+    "icon_name": "peanut_butter",
+    "is_custom": false,
+    "aliases": [
+      "fıstık ezmesi"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 yemek kaşığı (~20 g)",
+        "amount": 20,
+        "unit": "g"
+      },
+      {
+        "label": "2 yemek kaşığı (~40 g)",
+        "amount": 40,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 42,
+    "name": "Kabak çekirdeği",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 30.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 9.0,
+    "portion_type": "gram",
+    "icon_name": "pumpkin_seed",
+    "is_custom": false,
+    "aliases": [
+      "kabak çekirdeği"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 avuç (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 43,
+    "name": "Chia tohumu",
+    "category": "Kuruyemiş & Tohum",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 16.5,
+    "default_portion": 15,
+    "default_unit": "g",
+    "protein_per_default_portion": 2.5,
+    "portion_type": "gram",
+    "icon_name": "chia",
+    "is_custom": false,
+    "aliases": [
+      "chia",
+      "chia tohumu"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 yemek kaşığı (~15 g)",
+        "amount": 15,
+        "unit": "g"
+      },
+      {
+        "label": "2 yemek kaşığı (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      }
+    ]
+  },
+  {
+    "food_id": 44,
+    "name": "Whey protein",
+    "category": "Takviye & Pratik",
+    "base_amount": 1,
+    "base_unit": "ölçek",
+    "protein_per_base": 24.0,
+    "default_portion": 1,
+    "default_unit": "ölçek",
+    "protein_per_default_portion": 24.0,
+    "portion_type": "scoop",
+    "icon_name": "whey",
+    "is_custom": false,
+    "aliases": [
+      "whey",
+      "protein tozu",
+      "whey protein"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 ölçek",
+        "amount": 1,
+        "unit": "ölçek"
+      }
+    ]
+  },
+  {
+    "food_id": 45,
+    "name": "Ayran",
+    "category": "Takviye & Pratik",
+    "base_amount": 100,
+    "base_unit": "ml",
+    "protein_per_base": 2.0,
+    "default_portion": 250,
+    "default_unit": "ml",
+    "protein_per_default_portion": 5.0,
+    "portion_type": "ml",
+    "icon_name": "ayran",
+    "is_custom": false,
+    "aliases": [
+      "ayran"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 bardak (250 ml)",
+        "amount": 250,
+        "unit": "ml"
+      },
+      {
+        "label": "1 şişe (300 ml)",
+        "amount": 300,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "food_id": 46,
+    "name": "Soya sütü",
+    "category": "Takviye & Pratik",
+    "base_amount": 100,
+    "base_unit": "ml",
+    "protein_per_base": 3.3,
+    "default_portion": 200,
+    "default_unit": "ml",
+    "protein_per_default_portion": 6.6,
+    "portion_type": "ml",
+    "icon_name": "soy_milk",
+    "is_custom": false,
+    "aliases": [
+      "soya sütü"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 bardak (200 ml)",
+        "amount": 200,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "food_id": 47,
+    "name": "Proteinli süt",
+    "category": "Takviye & Pratik",
+    "base_amount": 1,
+    "base_unit": "şişe",
+    "protein_per_base": 25.0,
+    "default_portion": 1,
+    "default_unit": "şişe",
+    "protein_per_default_portion": 25.0,
+    "portion_type": "piece",
+    "icon_name": "protein_milk",
+    "is_custom": false,
+    "aliases": [
+      "proteinli süt",
+      "yüksek proteinli süt"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 şişe",
+        "amount": 1,
+        "unit": "şişe"
+      }
+    ]
+  },
+  {
+    "food_id": 48,
+    "name": "Proteinli yoğurt",
+    "category": "Takviye & Pratik",
+    "base_amount": 1,
+    "base_unit": "kase",
+    "protein_per_base": 20.0,
+    "default_portion": 1,
+    "default_unit": "kase",
+    "protein_per_default_portion": 20.0,
+    "portion_type": "piece",
+    "icon_name": "protein_yogurt",
+    "is_custom": false,
+    "aliases": [
+      "proteinli yoğurt",
+      "yüksek proteinli yoğurt"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 kase",
+        "amount": 1,
+        "unit": "kase"
+      }
+    ]
+  },
+  {
+    "food_id": 49,
+    "name": "Protein bar",
+    "category": "Takviye & Pratik",
+    "base_amount": 1,
+    "base_unit": "adet",
+    "protein_per_base": 20.0,
+    "default_portion": 1,
+    "default_unit": "adet",
+    "protein_per_default_portion": 20.0,
+    "portion_type": "piece",
+    "icon_name": "protein_bar",
+    "is_custom": false,
+    "aliases": [
+      "protein bar",
+      "protein barı"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 adet",
+        "amount": 1,
+        "unit": "adet"
+      }
+    ]
+  },
+  {
+    "food_id": 50,
+    "name": "Labne",
+    "category": "Yumurta & Süt",
+    "base_amount": 100,
+    "base_unit": "g",
+    "protein_per_base": 7.0,
+    "default_portion": 30,
+    "default_unit": "g",
+    "protein_per_default_portion": 2.1,
+    "portion_type": "gram",
+    "icon_name": "labneh",
+    "is_custom": false,
+    "aliases": [
+      "labne",
+      "labne peyniri"
+    ],
+    "alternative_portions": [
+      {
+        "label": "1 yemek kaşığı (~30 g)",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "label": "2 yemek kaşığı (~60 g)",
+        "amount": 60,
+        "unit": "g"
+      }
+    ]
+  }
+]

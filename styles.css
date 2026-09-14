@@ -1,0 +1,86 @@
+:root{
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color:#21152f;
+  background:#f6f1e8;
+  font-synthesis:none;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#fbf7ef 0%,#f6f1e8 100%)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.appShell{max-width:520px;min-height:100vh;margin:0 auto;padding:20px 18px 110px;background:#fffdf9;position:relative}
+.topbar,.screenHeader{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.screenHeader h1{font-size:24px;margin:0}
+.brand{display:flex;align-items:center;gap:10px}
+.logoMark{width:46px;height:46px;border-radius:14px;background:#54208C;color:white;display:grid;place-items:center;font-size:28px;font-weight:900;position:relative}
+.logoMark:after{content:"";position:absolute;width:10px;height:10px;border-radius:999px;background:#F6B21A;right:5px;top:5px}
+.brandName{font-size:28px;font-weight:900;color:#54208C;line-height:1}
+.brandSub{font-size:12px;color:#6d6475;margin-top:4px}
+.iconButton,.back{border:0;background:#f3eef7;width:42px;height:42px;border-radius:50%;color:#54208C;font-size:24px}
+.hello{margin:28px 2px 18px}
+.hello h1{margin:0;font-size:30px}
+.hello p,.muted{color:#736b79;margin:6px 0 0}
+.card,.section{background:#fff;border:1px solid #efe6f5;border-radius:22px;padding:20px;margin-top:16px;box-shadow:0 8px 24px rgba(64,31,82,.06)}
+.progressCard{display:grid;grid-template-columns:1fr 130px;gap:18px;align-items:center}
+.eyebrow{font-weight:800;font-size:18px}
+.proteinValue{font-size:46px;font-weight:900;color:#54208C;margin:6px 0}
+.proteinValue small{font-size:24px;color:#60596b}
+.remaining{color:#F0A000;font-size:19px;font-weight:800}
+.ring{width:120px;height:120px;border-radius:50%;background:conic-gradient(#F6B21A var(--pct),#efe8dc 0);display:grid;place-items:center;position:relative}
+.ring:before{content:"";position:absolute;width:86px;height:86px;background:#fff;border-radius:50%}
+.ring span{position:relative;font-weight:900;color:#54208C;font-size:20px}
+.primary{border:0;border-radius:16px;background:#54208C;color:#fff;padding:15px 18px;font-weight:800}
+.wide{grid-column:1/-1;width:100%;font-size:18px}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center}
+.sectionTitle h2{font-size:20px;margin:0 0 14px}
+.recommendGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.foodMini{border:1px solid #efe6f5;border-radius:16px;background:#fff;padding:10px;text-align:left;min-height:150px}
+.foodMini strong{display:block;font-size:13px}
+.foodMini span{display:block;font-size:12px;color:#766c7c;margin-top:4px}
+.foodMini b{display:block;color:#54208C;font-size:12px;margin-top:6px}
+.foodIcon{font-size:30px}
+.foodIcon.big{font-size:46px}
+.mealList{display:grid;gap:2px}
+.mealRow{display:flex;justify-content:space-between;padding:13px 4px;border-bottom:1px solid #eee6f2}
+.mealRow:last-child{border-bottom:0}
+.bottomNav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:86px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #eee6f2;padding:8px 8px max(8px,env(safe-area-inset-bottom));z-index:20}
+.bottomNav button{border:0;background:none;color:#83798c;display:grid;place-items:center;font-size:20px}
+.bottomNav button span{font-size:10px}
+.bottomNav .active{color:#54208C}
+.bottomNav .fab{width:56px;height:56px;border-radius:50%;background:#54208C;color:#fff;justify-self:center;align-self:start;margin-top:-20px}
+.bottomNav .fab span{color:#54208C;margin-top:14px}
+.topDots{text-align:center;color:#74697c;font-weight:800;margin-bottom:12px}
+.onboarding{display:flex;flex-direction:column;justify-content:space-between}
+.panel{flex:1}
+.onboardingHero{text-align:center;padding-top:50px}
+.onboardingHero .brand{justify-content:center}
+.heroEmoji{font-size:72px;margin:70px 0 20px}
+.onboardingHero h1{font-size:34px;margin:0}
+.onboardingHero p{font-size:18px;color:#6f6677}
+.onboardingActions{display:flex;gap:10px;padding-top:20px}
+.onboardingActions .primary{flex:1}
+.ghost{border:1px solid #d9cbe7;background:white;color:#54208C;border-radius:16px;padding:15px 20px;font-weight:800}
+.field{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #eee7f0}
+.field span{font-weight:700}
+.field input,.field select,.search{width:100%;border:1px solid #dfd3e9;background:#fff;border-radius:14px;padding:13px;color:#21152f}
+.choices{display:grid;gap:12px;margin-top:20px}
+.choices button{padding:18px;border-radius:18px;border:1px solid #dfd2e9;background:#fff;text-align:left;font-weight:700}
+.choices button.selected{border:2px solid #54208C;background:#f5effa}
+.targetStep{text-align:center;padding-top:70px}
+.targetBig{font-size:72px;font-weight:900;color:#54208C;margin:30px 0 6px}
+.range{width:100%;accent-color:#54208C;margin-top:25px}
+.search{margin:22px 0 10px;font-size:16px}
+.searchResults{border:1px solid #eadff0;border-radius:16px;overflow:hidden;margin-bottom:12px}
+.searchResults button{width:100%;display:flex;justify-content:space-between;border:0;background:#fff;padding:13px 14px;border-bottom:1px solid #eee6f2;text-align:left}
+.searchResults button:last-child{border-bottom:0}
+.selectedFood{display:flex;align-items:center;gap:14px}
+.selectedFood h2{margin:0}.selectedFood p{margin:4px 0 0;color:#766c7c}
+.proteinResult{display:flex;justify-content:space-between;padding:18px 0;font-size:20px}
+.proteinResult b{color:#54208C}
+.successBox{background:#fff6d7;border:1px solid #f6d77e;padding:16px;border-radius:16px}
+@media (max-width:390px){
+  .progressCard{grid-template-columns:1fr 105px}
+  .ring{width:100px;height:100px}
+  .ring:before{width:72px;height:72px}
+  .recommendGrid{grid-template-columns:1fr}
+}
