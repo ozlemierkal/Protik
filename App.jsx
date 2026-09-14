@@ -1,9 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import foods from './foods.json'
 
-const PURPLE = '#54208C'
-const YELLOW = '#F6B21A'
-
 function loadProfile() {
   try {
     return JSON.parse(localStorage.getItem('protik_profile')) || null
@@ -111,81 +108,215 @@ function Logo() {
 function Onboarding({ onFinish }) {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState({
-    age: 35,
-    gender: 'Kadın',
-    height: 165,
-    weight: 65,
-    activity: 'Orta',
-    goal: 'Genel sağlık',
+    age: '',
+    gender: '',
+    height: '',
+    weight: '',
+    activity: '',
+    goal: '',
   })
-
-  const multiplier = form.goal === 'Kas koruma / geliştirme'
-    ? 1.7
-    : form.goal === 'Kilo verme sürecinde'
-      ? 1.5
-      : form.activity === 'Yüksek'
-        ? 1.3
-        : form.activity === 'Orta'
-          ? 1.2
-          : 1.0
-
-  const suggested = Math.max(40, Math.round((form.weight * multiplier) / 5) * 5)
   const [manualTarget, setManualTarget] = useState(null)
+
+  const weightNumber = Number(form.weight)
+  const multiplier = getProteinMultiplier(form.activity, form.goal)
+  const suggested = weightNumber > 0 && multiplier > 0
+    ? Math.max(40, Math.round((weightNumber * multiplier) / 5) * 5)
+    : 40
   const target = manualTarget ?? suggested
 
-  const steps = [
-    <section className="onboardingHero" key="welcome">
-      <Logo />
-      <div className="heroEmoji">💪</div>
-      <h1>Protein hedefini takip et.</h1>
-      <p>Eksik kalan proteini nasıl tamamlayacağını da Protik sana önersin.</p>
-    </section>,
-    <section key="about">
-      <h2>Seni biraz tanıyalım</h2>
-      <p className="muted">Daha uygun bir başlangıç hedefi önerebilmemiz için.</p>
-      <Field label="Yaş"><input type="number" value={form.age} onChange={e => setForm({...form, age:+e.target.value})}/></Field>
-      <Field label="Cinsiyet">
-        <select value={form.gender} onChange={e => setForm({...form, gender:e.target.value})}>
-          <option>Kadın</option><option>Erkek</option><option>Belirtmek istemiyorum</option>
-        </select>
-      </Field>
-      <Field label="Boy (cm)"><input type="number" value={form.height} onChange={e => setForm({...form, height:+e.target.value})}/></Field>
-      <Field label="Kilo (kg)"><input type="number" value={form.weight} onChange={e => setForm({...form, weight:+e.target.value})}/></Field>
-    </section>,
-    <section key="activity">
-      <h2>Günlük hareketin nasıl?</h2>
-      <ChoiceGroup value={form.activity} onChange={v => setForm({...form, activity:v})}
-        options={['Düşük','Orta','Yüksek']} />
-    </section>,
-    <section key="goal">
-      <h2>Hedefin ne?</h2>
-      <ChoiceGroup value={form.goal} onChange={v => setForm({...form, goal:v})}
-        options={['Genel sağlık','Kilo verme sürecinde','Kas koruma / geliştirme']} />
-    </section>,
-    <section key="target" className="targetStep">
-      <h2>Önerilen başlangıç hedefin</h2>
-      <div className="targetBig">{target} g</div>
-      <p className="muted">İstersen şimdi değiştirebilirsin.</p>
-      <input className="range" type="range" min="40" max="200" step="5" value={target}
-        onChange={e => setManualTarget(+e.target.value)} />
-    </section>,
+  const activityOptions = [
+    { value: 'Düşük', title: 'Düşük', description: 'Çoğunlukla masa başı veya az hareketli bir gün.' },
+    { value: 'Orta', title: 'Orta', description: 'Haftada 1–3 gün egzersiz veya düzenli yürüyüş.' },
+    { value: 'Yüksek', title: 'Yüksek', description: 'Haftada 4+ gün düzenli egzersiz veya yoğun hareket.' },
   ]
 
+  const goalOptions = [
+    { value: 'Genel sağlık', title: 'Genel sağlık', description: 'Günlük proteinini daha dengeli tutmak istiyorum.' },
+    { value: 'Kilo verme sürecinde', title: 'Kilo verme sürecinde', description: 'Kilo verirken kas kaybını azaltmak istiyorum.' },
+    { value: 'Kas koruma / geliştirme', title: 'Kas koruma / geliştirme', description: 'Kas kütlemi korumak veya artırmak istiyorum.' },
+  ]
+
+  const canContinue =
+    step === 0 ? true
+      : step === 1 ? isBasicsValid(form)
+        : step === 2 ? Boolean(form.activity)
+          : step === 3 ? Boolean(form.goal)
+            : true
+
+  function goNext() {
+    if (!canContinue) return
+    if (step < 4) setStep(step + 1)
+  }
+
+  function complete() {
+    if (!isBasicsValid(form) || !form.activity || !form.goal) return
+    onFinish({
+      age: Number(form.age),
+      gender: form.gender || 'Belirtmek istemiyorum',
+      height: Number(form.height),
+      weight: Number(form.weight),
+      activity: form.activity,
+      goal: form.goal,
+      proteinTarget: target,
+    })
+  }
+
   return (
-    <main className="appShell onboarding">
-      <div className="topDots">{step+1} / {steps.length}</div>
-      <div className="panel">{steps[step]}</div>
+    <main className="appShell onboarding warmBackground">
+      <div className="topDots">{step + 1} / 5</div>
+
+      <div className="panel">
+        {step === 0 && (
+          <section className="onboardingStep centered welcomeStep">
+            <div className="welcomeArt">
+              <div className="welcomeGlow"></div>
+              <div className="welcomeLogoWrap"><Logo /></div>
+            </div>
+            <h1>Protein hedefini takip et.</h1>
+            <p>
+              Eksik kalan proteini nasıl tamamlayacağını da
+              <strong> Protik </strong>
+              sana önersin.
+            </p>
+            <div className="miniFeatureRow">
+              <div className="miniFeature">Hedefini gör</div>
+              <div className="miniFeature">Kolayca ekle</div>
+              <div className="miniFeature">Eksik kalanı tamamla</div>
+            </div>
+          </section>
+        )}
+
+        {step === 1 && (
+          <section className="onboardingStep">
+            <div className="stepIntro centered">
+              <h2>Seni biraz tanıyalım</h2>
+              <p className="muted">
+                Protein hedefini sana daha uygun önerebilmemiz için birkaç bilgiye ihtiyacımız var.
+              </p>
+            </div>
+            <div className="formCard warmCard">
+              <Field label="Yaşın">
+                <input
+                  type="number"
+                  placeholder="Örn. 35"
+                  value={form.age}
+                  onChange={(e) => setForm({ ...form, age: e.target.value })}
+                />
+              </Field>
+              <Field label="Cinsiyetin">
+                <select
+                  value={form.gender}
+                  onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                >
+                  <option value="">Seç</option>
+                  <option value="Kadın">Kadın</option>
+                  <option value="Erkek">Erkek</option>
+                  <option value="Belirtmek istemiyorum">Belirtmek istemiyorum</option>
+                </select>
+              </Field>
+              <Field label="Boyun (cm)">
+                <input
+                  type="number"
+                  placeholder="Örn. 165"
+                  value={form.height}
+                  onChange={(e) => setForm({ ...form, height: e.target.value })}
+                />
+              </Field>
+              <Field label="Kilon (kg)">
+                <input
+                  type="number"
+                  placeholder="Örn. 65"
+                  value={form.weight}
+                  onChange={(e) => setForm({ ...form, weight: e.target.value })}
+                />
+              </Field>
+            </div>
+            {!isBasicsValid(form) && (
+              <div className="helperText">Devam etmek için yaşını, boyunu ve kilonu gir.</div>
+            )}
+          </section>
+        )}
+
+        {step === 2 && (
+          <section className="onboardingStep centered compactStep">
+            <div className="stepIntro centered">
+              <h2>Günlük hareketin nasıl?</h2>
+              <p className="muted">Sana daha uygun bir protein hedefi önermemize yardımcı olur.</p>
+            </div>
+            <ChoiceGroup
+              value={form.activity}
+              onChange={(value) => setForm({ ...form, activity: value })}
+              options={activityOptions}
+            />
+          </section>
+        )}
+
+        {step === 3 && (
+          <section className="onboardingStep centered compactStep">
+            <div className="stepIntro centered">
+              <h2>Hedefin ne?</h2>
+              <p className="muted">Protein hedefini buna göre ayarlayacağız.</p>
+            </div>
+            <ChoiceGroup
+              value={form.goal}
+              onChange={(value) => setForm({ ...form, goal: value })}
+              options={goalOptions}
+            />
+          </section>
+        )}
+
+        {step === 4 && (
+          <section className="onboardingStep centered targetStep warmTargetStep">
+            <div className="stepIntro centered narrow">
+              <h2>Önerilen başlangıç hedefin</h2>
+              <p className="muted">Kilon, hareket düzeyin ve hedefine göre hesaplandı.</p>
+            </div>
+            <div className="targetSummaryCard warmCard">
+              <div className="targetPreviewCircle">
+                <span>{target}</span>
+                <small>g / gün</small>
+              </div>
+              <p className="muted">İstersen şimdi değiştirebilirsin.</p>
+              <input
+                className="range"
+                type="range"
+                min="40"
+                max="200"
+                step="5"
+                value={target}
+                onChange={(e) => setManualTarget(Number(e.target.value))}
+              />
+              <div className="targetMetaRow">
+                <span>{form.weight} kg</span>
+                <span>{form.activity}</span>
+                <span>{form.goal}</span>
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
+
       <div className="onboardingActions">
-        {step > 0 && <button className="ghost" onClick={() => setStep(step-1)}>Geri</button>}
-        {step < steps.length - 1
-          ? <button className="primary" onClick={() => setStep(step+1)}>Devam</button>
-          : <button className="primary" onClick={() => onFinish({...form, proteinTarget:target})}>Protik’i kullanmaya başla</button>}
+        {step > 0 && (
+          <button className="ghost" onClick={() => setStep(step - 1)}>
+            Geri
+          </button>
+        )}
+        {step < 4 ? (
+          <button className="primary" disabled={!canContinue} onClick={goNext}>
+            Devam
+          </button>
+        ) : (
+          <button className="primary" onClick={complete}>
+            Protik’i kullanmaya başla
+          </button>
+        )}
       </div>
     </main>
   )
 }
 
-function Home({ profile, target, total, remaining, recommendations, todayEntries, onAdd, onProfile }) {
+function Home({ target, total, remaining, recommendations, todayEntries, onAdd, onProfile }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
   return (
     <main className="appShell">
@@ -205,7 +336,7 @@ function Home({ profile, target, total, remaining, recommendations, todayEntries
           <div className="proteinValue">{Math.round(total)} <small>/ {target} g</small></div>
           <div className="remaining">{remaining > 0 ? `${Math.round(remaining)} g kaldı` : 'Hedef tamamlandı ✓'}</div>
         </div>
-        <div className="ring" style={{'--pct': `${pct * 3.6}deg`}}>
+        <div className="ring" style={{ '--pct': `${pct * 3.6}deg` }}>
           <span>%{pct}</span>
         </div>
         <button className="primary wide" onClick={onAdd}>＋ Protein Ekle</button>
@@ -232,8 +363,8 @@ function Home({ profile, target, total, remaining, recommendations, todayEntries
       <section className="section">
         <div className="sectionTitle"><h2>Bugünkü öğünler</h2></div>
         <div className="mealList">
-          {['Kahvaltı','Öğle Yemeği','Ara Öğün','Akşam Yemeği'].map(meal => {
-            const sum = todayEntries.filter(e => e.meal === meal).reduce((s,e)=>s+Number(e.protein),0)
+          {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
+            const sum = todayEntries.filter((e) => e.meal === meal).reduce((s, e) => s + Number(e.protein), 0)
             return <div className="mealRow" key={meal}><span>{meal}</span><b>{sum ? `${Math.round(sum)} g` : '—'}</b></div>
           })}
         </div>
@@ -256,9 +387,9 @@ function AddProtein({ foods, onBack, onSave }) {
   const [amount, setAmount] = useState(foods[0].default_portion)
   const [meal, setMeal] = useState(autoMeal())
 
-  const filtered = foods.filter(f =>
+  const filtered = foods.filter((f) =>
     f.name.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')) ||
-    (f.aliases || []).some(a => a.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))
+    (f.aliases || []).some((a) => a.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))
   ).slice(0, 10)
 
   function choose(f) {
@@ -281,10 +412,10 @@ function AddProtein({ foods, onBack, onSave }) {
         <span />
       </header>
 
-      <input className="search" placeholder="Yiyecek ara veya yaz..." value={query} onChange={e => setQuery(e.target.value)} />
+      <input className="search" placeholder="Yiyecek ara veya yaz..." value={query} onChange={(e) => setQuery(e.target.value)} />
       {query && (
         <div className="searchResults">
-          {filtered.map(f => <button key={f.food_id} onClick={() => choose(f)}>{f.name}<span>{f.protein_per_default_portion} g</span></button>)}
+          {filtered.map((f) => <button key={f.food_id} onClick={() => choose(f)}>{f.name}<span>{f.protein_per_default_portion} g</span></button>)}
         </div>
       )}
 
@@ -295,21 +426,21 @@ function AddProtein({ foods, onBack, onSave }) {
             <div><h2>{selected.name}</h2><p>{selected.category}</p></div>
           </div>
           <Field label={`Miktar (${selected.default_unit})`}>
-            <input type="number" min="1" value={amount} onChange={e => setAmount(+e.target.value)} />
+            <input type="number" min="1" value={amount} onChange={(e) => setAmount(+e.target.value)} />
           </Field>
           <div className="proteinResult"><span>Protein</span><b>{protein.toFixed(1)} g</b></div>
           <Field label="Öğün">
-            <select value={meal} onChange={e => setMeal(e.target.value)}>
+            <select value={meal} onChange={(e) => setMeal(e.target.value)}>
               <option>Kahvaltı</option><option>Öğle Yemeği</option><option>Ara Öğün</option><option>Akşam Yemeği</option>
             </select>
           </Field>
           <button className="primary wide" onClick={() => onSave({
-            foodId:selected.food_id,
-            name:selected.name,
+            foodId: selected.food_id,
+            name: selected.name,
             amount,
-            unit:selected.default_unit,
+            unit: selected.default_unit,
             protein,
-            meal
+            meal,
           })}>Kaydet</button>
         </section>
       )}
@@ -323,19 +454,19 @@ function Profile({ profile, onBack, onSave }) {
     <main className="appShell">
       <header className="screenHeader"><button className="back" onClick={onBack}>‹</button><h1>Profil</h1><span /></header>
       <section className="card">
-        <Field label="Kilo (kg)"><input type="number" value={p.weight} onChange={e=>setP({...p,weight:+e.target.value})}/></Field>
+        <Field label="Kilo (kg)"><input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} /></Field>
         <Field label="Aktivite">
-          <select value={p.activity} onChange={e=>setP({...p,activity:e.target.value})}>
+          <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
             <option>Düşük</option><option>Orta</option><option>Yüksek</option>
           </select>
         </Field>
         <Field label="Hedef">
-          <select value={p.goal} onChange={e=>setP({...p,goal:e.target.value})}>
+          <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
             <option>Genel sağlık</option><option>Kilo verme sürecinde</option><option>Kas koruma / geliştirme</option>
           </select>
         </Field>
-        <Field label="Günlük protein hedefi (g)"><input type="number" value={p.proteinTarget} onChange={e=>setP({...p,proteinTarget:+e.target.value})}/></Field>
-        <button className="primary wide" onClick={()=>onSave(p)}>Kaydet</button>
+        <Field label="Günlük protein hedefi (g)"><input type="number" value={p.proteinTarget} onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })} /></Field>
+        <button className="primary wide" onClick={() => onSave(p)}>Kaydet</button>
       </section>
     </main>
   )
@@ -346,7 +477,33 @@ function Field({ label, children }) {
 }
 
 function ChoiceGroup({ value, onChange, options }) {
-  return <div className="choices">{options.map(o => <button key={o} className={value===o?'selected':''} onClick={()=>onChange(o)}>{o}</button>)}</div>
+  return (
+    <div className="choices richChoices">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          className={value === option.value ? 'selected richChoiceCard' : 'richChoiceCard'}
+          onClick={() => onChange(option.value)}
+        >
+          <strong>{option.title}</strong>
+          {option.description && <span>{option.description}</span>}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function isBasicsValid(form) {
+  return Number(form.age) > 0 && Number(form.height) > 0 && Number(form.weight) > 0
+}
+
+function getProteinMultiplier(activity, goal) {
+  if (goal === 'Kas koruma / geliştirme') return 1.7
+  if (goal === 'Kilo verme sürecinde') return 1.5
+  if (activity === 'Yüksek') return 1.3
+  if (activity === 'Orta') return 1.2
+  if (activity === 'Düşük') return 1.0
+  return 0
 }
 
 function autoMeal() {
@@ -357,7 +514,7 @@ function autoMeal() {
   return 'Akşam Yemeği'
 }
 
-function iconFor(name='') {
+function iconFor(name = '') {
   if (name.includes('egg')) return '🥚'
   if (name.includes('milk') || name.includes('yogurt') || name.includes('kefir')) return '🥛'
   if (name.includes('chicken') || name.includes('turkey')) return '🍗'
