@@ -1,10 +1,19 @@
-name: Protik Build Check
+name: Protik Pages
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -18,10 +27,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          
 
       - name: Paketleri yükle
         run: npm install
 
       - name: Projeyi derle
         run: npm run build
+
+      - name: Pages ayarla
+        uses: actions/configure-pages@v5
+
+      - name: Site dosyalarını yükle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: GitHub Pages'a yayınla
+        id: deployment
+        uses: actions/deploy-pages@v4
