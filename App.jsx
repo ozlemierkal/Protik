@@ -25,6 +25,8 @@ function App() {
   const [profile, setProfile] = useState(loadProfile)
   const [entries, setEntries] = useState(loadEntries)
   const [screen, setScreen] = useState(profile ? 'home' : 'onboarding')
+  const [selectedMeal, setSelectedMeal] = useState(null)
+  const [editingEntry, setEditingEntry] = useState(null)
 
   const todayKey = new Date().toISOString().slice(0, 10)
   const todayEntries = entries.filter((e) => e.date === todayKey)
@@ -57,12 +59,63 @@ function App() {
     setScreen('home')
   }
 
+  function updateEntry(updated) {
+    const next = entries.map((entry) =>
+      entry.id === updated.id ? { ...updated } : entry
+    )
+    save('protik_entries', next)
+    setEntries(next)
+    setEditingEntry(null)
+    setScreen('meal')
+  }
+
+  function deleteEntry(id) {
+    const next = entries.filter((entry) => entry.id !== id)
+    save('protik_entries', next)
+    setEntries(next)
+  }
+
   if (screen === 'onboarding') {
     return <Onboarding onFinish={finishOnboarding} />
   }
 
   if (screen === 'add') {
-    return <AddProtein foods={foods} onBack={() => setScreen('home')} onSave={addEntry} />
+    return (
+      <AddProtein
+        foods={foods}
+        onBack={() => setScreen('home')}
+        onSave={addEntry}
+      />
+    )
+  }
+
+  if (screen === 'edit' && editingEntry) {
+    return (
+      <AddProtein
+        foods={foods}
+        onBack={() => {
+          setEditingEntry(null)
+          setScreen('meal')
+        }}
+        onSave={updateEntry}
+        editingEntry={editingEntry}
+      />
+    )
+  }
+
+  if (screen === 'meal' && selectedMeal) {
+    return (
+      <MealDetails
+        meal={selectedMeal}
+        entries={todayEntries.filter((entry) => entry.meal === selectedMeal)}
+        onBack={() => setScreen('home')}
+        onDelete={deleteEntry}
+        onEdit={(entry) => {
+          setEditingEntry(entry)
+          setScreen('edit')
+        }}
+      />
+    )
   }
 
   if (screen === 'profile') {
@@ -81,7 +134,6 @@ function App() {
 
   return (
     <Home
-      profile={profile}
       target={target}
       total={totalProtein}
       remaining={remaining}
@@ -89,6 +141,10 @@ function App() {
       todayEntries={todayEntries}
       onAdd={() => setScreen('add')}
       onProfile={() => setScreen('profile')}
+      onMeal={(meal) => {
+        setSelectedMeal(meal)
+        setScreen('meal')
+      }}
     />
   )
 }
@@ -125,15 +181,15 @@ function Onboarding({ onFinish }) {
   const target = manualTarget ?? suggested
 
   const activityOptions = [
-    { value: 'Düşük', title: 'Düşük', description: 'Çoğunlukla masa başı veya az hareketli bir gün.' },
-    { value: 'Orta', title: 'Orta', description: 'Haftada 1–3 gün egzersiz veya düzenli yürüyüş.' },
-    { value: 'Yüksek', title: 'Yüksek', description: 'Haftada 4+ gün düzenli egzersiz veya yoğun hareket.' },
+    { value: 'Düşük', icon: '○', title: 'Düşük', description: 'Çoğunlukla masa başı veya az hareketli bir gün.' },
+    { value: 'Orta', icon: '◐', title: 'Orta', description: 'Haftada 1–3 gün egzersiz veya düzenli yürüyüş.' },
+    { value: 'Yüksek', icon: '●', title: 'Yüksek', description: 'Haftada 4+ gün düzenli egzersiz veya yoğun hareket.' },
   ]
 
   const goalOptions = [
-    { value: 'Genel sağlık', title: 'Genel sağlık', description: 'Günlük proteinini daha dengeli tutmak istiyorum.' },
-    { value: 'Kilo verme sürecinde', title: 'Kilo verme sürecinde', description: 'Kilo verirken kas kaybını azaltmak istiyorum.' },
-    { value: 'Kas koruma / geliştirme', title: 'Kas koruma / geliştirme', description: 'Kas kütlemi korumak veya artırmak istiyorum.' },
+    { value: 'Genel sağlık', icon: '♡', title: 'Genel sağlık', description: 'Günlük proteinini daha dengeli tutmak istiyorum.' },
+    { value: 'Kilo verme sürecinde', icon: '◎', title: 'Kilo verme sürecinde', description: 'Kilo verirken kas kaybını azaltmak istiyorum.' },
+    { value: 'Kas koruma / geliştirme', icon: '▲', title: 'Kas koruma / geliştirme', description: 'Kas kütlemi korumak veya artırmak istiyorum.' },
   ]
 
   const canContinue =
@@ -238,7 +294,7 @@ function Onboarding({ onFinish }) {
         )}
 
         {step === 2 && (
-          <section className="onboardingStep centered compactStep">
+          <section className="onboardingStep centered choiceStep">
             <div className="stepIntro centered">
               <h2>Günlük hareketin nasıl?</h2>
               <p className="muted">Sana daha uygun bir protein hedefi önermemize yardımcı olur.</p>
@@ -252,7 +308,7 @@ function Onboarding({ onFinish }) {
         )}
 
         {step === 3 && (
-          <section className="onboardingStep centered compactStep">
+          <section className="onboardingStep centered choiceStep">
             <div className="stepIntro centered">
               <h2>Hedefin ne?</h2>
               <p className="muted">Protein hedefini buna göre ayarlayacağız.</p>
@@ -272,18 +328,12 @@ function Onboarding({ onFinish }) {
               <p className="muted">Kilon, hareket düzeyin ve hedefine göre hesaplandı.</p>
             </div>
             <div className="targetSummaryCard warmCard">
-              
               <div className="targetPreviewCircle">
-  <div className="targetPreviewContent">
-    <span>{target}</span>
-    <small>g / gün</small>
-  </div>
-</div>
-                
-                
-           
-
-              
+                <div className="targetPreviewContent">
+                  <span>{target}</span>
+                  <small>g / gün</small>
+                </div>
+              </div>
               <p className="muted">İstersen şimdi değiştirebilirsin.</p>
               <input
                 className="range"
@@ -324,8 +374,9 @@ function Onboarding({ onFinish }) {
   )
 }
 
-function Home({ target, total, remaining, recommendations, todayEntries, onAdd, onProfile }) {
+function Home({ target, total, remaining, recommendations, todayEntries, onAdd, onProfile, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
+
   return (
     <main className="appShell">
       <header className="topbar">
@@ -372,8 +423,16 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
         <div className="sectionTitle"><h2>Bugünkü öğünler</h2></div>
         <div className="mealList">
           {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
-            const sum = todayEntries.filter((e) => e.meal === meal).reduce((s, e) => s + Number(e.protein), 0)
-            return <div className="mealRow" key={meal}><span>{meal}</span><b>{sum ? `${Math.round(sum)} g` : '—'}</b></div>
+            const sum = todayEntries
+              .filter((e) => e.meal === meal)
+              .reduce((s, e) => s + Number(e.protein), 0)
+            return (
+              <button className="mealRow mealButton" key={meal} onClick={() => onMeal(meal)}>
+                <span>{meal}</span>
+                <b>{sum ? `${Math.round(sum)} g` : '—'}</b>
+                <span className="mealChevron">›</span>
+              </button>
+            )
           })}
         </div>
       </section>
@@ -389,91 +448,239 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
   )
 }
 
-function AddProtein({ foods, onBack, onSave }) {
-  const [query, setQuery] = useState('')
-  const [selected, setSelected] = useState(foods[0])
-  const [amount, setAmount] = useState(foods[0].default_portion)
-  const [meal, setMeal] = useState(autoMeal())
+function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
+  const initialFood = editingEntry
+    ? foods.find((f) => f.food_id === editingEntry.foodId) || null
+    : null
+
+  const [query, setQuery] = useState(initialFood?.name || '')
+  const [selected, setSelected] = useState(initialFood)
+  const [amount, setAmount] = useState(editingEntry?.amount || initialFood?.default_portion || '')
+  const [meal, setMeal] = useState(editingEntry?.meal || autoMeal())
+  const [showResults, setShowResults] = useState(false)
 
   const filtered = foods.filter((f) =>
     f.name.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')) ||
     (f.aliases || []).some((a) => a.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))
   ).slice(0, 10)
 
+  function handleQueryChange(value) {
+    setQuery(value)
+    setShowResults(Boolean(value.trim()))
+    if (!editingEntry || value !== initialFood?.name) {
+      setSelected(null)
+      setAmount('')
+    }
+  }
+
   function choose(f) {
     setSelected(f)
     setAmount(f.default_portion)
     setQuery(f.name)
+    setShowResults(false)
   }
 
   const protein = selected
     ? selected.base_unit === selected.default_unit
-      ? (amount / selected.base_amount) * selected.protein_per_base
+      ? (Number(amount || 0) / selected.base_amount) * selected.protein_per_base
       : selected.protein_per_default_portion
     : 0
+
+  function saveEntry() {
+    if (!selected || Number(amount) <= 0) return
+
+    const entry = {
+      foodId: selected.food_id,
+      name: selected.name,
+      amount: Number(amount),
+      unit: selected.default_unit,
+      protein,
+      meal,
+    }
+
+    if (editingEntry) {
+      onSave({ ...editingEntry, ...entry })
+    } else {
+      onSave(entry)
+    }
+  }
 
   return (
     <main className="appShell">
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
-        <h1>Protein Ekle</h1>
+        <h1>{editingEntry ? 'Kaydı Düzenle' : 'Protein Ekle'}</h1>
         <span />
       </header>
 
-      <input className="search" placeholder="Yiyecek ara veya yaz..." value={query} onChange={(e) => setQuery(e.target.value)} />
-      {query && (
+      <input
+        className="search"
+        placeholder="Yiyecek ara veya yaz..."
+        value={query}
+        onChange={(e) => handleQueryChange(e.target.value)}
+        onFocus={() => query && setShowResults(true)}
+      />
+
+      {showResults && query && (
         <div className="searchResults">
-          {filtered.map((f) => <button key={f.food_id} onClick={() => choose(f)}>{f.name}<span>{f.protein_per_default_portion} g</span></button>)}
+          {filtered.length > 0 ? (
+            filtered.map((f) => (
+              <button key={f.food_id} onClick={() => choose(f)}>
+                {f.name}
+                <span>{f.protein_per_default_portion} g</span>
+              </button>
+            ))
+          ) : (
+            <div className="emptySearch">Bu yiyecek henüz listede yok.</div>
+          )}
         </div>
       )}
 
-      {selected && (
+      {!query && !selected && !editingEntry && (
+        <div className="addEmptyState">
+          <div className="addEmptyIcon">＋</div>
+          <strong>Ne yediğini ara</strong>
+          <span>Yiyeceği seçince miktar ve protein bilgisi burada açılacak.</span>
+        </div>
+      )}
+
+      {selected && !showResults && (
         <section className="card addCard">
           <div className="selectedFood">
             <div className="foodIcon big">{iconFor(selected.icon_name)}</div>
             <div><h2>{selected.name}</h2><p>{selected.category}</p></div>
           </div>
+
           <Field label={`Miktar (${selected.default_unit})`}>
-            <input type="number" min="1" value={amount} onChange={(e) => setAmount(+e.target.value)} />
+            <input
+              type="number"
+              min="1"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
           </Field>
-          <div className="proteinResult"><span>Protein</span><b>{protein.toFixed(1)} g</b></div>
+
+          <div className="proteinResult">
+            <span>Protein</span>
+            <b>{protein.toFixed(1)} g</b>
+          </div>
+
           <Field label="Öğün">
             <select value={meal} onChange={(e) => setMeal(e.target.value)}>
-              <option>Kahvaltı</option><option>Öğle Yemeği</option><option>Ara Öğün</option><option>Akşam Yemeği</option>
+              <option>Kahvaltı</option>
+              <option>Öğle Yemeği</option>
+              <option>Ara Öğün</option>
+              <option>Akşam Yemeği</option>
             </select>
           </Field>
-          <button className="primary wide" onClick={() => onSave({
-            foodId: selected.food_id,
-            name: selected.name,
-            amount,
-            unit: selected.default_unit,
-            protein,
-            meal,
-          })}>Kaydet</button>
+
+          <button
+            className="primary wide"
+            disabled={Number(amount) <= 0}
+            onClick={saveEntry}
+          >
+            {editingEntry ? 'Değişiklikleri Kaydet' : 'Kaydet'}
+          </button>
         </section>
       )}
     </main>
   )
 }
 
-function Profile({ profile, onBack, onSave }) {
-  const [p, setP] = useState(profile)
+function MealDetails({ meal, entries, onBack, onDelete, onEdit }) {
+  const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+
   return (
     <main className="appShell">
-      <header className="screenHeader"><button className="back" onClick={onBack}>‹</button><h1>Profil</h1><span /></header>
+      <header className="screenHeader">
+        <button className="back" onClick={onBack}>‹</button>
+        <h1>{meal}</h1>
+        <span />
+      </header>
+
+      <section className="card mealDetailCard">
+        <div className="mealDetailHeader">
+          <div>
+            <span className="muted">Toplam protein</span>
+            <strong>{total.toFixed(1)} g</strong>
+          </div>
+        </div>
+
+        {entries.length === 0 ? (
+          <div className="emptyMeal">
+            <strong>Bu öğünde henüz kayıt yok.</strong>
+            <span>Ana ekrandan Protein Ekle ile yeni kayıt ekleyebilirsin.</span>
+          </div>
+        ) : (
+          <div className="entryList">
+            {entries.map((entry) => (
+              <div className="entryRow" key={entry.id}>
+                <div>
+                  <strong>{entry.name}</strong>
+                  <span>{entry.amount} {entry.unit} · {Number(entry.protein).toFixed(1)} g protein</span>
+                </div>
+                <div className="entryActions">
+                  <button className="smallAction" onClick={() => onEdit(entry)}>Düzenle</button>
+                  <button
+                    className="smallAction danger"
+                    onClick={() => {
+                      if (window.confirm(`${entry.name} kaydını silmek istiyor musun?`)) {
+                        onDelete(entry.id)
+                      }
+                    }}
+                  >
+                    Sil
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
+  )
+}
+
+function Profile({ profile, onBack, onSave }) {
+  const [p, setP] = useState(profile)
+
+  return (
+    <main className="appShell">
+      <header className="screenHeader">
+        <button className="back" onClick={onBack}>‹</button>
+        <h1>Profil</h1>
+        <span />
+      </header>
+
       <section className="card">
-        <Field label="Kilo (kg)"><input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} /></Field>
+        <Field label="Kilo (kg)">
+          <input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} />
+        </Field>
+
         <Field label="Aktivite">
           <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
-            <option>Düşük</option><option>Orta</option><option>Yüksek</option>
+            <option>Düşük</option>
+            <option>Orta</option>
+            <option>Yüksek</option>
           </select>
         </Field>
+
         <Field label="Hedef">
           <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
-            <option>Genel sağlık</option><option>Kilo verme sürecinde</option><option>Kas koruma / geliştirme</option>
+            <option>Genel sağlık</option>
+            <option>Kilo verme sürecinde</option>
+            <option>Kas koruma / geliştirme</option>
           </select>
         </Field>
-        <Field label="Günlük protein hedefi (g)"><input type="number" value={p.proteinTarget} onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })} /></Field>
+
+        <Field label="Günlük protein hedefi (g)">
+          <input
+            type="number"
+            value={p.proteinTarget}
+            onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
+          />
+        </Field>
+
         <button className="primary wide" onClick={() => onSave(p)}>Kaydet</button>
       </section>
     </main>
@@ -493,8 +700,11 @@ function ChoiceGroup({ value, onChange, options }) {
           className={value === option.value ? 'selected richChoiceCard' : 'richChoiceCard'}
           onClick={() => onChange(option.value)}
         >
-          <strong>{option.title}</strong>
-          {option.description && <span>{option.description}</span>}
+          <div className="choiceIcon">{option.icon}</div>
+          <div>
+            <strong>{option.title}</strong>
+            {option.description && <span>{option.description}</span>}
+          </div>
         </button>
       ))}
     </div>
@@ -516,10 +726,12 @@ function getProteinMultiplier(activity, goal) {
 
 function autoMeal() {
   const h = new Date().getHours()
-  if (h < 11) return 'Kahvaltı'
-  if (h < 15) return 'Öğle Yemeği'
-  if (h < 18) return 'Ara Öğün'
-  return 'Akşam Yemeği'
+
+  if (h >= 5 && h < 11) return 'Kahvaltı'
+  if (h >= 11 && h < 15) return 'Öğle Yemeği'
+  if (h >= 15 && h < 18) return 'Ara Öğün'
+  if (h >= 18 && h < 23) return 'Akşam Yemeği'
+  return 'Ara Öğün'
 }
 
 function iconFor(name = '') {
