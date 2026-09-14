@@ -476,7 +476,7 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
   const [query, setQuery] = useState(initialFood?.name || '')
   const [selected, setSelected] = useState(initialFood)
   const [amount, setAmount] = useState(editingEntry?.amount || initialFood?.default_portion || '')
-  const [meal, setMeal] = useState(editingEntry?.meal || autoMeal())
+  const [meal, setMeal] = useState(editingEntry?.meal || '')
   const [showResults, setShowResults] = useState(false)
 
   const filtered = foods.filter((f) =>
@@ -507,7 +507,7 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
     : 0
 
   function saveEntry() {
-    if (!selected || Number(amount) <= 0) return
+    if (!selected || Number(amount) <= 0 || !meal) return
 
     const entry = {
       foodId: selected.food_id,
@@ -573,10 +573,21 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
       )}
 
       {!query && !selected && !editingEntry && (
-        <div className="addEmptyState">
-          <div className="addEmptyIcon">＋</div>
-          <strong>Ne yediğini ara</strong>
-          <span>Yiyeceği seçince miktar ve protein bilgisi burada açılacak.</span>
+        <div className="quickStart">
+          <div className="quickStartTitle">Hızlı ara</div>
+          <div className="quickChips">
+            {['Yumurta', 'Tavuk göğsü', 'Süzme yoğurt', 'Ton balığı'].map((item) => (
+              <button
+                key={item}
+                type="button"
+                className="quickChip"
+                onClick={() => handleQueryChange(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className="quickHint">Ya da yukarıdaki alana yediğin yiyeceği yaz.</div>
         </div>
       )}
 
@@ -601,17 +612,19 @@ function AddProtein({ foods, onBack, onSave, editingEntry = null }) {
             <b>{protein.toFixed(1)} g</b>
           </div>
 
-          <div className="selectedMealNote">
-            <span>Seçilen öğün</span>
-            <strong>{meal}</strong>
-          </div>
+          {meal && (
+            <div className="selectedMealNote">
+              <span>Seçilen öğün</span>
+              <strong>{meal}</strong>
+            </div>
+          )}
 
           <button
             className="primary wide"
-            disabled={Number(amount) <= 0}
+            disabled={Number(amount) <= 0 || !meal}
             onClick={saveEntry}
           >
-            {editingEntry ? 'Değişiklikleri Kaydet' : addButtonLabel(meal)}
+            {editingEntry ? 'Değişiklikleri Kaydet' : (meal ? addButtonLabel(meal) : 'Öğün Seç')}
           </button>
         </section>
       )}

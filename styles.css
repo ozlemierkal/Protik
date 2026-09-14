@@ -257,3 +257,39 @@ button{cursor:pointer}
   color:#8a8191;
   font-size:13px;
 }
+
+
+/* v0.6 - Protein Ekle başlangıç ekranı */
+.quickStart{
+  margin-top:22px;
+  padding:18px;
+  border-radius:20px;
+  background:#fffaf3;
+  border:1px solid #f0e4f5;
+}
+.quickStartTitle{
+  font-weight:900;
+  color:#2d1941;
+  margin-bottom:12px;
+}
+.quickChips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.quickChip{
+  border:1px solid #ded1e8;
+  background:#fff;
+  color:#54208C;
+  border-radius:999px;
+  padding:10px 13px;
+  font-weight:800;
+}
+.quickChip:active{
+  background:#f5effa;
+}
+.quickHint{
+  margin-top:12px;
+  color:#817789;
+  font-size:13px;
+}
