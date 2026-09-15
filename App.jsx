@@ -351,7 +351,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
     activity: '',
     goal: '',
   })
-  const [manualTarget, setManualTarget] = useState(initialProfile?.proteinTarget || null)
+  const [manualTarget, setManualTarget] = useState(null)
 
   const weightNumber = Number(form.weight)
   const multiplier = getProteinMultiplier(form.activity, form.goal)
@@ -359,6 +359,11 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
     ? Math.max(40, Math.round((weightNumber * multiplier) / 5) * 5)
     : 40
   const target = manualTarget ?? suggested
+
+  function updateForm(patch, resetTarget = false) {
+    setForm((current) => ({ ...current, ...patch }))
+    if (resetTarget) setManualTarget(null)
+  }
 
   const activityOptions = [
     { value: 'Düşük', icon: '○', title: 'Düşük', description: 'Çoğunlukla masa başı veya az hareketli bir gün.' },
@@ -501,7 +506,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
                   type="number"
                   placeholder="Örn. 65"
                   value={form.weight}
-                  onChange={(e) => setForm({ ...form, weight: e.target.value })}
+                  onChange={(e) => updateForm({ weight: e.target.value }, true)}
                 />
               </Field>
             </div>
@@ -519,7 +524,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
             </div>
             <ChoiceGroup
               value={form.activity}
-              onChange={(value) => setForm({ ...form, activity: value })}
+              onChange={(value) => updateForm({ activity: value }, true)}
               options={activityOptions}
             />
           </section>
@@ -533,7 +538,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
             </div>
             <ChoiceGroup
               value={form.goal}
-              onChange={(value) => setForm({ ...form, goal: value })}
+              onChange={(value) => updateForm({ goal: value }, true)}
               options={goalOptions}
             />
           </section>
