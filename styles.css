@@ -4715,3 +4715,37 @@ p, span, small, label, input, select, button{
     padding:12px 14px;
   }
 }
+
+/* v0.43 - mevcut öğün kayıtlarında görsel hiyerarşi */
+.mealExistingEntriesHead{
+  margin-bottom:6px;
+}
+.mealExistingEntriesHead strong{
+  color:#2b1239;
+  font-size:16.5px;
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:-0.15px;
+}
+.mealExistingEntriesHead span{
+  font-size:11.5px;
+  font-weight:750;
+}
+.mealExistingEntries .entryRow > div:first-child > strong{
+  color:#24102f;
+  font-size:18px;
+  font-weight:800;
+  line-height:1.25;
+  letter-spacing:-0.2px;
+}
+.mealExistingEntries .entryRow > div:first-child > span{
+  margin-top:5px;
+  font-size:14px;
+  font-weight:560;
+  line-height:1.35;
+  color:#766b7c;
+}
+@media (max-width:520px){
+  .mealExistingEntriesHead strong{font-size:16px;}
+  .mealExistingEntries .entryRow > div:first-child > strong{font-size:17.5px;}
+}
