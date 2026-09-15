@@ -452,3 +452,53 @@ button{cursor:pointer}
 .mealAddButton{
   margin:16px 0 8px;
 }
+
+
+/* v0.16 - öğün detayında tek ekranda protein girişi */
+.inlineAddArea{
+  margin-top:16px;
+}
+.inlineAddArea > h2{
+  margin:0 0 10px;
+  font-size:16px;
+}
+.inlineResults{
+  position:relative;
+  z-index:2;
+  margin-top:6px;
+}
+.inlineSelectedFood{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid #eadff1;
+  border-radius:16px;
+  background:#fff;
+}
+.inlineAddActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+  margin-top:12px;
+}
+.inlineSaveButton{
+  flex:1;
+  border:0;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:800;
+}
+.inlineSaveButton:disabled{
+  opacity:.4;
+}
+.mealEntriesDivider{
+  height:1px;
+  background:#eee8f2;
+  margin:18px 0 12px;
+}
+.compactEmpty{
+  padding:14px 0 4px;
+}
+.compactEmpty strong{
+  color:#7d7482;
+}

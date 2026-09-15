@@ -101,18 +101,6 @@ function App() {
     return <Onboarding onFinish={finishOnboarding} />
   }
 
-  if (screen === 'add') {
-    return (
-      <AddProtein
-        foods={allFoods}
-        onBack={() => setScreen(selectedMeal ? 'meal' : 'home')}
-        onSave={addEntry}
-        onSaveCustomFood={saveCustomFood}
-        presetMeal={selectedMeal}
-      />
-    )
-  }
-
   if (screen === 'edit' && editingEntry) {
     return (
       <AddProtein
@@ -133,9 +121,11 @@ function App() {
       <MealDetails
         meal={selectedMeal}
         entries={todayEntries.filter((entry) => entry.meal === selectedMeal)}
+        foods={allFoods}
         onBack={() => setScreen('home')}
         onDelete={deleteEntry}
-        onAdd={() => setScreen('add')}
+        onSave={addEntry}
+        onSaveCustomFood={saveCustomFood}
         onEdit={(entry) => {
           setEditingEntry(entry)
           setScreen('edit')
@@ -776,8 +766,102 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   )
 }
 
-function MealDetails({ meal, entries, onBack, onDelete, onEdit, onAdd }) {
+function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, onSaveCustomFood }) {
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+  const [query, setQuery] = useState('')
+  const [selected, setSelected] = useState(null)
+  const [amount, setAmount] = useState('')
+  const [showResults, setShowResults] = useState(false)
+  const [showProteinEditor, setShowProteinEditor] = useState(false)
+  const [customProteinPerBase, setCustomProteinPerBase] = useState('')
+  const [customProductName, setCustomProductName] = useState('')
+
+  const filtered = foods.filter((f) =>
+    f.name.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')) ||
+    (f.aliases || []).some((a) => a.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))
+  ).slice(0, 10)
+
+  function resetForm() {
+    setQuery('')
+    setSelected(null)
+    setAmount('')
+    setShowResults(false)
+    setShowProteinEditor(false)
+    setCustomProteinPerBase('')
+    setCustomProductName('')
+  }
+
+  function handleQueryChange(value) {
+    setQuery(value)
+    setShowResults(Boolean(value.trim()))
+    setSelected(null)
+    setAmount('')
+    setShowProteinEditor(false)
+    setCustomProteinPerBase('')
+    setCustomProductName('')
+  }
+
+  function choose(food) {
+    setSelected(food)
+    setQuery(food.name)
+    setAmount(food.default_portion)
+    setShowResults(false)
+    setShowProteinEditor(false)
+    setCustomProteinPerBase(food.protein_per_base)
+    setCustomProductName(food.is_custom ? food.name : '')
+  }
+
+  const effectiveProteinPerBase = Number(customProteinPerBase || selected?.protein_per_base || 0)
+
+  const protein = selected
+    ? selected.base_unit === selected.default_unit
+      ? (Number(amount || 0) / Number(selected.base_amount)) * effectiveProteinPerBase
+      : Number(selected.protein_per_default_portion || 0) * (
+          effectiveProteinPerBase / Number(selected.protein_per_base || 1)
+        ) * (Number(amount || 0) / Number(selected.default_portion || 1))
+    : 0
+
+  const proteinValueChanged =
+    selected && Math.abs(effectiveProteinPerBase - Number(selected.protein_per_base || 0)) > 0.01
+
+  function saveEntryInline() {
+    if (!selected || Number(amount) <= 0) return
+    onSave({
+      foodId: selected.food_id,
+      name: selected.name,
+      amount: Number(amount),
+      unit: selected.default_unit,
+      protein,
+      proteinPerBase: effectiveProteinPerBase,
+      meal,
+    })
+    resetForm()
+  }
+
+  function saveAsCustomProduct() {
+    if (!selected || !customProductName.trim() || effectiveProteinPerBase <= 0) return
+
+    const customFood = onSaveCustomFood({
+      ...selected,
+      food_id: `custom-${Date.now()}`,
+      name: customProductName.trim(),
+      protein_per_base: effectiveProteinPerBase,
+      protein_per_default_portion:
+        selected.base_unit === selected.default_unit
+          ? (Number(selected.default_portion) / Number(selected.base_amount)) * effectiveProteinPerBase
+          : Number(selected.protein_per_default_portion || 0) * (
+              effectiveProteinPerBase / Number(selected.protein_per_base || 1)
+            ),
+      icon_name: selected.icon_name || 'custom_food',
+      is_custom: true,
+      aliases: [customProductName.trim(), selected.name],
+    })
+
+    setSelected(customFood)
+    setQuery(customFood.name)
+    setCustomProductName(customFood.name)
+    setShowProteinEditor(false)
+  }
 
   return (
     <main className="appShell">
@@ -795,14 +879,134 @@ function MealDetails({ meal, entries, onBack, onDelete, onEdit, onAdd }) {
           </div>
         </div>
 
-        <button className="primary wide mealAddButton" onClick={onAdd}>
-          + {meal} için protein ekle
-        </button>
+        <div className="inlineAddArea">
+          <h2>Protein ekle</h2>
+          <input
+            className="search"
+            placeholder="Yiyecek ara veya yaz..."
+            value={query}
+            onChange={(e) => handleQueryChange(e.target.value)}
+            onFocus={() => query && setShowResults(true)}
+          />
+
+          {showResults && query && (
+            <div className="searchResults inlineResults">
+              {filtered.length > 0 ? (
+                filtered.map((food) => (
+                  <button key={food.food_id} onClick={() => choose(food)}>
+                    <span className="searchFoodName">
+                      {food.name}
+                      {food.is_custom && <small>Benim ürünüm</small>}
+                    </span>
+                    <span>{Number(food.protein_per_default_portion).toFixed(1)} g</span>
+                  </button>
+                ))
+              ) : (
+                <div className="emptySearch">Bu yiyecek henüz listede yok.</div>
+              )}
+            </div>
+          )}
+
+          {selected && !showResults && (
+            <div className="inlineSelectedFood">
+              <div className="selectedFood">
+                <div className="foodIcon big">{iconFor(selected.icon_name)}</div>
+                <div>
+                  <h2>{selected.name}</h2>
+                  <p>{selected.category}</p>
+                </div>
+              </div>
+
+              <Field label={`Miktar (${selected.default_unit})`}>
+                <input
+                  type="number"
+                  min="0.1"
+                  step="0.1"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </Field>
+
+              <div className="proteinResult">
+                <span>Protein</span>
+                <b>{protein.toFixed(1)} g</b>
+              </div>
+
+              <button
+                type="button"
+                className="textAction"
+                onClick={() => setShowProteinEditor((value) => !value)}
+              >
+                {showProteinEditor ? 'Protein değerini kapat' : 'Protein değerini değiştir'}
+              </button>
+
+              {showProteinEditor && (
+                <div className="proteinEditor">
+                  <div className="proteinEditorTitle">
+                    Bu ürünün etiketindeki değeri girebilirsin.
+                  </div>
+
+                  <Field label={`${selected.base_amount} ${selected.base_unit} protein (g)`}>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value={customProteinPerBase}
+                      onChange={(e) => setCustomProteinPerBase(e.target.value)}
+                    />
+                  </Field>
+
+                  <div className="proteinEditorHint">
+                    Standart değer: {selected.protein_per_base} g / {selected.base_amount} {selected.base_unit}
+                  </div>
+
+                  {proteinValueChanged && (
+                    <div className="customProductBox">
+                      <input
+                        className="customProductInput"
+                        type="text"
+                        placeholder="Örn. Benim yüksek proteinli yoğurdum"
+                        value={customProductName}
+                        onChange={(e) => setCustomProductName(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="secondaryButton"
+                        disabled={!customProductName.trim() || effectiveProteinPerBase <= 0}
+                        onClick={saveAsCustomProduct}
+                      >
+                        Bu ürünü kaydet
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="inlineAddActions">
+                <button type="button" className="smallAction" onClick={resetForm}>
+                  Vazgeç
+                </button>
+                <button
+                  type="button"
+                  className="primary inlineSaveButton"
+                  disabled={!selected || Number(amount) <= 0}
+                  onClick={saveEntryInline}
+                >
+                  {meal === 'Kahvaltı' ? 'Kahvaltıya Ekle' :
+                   meal === 'Öğle Yemeği' ? 'Öğle Yemeğine Ekle' :
+                   meal === 'Ara Öğün' ? 'Ara Öğüne Ekle' :
+                   'Akşam Yemeğine Ekle'}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mealEntriesDivider" />
 
         {entries.length === 0 ? (
-          <div className="emptyMeal">
-            <strong>Bu öğünde henüz kayıt yok.</strong>
-            <span>Ana ekrandan Protein Ekle ile yeni kayıt ekleyebilirsin.</span>
+          <div className="emptyMeal compactEmpty">
+            <strong>Henüz protein eklenmedi.</strong>
           </div>
         ) : (
           <div className="entryList">
