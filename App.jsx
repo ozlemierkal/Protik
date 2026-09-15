@@ -1724,6 +1724,38 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
           </div>
         </div>
 
+        {entries.length > 0 && (
+          <section className="mealExistingEntries" aria-label="Bu öğüne eklenenler">
+            <div className="mealExistingEntriesHead">
+              <strong>Bu öğüne eklediklerin</strong>
+              <span>{entries.length} kayıt</span>
+            </div>
+            <div className="entryList">
+              {entries.map((entry) => (
+                <div className="entryRow" key={entry.id}>
+                  <div>
+                    <strong>{entry.name}</strong>
+                    <span>{entry.amount} {entry.unit} · {Number(entry.protein).toFixed(1)} g protein</span>
+                  </div>
+                  <div className="entryActions">
+                    <button className="smallAction" onClick={() => onEdit(entry)}>Düzenle</button>
+                    <button
+                      className="smallAction danger"
+                      onClick={() => {
+                        if (window.confirm(`${entry.name} kaydını silmek istiyor musun?`)) {
+                          onDelete(entry.id)
+                        }
+                      }}
+                    >
+                      Sil
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="inlineAddArea mealEntryChooser">
           <div className="mealEntryIntro">
             <strong>Proteinini nasıl eklemek istersin?</strong>
@@ -2045,33 +2077,6 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
 
         </div>
 
-        <div className="mealEntriesDivider" />
-
-        {entries.length > 0 && (
-          <div className="entryList">
-            {entries.map((entry) => (
-              <div className="entryRow" key={entry.id}>
-                <div>
-                  <strong>{entry.name}</strong>
-                  <span>{entry.amount} {entry.unit} · {Number(entry.protein).toFixed(1)} g protein</span>
-                </div>
-                <div className="entryActions">
-                  <button className="smallAction" onClick={() => onEdit(entry)}>Düzenle</button>
-                  <button
-                    className="smallAction danger"
-                    onClick={() => {
-                      if (window.confirm(`${entry.name} kaydını silmek istiyor musun?`)) {
-                        onDelete(entry.id)
-                      }
-                    }}
-                  >
-                    Sil
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </section>
       <BottomNav
         active=""
