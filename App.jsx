@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import foods from './foods.json'
 
 
@@ -62,6 +62,38 @@ function localDateKey(date = new Date()) {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
+}
+
+
+function useScreenTop() {
+  const topRef = useRef(null)
+
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+
+    const reset = () => {
+      if (topRef.current) {
+        topRef.current.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'auto' })
+        topRef.current.scrollTop = 0
+      }
+      window.scrollTo(0, 0)
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }
+
+    reset()
+    const frame = requestAnimationFrame(reset)
+    const timer = window.setTimeout(reset, 60)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.clearTimeout(timer)
+    }
+  }, [])
+
+  return topRef
 }
 
 function App() {
@@ -697,6 +729,7 @@ function formatLongDateTR(date = new Date()) {
 }
 
 function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onHistory, onMeal }) {
+  const screenTopRef = useScreenTop()
   const pct = Math.min(Math.round((total / target) * 100), 100)
   const [activePlan, setActivePlan] = useState(0)
   const [showPlans, setShowPlans] = useState(false)
@@ -711,7 +744,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
   const dateLabel = formatLongDateTR(new Date())
 
   return (
-    <main className="appShell themedShell modernHomeShell">
+    <main className="appShell themedShell modernHomeShell" ref={screenTopRef}>
       <section className="homeHeroPanel">
         <header className="topbar proTopbar homeTopbarDark">
           <Logo />
@@ -892,6 +925,7 @@ function formatHistoryDate(dateKey, withYear = false) {
 }
 
 function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
+  const screenTopRef = useScreenTop()
   const today = dateKeyOffset(0)
   const historyEntries = entries.filter((entry) => entry.date <= today)
 
@@ -938,7 +972,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   const lastDate = chartDays[chartDays.length - 1]
 
   return (
-    <main className="appShell historyShell">
+    <main className="appShell historyShell" ref={screenTopRef}>
       <header className="screenHeader historyHeader">
         <button className="back" onClick={onBackHome}>‹</button>
         <h1>Geçmiş</h1>
@@ -1066,13 +1100,14 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
 }
 
 function HistoryDay({ date, entries, target, onBack }) {
+  const screenTopRef = useScreenTop()
   const dayEntries = entries.filter((entry) => entry.date === date)
 
   const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
 
   return (
-    <main className="appShell historyDayShell">
+    <main className="appShell historyDayShell" ref={screenTopRef}>
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}</h1>
@@ -1114,6 +1149,7 @@ function HistoryDay({ date, entries, target, onBack }) {
 
 
 function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = null, presetMeal = '' }) {
+  const screenTopRef = useScreenTop()
   const initialFood = editingEntry
     ? foods.find((f) => f.food_id === editingEntry.foodId) || null
     : null
@@ -1216,7 +1252,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
     selected && Math.abs(effectiveProteinPerBase - Number(selected.protein_per_base || 0)) > 0.01
 
   return (
-    <main className="appShell detailShell">
+    <main className="appShell detailShell" ref={screenTopRef}>
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{editingEntry ? 'Kaydı Düzenle' : 'Protein Ekle'}</h1>
@@ -1404,6 +1440,7 @@ function naturalPortionsFor(food) {
 }
 
 function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete, onEdit, onSave, onSaveCustomFood, onHome, onHistory, onProfile }) {
+  const screenTopRef = useScreenTop()
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
@@ -1669,7 +1706,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
   }
 
   return (
-    <main className="appShell detailShell">
+    <main className="appShell detailShell" ref={screenTopRef}>
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{meal}</h1>
@@ -2051,6 +2088,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
 }
 
 function Profile({ profile, onBack, onHome, onHistory, onSave }) {
+  const screenTopRef = useScreenTop()
   const [p, setP] = useState(profile)
   const [editing, setEditing] = useState(false)
 
@@ -2070,7 +2108,7 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   ]
 
   return (
-    <main className="appShell themedShell profileShell">
+    <main className="appShell themedShell profileShell" ref={screenTopRef}>
       <header className="screenHeader proScreenHeader profileHeaderClean">
         <button className="back" onClick={onBack} aria-label="Geri">
           ‹
