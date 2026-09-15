@@ -1255,7 +1255,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
 
       <input
         className="search"
-        placeholder="Yiyecek ara veya yaz..."
+        placeholder="Yiyecek / içecek ara veya yaz..."
         value={query}
         onChange={(e) => handleQueryChange(e.target.value)}
         onFocus={() => query && setShowResults(true)}
@@ -1274,7 +1274,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
               </button>
             ))
           ) : (
-            <div className="emptySearch">Bu yiyecek henüz listede yok.</div>
+            <div className="emptySearch">Bu ürün henüz listede yok.</div>
           )}
         </div>
       )}
@@ -1661,20 +1661,20 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
         <div className="inlineAddArea mealEntryChooser">
           <div className="mealEntryIntro">
             <strong>Proteinini nasıl eklemek istersin?</strong>
-            <span>Yiyeceğini listeden bulabilir ya da paketli ürünün barkodunu okutabilirsin.</span>
+            <span>Yiyecek veya içeceğini listeden bulabilir ya da paketli ürünün barkodunu okutabilirsin.</span>
           </div>
 
           <section className="manualEntrySection">
             <div className="entryMethodHead">
               <span className="entryMethodIcon" aria-hidden="true">⌕</span>
               <div>
-                <strong>Yiyecek ara</strong>
-                <span>Listeden seç, yediğin miktarı gir.</span>
+                <strong>Yiyecek / içecek ara</strong>
+                <span>Listeden seç, tükettiğin miktarı gir.</span>
               </div>
             </div>
             <input
               className="search mealSearch"
-              placeholder="Örn. tavuk, yoğurt, yumurta..."
+              placeholder="Örn. tavuk, yoğurt, kefir..."
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
               onFocus={() => query && setShowResults(true)}
@@ -1832,7 +1832,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                   </button>
                 ))
               ) : (
-                <div className="emptySearch">Bu yiyecek henüz listede yok.</div>
+                <div className="emptySearch">Bu ürün henüz listede yok.</div>
               )}
             </div>
           )}

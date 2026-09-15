@@ -4497,3 +4497,17 @@ p, span, small, label, input, select, button{
   .entryMethodIcon{width:38px;height:38px;flex-basis:38px}
   .barcodeGlyphLarge{width:40px;height:40px;flex-basis:40px}
 }
+
+
+/* v0.38 — barkod CTA metin yerleşimi + yiyecek/içecek dili */
+.barcodePrimaryButton>span{
+  min-width:0;
+  display:flex!important;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:2px;
+  line-height:1.15;
+}
+.barcodePrimaryButton strong{display:block;white-space:nowrap}
+.barcodePrimaryButton small{display:block;white-space:nowrap;font-size:11px}
