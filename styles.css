@@ -412,3 +412,16 @@ button{cursor:pointer}
   font-size:10px;
   font-weight:800;
 }
+
+
+/* v0.13 - Protein Ekle ana sayfanın en altında */
+.bottomAddWrap{
+  margin-top:16px;
+  padding:0 2px 8px;
+}
+.bottomAddButton{
+  width:100%;
+  min-height:52px;
+  font-size:18px;
+  box-shadow:0 10px 22px rgba(84,32,140,.14);
+}

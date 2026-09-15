@@ -424,7 +424,6 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
         <div className="ring" style={{ '--pct': `${pct * 3.6}deg` }}>
           <span>%{pct}</span>
         </div>
-        <button className="primary wide" onClick={onAdd}>＋ Protein Ekle</button>
       </section>
 
       <section className="section">
@@ -513,6 +512,12 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
           <div className="successBox">Bugünkü hedefini tamamladın. 🎉</div>
         ) : null}
       </section>
+
+      <div className="bottomAddWrap">
+        <button className="primary wide bottomAddButton" onClick={onAdd}>
+          ＋ Protein Ekle
+        </button>
+      </div>
 
       <nav className="bottomNav">
         <button className="active">⌂<span>Ana Sayfa</span></button>
@@ -906,104 +911,206 @@ function getProteinMultiplier(activity, goal) {
 }
 
 function buildCompletionPlans(foods, remaining) {
-  const byName = (needle) =>
-    foods.find((food) => food.name.toLocaleLowerCase('tr').includes(needle.toLocaleLowerCase('tr')))
+  const findFood = (name) =>
+    foods.find((food) =>
+      food.name.toLocaleLowerCase('tr').includes(name.toLocaleLowerCase('tr'))
+    )
 
-  const presets = [
+  const proteinFor = (food, amount) => {
+    if (!food) return 0
+    if (food.base_unit === food.default_unit) {
+      return (Number(amount) / Number(food.base_amount)) * Number(food.protein_per_base)
+    }
+
+    const defaultAmount = Number(food.default_portion || 1)
+    return Number(food.protein_per_default_portion || 0) * (Number(amount) / defaultAmount)
+  }
+
+  const portion = (foodName, amount, unitLabel = null) => {
+    const food = findFood(foodName)
+    if (!food) return null
+    const unit = unitLabel || food.default_unit
+    return {
+      food_id: food.food_id,
+      name: food.name,
+      amount,
+      unit,
+      label: `${amount} ${unit} ${food.name}`,
+      protein: proteinFor(food, amount),
+    }
+  }
+
+  // Gerçek hayatta sık kullanılan, yuvarlak porsiyonlar.
+  const libraries = {
+    balanced: [
+      portion('Tavuk göğsü', 100, 'g'),
+      portion('Tavuk göğsü', 120, 'g'),
+      portion('Tavuk göğsü', 150, 'g'),
+      portion('Hindi göğsü', 100, 'g'),
+      portion('Hindi göğsü', 120, 'g'),
+      portion('Somon', 100, 'g'),
+      portion('Somon', 150, 'g'),
+      portion('Süzme yoğurt', 100, 'g'),
+      portion('Süzme yoğurt', 150, 'g'),
+      portion('Süzme yoğurt', 200, 'g'),
+      portion('Yumurta', 1, 'adet'),
+      portion('Yumurta', 2, 'adet'),
+      portion('Kaşar peyniri', 30, 'g'),
+      portion('Lor peyniri', 50, 'g'),
+    ].filter(Boolean),
+
+    practical: [
+      portion('Whey protein', 1, 'ölçek'),
+      portion('Ton balığı', 80, 'g'),
+      portion('Ton balığı', 120, 'g'),
+      portion('Proteinli yoğurt', 1, 'kase'),
+      portion('Proteinli süt', 1, 'şişe'),
+      portion('Yumurta', 1, 'adet'),
+      portion('Yumurta', 2, 'adet'),
+      portion('İnek sütü', 200, 'ml'),
+      portion('İnek sütü', 250, 'ml'),
+      portion('Süzme yoğurt', 150, 'g'),
+    ].filter(Boolean),
+
+    vegetarian: [
+      portion('Tofu', 100, 'g'),
+      portion('Tofu', 150, 'g'),
+      portion('Yeşil mercimek', 150, 'g'),
+      portion('Yeşil mercimek', 200, 'g'),
+      portion('Edamame', 100, 'g'),
+      portion('Edamame', 150, 'g'),
+      portion('Süzme yoğurt', 100, 'g'),
+      portion('Süzme yoğurt', 150, 'g'),
+      portion('Süzme yoğurt', 200, 'g'),
+      portion('Yumurta', 1, 'adet'),
+      portion('Yumurta', 2, 'adet'),
+      portion('Cottage cheese', 100, 'g'),
+      portion('Lor peyniri', 50, 'g'),
+    ].filter(Boolean),
+  }
+
+  // Kullanıcının kaydettiği özel ürünleri pratik ve dengeli seçeneklerde
+  // doğal varsayılan porsiyonuyla hesaba kat.
+  const customPortions = foods
+    .filter((food) => food.is_custom)
+    .map((food) => ({
+      food_id: food.food_id,
+      name: food.name,
+      amount: Number(food.default_portion),
+      unit: food.default_unit,
+      label: `${food.default_portion} ${food.default_unit} ${food.name}`,
+      protein: Number(food.protein_per_default_portion || 0),
+    }))
+    .filter((item) => item.protein > 0)
+
+  libraries.practical.push(...customPortions)
+  libraries.balanced.push(...customPortions)
+
+  const uniqueByLabel = (items) => {
+    const seen = new Set()
+    return items.filter((item) => {
+      if (!item || seen.has(item.label)) return false
+      seen.add(item.label)
+      return true
+    })
+  }
+
+  Object.keys(libraries).forEach((key) => {
+    libraries[key] = uniqueByLabel(libraries[key])
+  })
+
+  const scoreCombo = (items, total, target) => {
+    const diff = Math.abs(total - target)
+    const overshoot = Math.max(total - target, 0)
+
+    // 2 ürün genellikle daha "öneri" hissi verir; ama tek doğal porsiyon
+    // hedefe çok yakınsa onu da kabul et.
+    const itemPenalty =
+      items.length === 1 && diff > 3 ? 5 :
+      items.length === 3 ? 1.5 :
+      0
+
+    // Fazla aşmayı, az eksik kalmaya göre biraz daha çok cezalandır.
+    const overshootPenalty = overshoot * 0.35
+
+    // Aynı yiyeceğin iki farklı porsiyonunu aynı planda kullanma.
+    const names = items.map((item) => item.name)
+    const duplicatePenalty = new Set(names).size !== names.length ? 100 : 0
+
+    return diff + overshootPenalty + itemPenalty + duplicatePenalty
+  }
+
+  const bestCombination = (library, target) => {
+    let best = null
+
+    const consider = (items) => {
+      const total = items.reduce((sum, item) => sum + Number(item.protein || 0), 0)
+      if (total <= 0) return
+
+      // Çok küçük hedeflerde devasa plan göstermeyelim.
+      if (total > target + 12) return
+
+      const score = scoreCombo(items, total, target)
+      if (!best || score < best.score) {
+        best = { items, total, score }
+      }
+    }
+
+    // 1 ürün
+    for (let i = 0; i < library.length; i++) {
+      consider([library[i]])
+    }
+
+    // 2 ürün
+    for (let i = 0; i < library.length; i++) {
+      for (let j = i + 1; j < library.length; j++) {
+        consider([library[i], library[j]])
+      }
+    }
+
+    // 3 ürün — sadece daha yüksek kalan hedeflerde.
+    if (target >= 45) {
+      for (let i = 0; i < library.length; i++) {
+        for (let j = i + 1; j < library.length; j++) {
+          for (let k = j + 1; k < library.length; k++) {
+            consider([library[i], library[j], library[k]])
+          }
+        }
+      }
+    }
+
+    return best
+  }
+
+  const definitions = [
     {
       id: 'balanced',
       title: 'Dengeli seçenek',
-      subtitle: 'Ana öğün + süt ürünü + yumurta',
-      names: ['Tavuk göğsü', 'Süzme yoğurt', 'Yumurta', 'Kaşar peyniri'],
+      subtitle: 'Doğal porsiyonlarla dengeli bir kombinasyon',
     },
     {
       id: 'practical',
       title: 'Pratik seçenek',
-      subtitle: 'Hazırlaması kolay proteinler',
-      names: ['Whey protein', 'Ton balığı', 'Proteinli yoğurt', 'Yumurta'],
+      subtitle: 'Hazırlaması kolay seçenekler',
     },
     {
       id: 'vegetarian',
       title: 'Vejetaryen seçenek',
-      subtitle: 'Et olmadan tamamla',
-      names: ['Tofu', 'Yeşil mercimek', 'Süzme yoğurt', 'Edamame'],
+      subtitle: 'Et ve balık olmadan',
     },
   ]
 
-  return presets.map((preset) => {
-    const pool = preset.names.map(byName).filter(Boolean)
-    const items = []
-    let total = 0
-
-    for (const food of pool) {
-      if (items.length >= 4) break
-      const protein = Number(food.protein_per_default_portion || 0)
-      if (!protein) continue
-
-      const currentGap = Math.max(remaining - total, 0)
-
-      if (currentGap <= 0) break
-
-      // Son ürünü gerektiğinde porsiyona göre küçült.
-      if (protein > currentGap && currentGap >= 5) {
-        const ratio = currentGap / protein
-        const discreteUnits = ['adet', 'ölçek', 'kase', 'şişe']
-        const isDiscrete = discreteUnits.includes(food.default_unit)
-
-        if (isDiscrete) {
-          const defaultAmount = Number(food.default_portion)
-
-          // 2 yumurta gibi bir porsiyon varsa 1 adede düşebilir.
-          if (defaultAmount > 1) {
-            const amount = Math.max(1, Math.min(defaultAmount, Math.round(defaultAmount * ratio)))
-            const scaledProtein = food.base_unit === food.default_unit
-              ? (amount / Number(food.base_amount)) * Number(food.protein_per_base)
-              : protein * (amount / defaultAmount)
-
-            // Hedefe makul yaklaşmıyorsa bu ürünü atla ve sıradakine geç.
-            if (scaledProtein <= currentGap + 5) {
-              items.push({
-                food_id: food.food_id,
-                label: `${amount} ${food.default_unit} ${food.name}`,
-                protein: scaledProtein,
-              })
-              total += scaledProtein
-              break
-            }
-          }
-
-          // 1 kase / 1 şişe gibi bölünemeyen porsiyonu zorla büyütme.
-          continue
-        }
-
-        const amount = Math.max(
-          10,
-          Math.round(Number(food.default_portion) * ratio)
-        )
-
-        const scaledProtein = food.base_unit === food.default_unit
-          ? (amount / Number(food.base_amount)) * Number(food.protein_per_base)
-          : protein * ratio
-
-        items.push({
-          food_id: food.food_id,
-          label: `${amount} ${food.default_unit} ${food.name}`,
-          protein: scaledProtein,
-        })
-        total += scaledProtein
-        break
+  return definitions
+    .map((definition) => {
+      const result = bestCombination(libraries[definition.id], remaining)
+      if (!result) return null
+      return {
+        ...definition,
+        items: result.items,
+        total: result.total,
       }
-
-      items.push({
-        food_id: food.food_id,
-        label: `${food.default_portion} ${food.default_unit} ${food.name}`,
-        protein,
-      })
-      total += protein
-    }
-
-    return { ...preset, items, total }
-  }).filter((plan) => plan.items.length > 0)
+    })
+    .filter(Boolean)
 }
 
 function addButtonLabel(meal) {
