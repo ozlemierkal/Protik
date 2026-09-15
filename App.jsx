@@ -617,31 +617,57 @@ function createHistoryTestEntries() {
 
 function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   const testEntries = createHistoryTestEntries()
-  const realPastEntries = entries.filter((entry) => entry.date < dateKeyOffset(0))
+  const today = dateKeyOffset(0)
+  const realRecentEntries = entries.filter((entry) => entry.date <= today)
 
-  // Test aşamasında gerçek geçmiş olmayan günleri geçici örnek verilerle dolduruyoruz.
-  const historyEntries = [...realPastEntries]
+  // Test aşamasında gerçek kaydı olmayan geçmiş günleri örnek verilerle dolduruyoruz.
+  const historyEntries = [...realRecentEntries]
   testEntries.forEach((testEntry) => {
-    const hasRealDataForDay = realPastEntries.some((entry) => entry.date === testEntry.date)
+    const hasRealDataForDay = realRecentEntries.some((entry) => entry.date === testEntry.date)
     if (!hasRealDataForDay) historyEntries.push(testEntry)
   })
 
-  const days = Array.from({ length: 7 }, (_, index) => dateKeyOffset(index + 1))
+  // Bugün + önceki 6 gün.
+  const days = Array.from({ length: 7 }, (_, index) => dateKeyOffset(index))
   const chartDays = [...days].reverse()
-  const chartValues = chartDays.map((date) => {
+
+  const totalsByDay = days.map((date) => {
     const dayEntries = historyEntries.filter((entry) => entry.date === date)
-    return {
-      date,
-      total: dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0),
-    }
+    const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+    return { date, dayEntries, total }
+  })
+
+  const recordedDays = totalsByDay.filter((item) => item.dayEntries.length > 0)
+  const average = recordedDays.length
+    ? recordedDays.reduce((sum, item) => sum + item.total, 0) / recordedDays.length
+    : 0
+  const averagePct = target > 0 ? Math.round((average / target) * 100) : 0
+  const completedDays = totalsByDay.filter((item) => item.total >= target && item.dayEntries.length > 0).length
+
+  const chartValues = chartDays.map((date) => {
+    const found = totalsByDay.find((item) => item.date === date)
+    return { date, total: found?.total || 0 }
   })
   const chartMax = Math.max(target, ...chartValues.map((item) => item.total), 1)
+
   const weekdayShort = (dateKey) => {
     const [year, month, day] = dateKey.split('-').map(Number)
     return new Intl.DateTimeFormat('tr-TR', { weekday: 'short' })
       .format(new Date(year, month - 1, day, 12))
       .replace('.', '')
   }
+
+  const statusFor = (total, hasEntries) => {
+    if (!hasEntries) return { text: 'Kayıt yok', className: 'historyStatus neutral' }
+    const pct = target > 0 ? Math.round((total / target) * 100) : 0
+    if (total >= target) return { text: 'Hedef tamamlandı', className: 'historyStatus done' }
+    if (pct >= 90) return { text: 'Hedefe yakın', className: 'historyStatus close' }
+    if (pct >= 60) return { text: 'Biraz daha var', className: 'historyStatus more' }
+    return { text: 'Eksik kaldı', className: 'historyStatus low' }
+  }
+
+  const firstDate = chartDays[0]
+  const lastDate = chartDays[chartDays.length - 1]
 
   return (
     <main className="appShell">
@@ -651,52 +677,78 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         <span />
       </header>
 
-      <div className="historyIntro">
-        <h2>Son 7 gün</h2>
-        <p>Günlük protein toplamını ve öğünlerini burada görebilirsin.</p>
+      <div className="historyIntro historyIntroCompact">
+        <p>Son 7 günün protein özetini gör.</p>
       </div>
 
-      <div className="historyTestNote">Test için geçmiş günlere örnek kayıtlar eklendi.</div>
+      <section className="card weeklySummaryCard">
+        <div className="weeklySummaryHeader">
+          <h2>Haftalık özet</h2>
+          <span>{formatHistoryDate(firstDate)} – {formatHistoryDate(lastDate)}</span>
+        </div>
 
-      <section className="historyList">
-        {days.map((date) => {
-          const dayEntries = historyEntries.filter((entry) => entry.date === date)
-          const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
-          const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
-          const remaining = Math.max(target - total, 0)
+        <div className="weeklySummaryGrid">
+          <div className="summaryMetric">
+            <div className="summaryMetricIcon">▥</div>
+            <div>
+              <span>Günlük ortalama</span>
+              <strong>{average.toFixed(0)} g <small>/ {target} g</small></strong>
+              <p>Hedefinin %{averagePct}'ini karşıladın.</p>
+            </div>
+          </div>
+
+          <div className="summaryMetric summaryMetricRight">
+            <div className="summaryMetricIcon trophy">🏆</div>
+            <div>
+              <span>Hedef tamamlanan gün</span>
+              <strong>{completedDays} <small>/ 7 gün</small></strong>
+              <p>{completedDays >= 4 ? 'Harika gidiyorsun!' : 'Devam ettikçe artacak.'}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="historySectionHeading">
+        <h2>Son günlerin</h2>
+      </div>
+
+      <div className="historyTestNote">Test için bazı geçmiş günlere örnek kayıtlar eklendi.</div>
+
+      <section className="historyList historyListRich">
+        {totalsByDay.map(({ date, dayEntries, total }) => {
+          const pct = target > 0 ? Math.round((total / target) * 100) : 0
+          const clampedPct = Math.min(pct, 100)
+          const status = statusFor(total, dayEntries.length > 0)
 
           return (
             <button
               key={date}
-              className="historyDayCard"
+              className="historyDayCard richHistoryDay"
               onClick={() => onOpenDay(date)}
               disabled={dayEntries.length === 0}
             >
-              <div className="historyDayMain">
-                <div>
-                  <strong>{date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}</strong>
-                  <span className="historyDateSmall">{formatHistoryDate(date, true)}</span>
+              <div className="historyRichDate">
+                <strong>
+                  {date === today ? 'Bugün' : date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}
+                </strong>
+                <span>{formatHistoryDate(date, true)}</span>
+              </div>
+
+              <div className="historyRichMiddle">
+                <div className="historyProteinLine">
+                  <b>{total.toFixed(0)} <small>/ {target} g</small></b>
+                  <span>%{pct}</span>
                 </div>
-                <div className="historyTotal">
-                  <b>{total.toFixed(1)} <small>/ {target} g</small></b>
-                  {dayEntries.length > 0 ? (
-                    <span className={remaining <= 0 ? 'historyDone' : 'historyMissing'}>
-                      {remaining <= 0 ? 'Hedef tamamlandı' : `${remaining.toFixed(0)} g eksik`}
-                    </span>
-                  ) : (
-                    <span>Kayıt yok</span>
-                  )}
+                <div className="historyProgressTrack">
+                  <div className="historyProgressFill" style={{ width: `${clampedPct}%` }} />
                 </div>
               </div>
 
-              <div className="historyProgressTrack" aria-hidden="true">
-                <div className="historyProgressFill" style={{ width: `${pct}%` }} />
+              <div className={status.className}>
+                {status.text}
               </div>
 
-              <div className="historyCardFooter">
-                <span>%{pct}</span>
-                {dayEntries.length > 0 && <span>Detayı gör ›</span>}
-              </div>
+              <span className="historyRowChevron">›</span>
             </button>
           )
         })}
@@ -706,11 +758,11 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         <div className="weeklyChartHeader">
           <div>
             <h2>Haftalık protein grafiği</h2>
-            <p>Günlük protein miktarın ve {target} g hedefin.</p>
+            <p>Günlük protein miktarın. Hedefin {target} g.</p>
           </div>
           <div className="chartLegend">
-            <span><i className="legendDot" /> Protein</span>
-            <span><i className="legendLine" /> Hedef</span>
+            <span><i className="legendDot" /> Alınan protein</span>
+            <span><i className="legendLine" /> Hedef ({target} g)</span>
           </div>
         </div>
 

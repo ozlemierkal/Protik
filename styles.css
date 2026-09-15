@@ -955,3 +955,204 @@ button{cursor:pointer}
   color:#5a218e;
   white-space:nowrap;
 }
+
+
+/* v0.20 - Geçmiş ekranı mockup'a yaklaştırıldı */
+.historyIntroCompact{
+  margin-top:-2px;
+  margin-bottom:14px;
+}
+.historyIntroCompact p{
+  font-size:15px;
+  color:#746c7d;
+}
+
+.weeklySummaryCard{
+  padding:18px;
+  margin-bottom:18px;
+}
+.weeklySummaryHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.weeklySummaryHeader h2{
+  margin:0;
+  font-size:19px;
+}
+.weeklySummaryHeader span{
+  color:#746c7d;
+  font-size:12px;
+  font-weight:700;
+}
+.weeklySummaryGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.summaryMetric{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding-right:14px;
+}
+.summaryMetricRight{
+  border-left:1px solid #ece6ef;
+  padding-left:16px;
+  padding-right:0;
+}
+.summaryMetricIcon{
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f2e9fb;
+  color:#6b27a7;
+  font-size:22px;
+  font-weight:900;
+}
+.summaryMetricIcon.trophy{
+  background:#fff3d8;
+  font-size:21px;
+}
+.summaryMetric span{
+  display:block;
+  color:#7f7687;
+  font-size:11px;
+  margin-bottom:3px;
+}
+.summaryMetric strong{
+  display:block;
+  color:#5b2290;
+  font-size:26px;
+  line-height:1;
+}
+.summaryMetric strong small{
+  color:#655e6b;
+  font-size:13px;
+}
+.summaryMetric p{
+  margin:5px 0 0;
+  color:#7c7481;
+  font-size:10px;
+}
+
+.historySectionHeading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:0 2px 10px;
+}
+.historySectionHeading h2{
+  margin:0;
+  font-size:19px;
+}
+
+.historyListRich{
+  gap:9px;
+}
+.richHistoryDay{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr) auto 14px;
+  align-items:center;
+  gap:12px;
+  padding:13px 14px;
+}
+.historyRichDate strong{
+  display:block;
+  color:#25162d;
+  font-size:14px;
+}
+.historyRichDate span{
+  display:block;
+  margin-top:3px;
+  color:#8d8592;
+  font-size:10px;
+}
+.historyRichMiddle{
+  min-width:0;
+}
+.historyProteinLine{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:7px;
+}
+.historyProteinLine b{
+  color:#25162d;
+  font-size:16px;
+}
+.historyProteinLine b small{
+  color:#706977;
+  font-size:11px;
+}
+.historyProteinLine > span{
+  color:#6b27a7;
+  font-size:11px;
+  font-weight:800;
+}
+.historyStatus{
+  min-width:96px;
+  text-align:center;
+  padding:7px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.historyStatus.done{
+  background:#e7f7ef;
+  color:#287554;
+}
+.historyStatus.close{
+  background:#f2e8fb;
+  color:#65269b;
+}
+.historyStatus.more{
+  background:#fff4dc;
+  color:#a26b00;
+}
+.historyStatus.low{
+  background:#fff0e8;
+  color:#a85b32;
+}
+.historyStatus.neutral{
+  background:#f2eff3;
+  color:#8a828e;
+}
+.historyRowChevron{
+  color:#8a8190;
+  font-size:22px;
+}
+
+.weeklyChartCard{
+  margin-top:18px;
+}
+
+@media (max-width:520px){
+  .weeklySummaryGrid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .summaryMetricRight{
+    border-left:0;
+    border-top:1px solid #ece6ef;
+    padding-left:0;
+    padding-top:14px;
+  }
+  .richHistoryDay{
+    grid-template-columns:82px minmax(0,1fr) auto 10px;
+    gap:8px;
+    padding:12px 10px;
+  }
+  .historyStatus{
+    min-width:80px;
+    padding:6px 7px;
+    font-size:9px;
+  }
+}
