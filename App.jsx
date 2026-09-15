@@ -1757,11 +1757,6 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         )}
 
         <div className="inlineAddArea mealEntryChooser">
-          <div className="mealEntryIntro">
-            <strong>Proteinini nasıl eklemek istersin?</strong>
-            <span>Yiyecek veya içeceğini listeden bulabilir ya da paketli ürünün barkodunu okutabilirsin.</span>
-          </div>
-
           {recentFoods.length > 0 && (
             <section className="recentFoodsSection">
               <div className="recentFoodsHead">

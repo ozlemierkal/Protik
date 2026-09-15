@@ -4749,3 +4749,14 @@ p, span, small, label, input, select, button{
   .mealExistingEntriesHead strong{font-size:16px;}
   .mealExistingEntries .entryRow > div:first-child > strong{font-size:17.5px;}
 }
+
+/* v0.44 — sadeleştirilmiş öğün ekleme akışı */
+.mealExistingEntries + .inlineAddArea{
+  margin-top:28px;
+}
+.mealEntryChooser{
+  gap:18px;
+}
+.recentFoodsSection{
+  margin-top:0;
+}
