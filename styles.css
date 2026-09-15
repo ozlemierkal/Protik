@@ -425,3 +425,30 @@ button{cursor:pointer}
   font-size:18px;
   box-shadow:0 10px 22px rgba(84,32,140,.14);
 }
+
+
+/* v0.15 - öğün merkezli protein ekleme akışı */
+.bottomNav.fourItems{
+  grid-template-columns:repeat(4,1fr);
+}
+.presetMealBanner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:20px 0 8px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:#faf5ff;
+  border:1px solid #e4d7ee;
+}
+.presetMealBanner span{
+  color:#7a7082;
+  font-size:14px;
+}
+.presetMealBanner strong{
+  color:#54208C;
+}
+.mealAddButton{
+  margin:16px 0 8px;
+}

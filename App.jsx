@@ -60,7 +60,7 @@ function App() {
     const next = [...entries, { ...entry, id: Date.now(), date: todayKey }]
     save('protik_entries', next)
     setEntries(next)
-    setScreen('home')
+    setScreen(selectedMeal ? 'meal' : 'home')
   }
 
   function updateEntry(updated) {
@@ -105,9 +105,10 @@ function App() {
     return (
       <AddProtein
         foods={allFoods}
-        onBack={() => setScreen('home')}
+        onBack={() => setScreen(selectedMeal ? 'meal' : 'home')}
         onSave={addEntry}
         onSaveCustomFood={saveCustomFood}
+        presetMeal={selectedMeal}
       />
     )
   }
@@ -134,6 +135,7 @@ function App() {
         entries={todayEntries.filter((entry) => entry.meal === selectedMeal)}
         onBack={() => setScreen('home')}
         onDelete={deleteEntry}
+        onAdd={() => setScreen('add')}
         onEdit={(entry) => {
           setEditingEntry(entry)
           setScreen('edit')
@@ -163,7 +165,6 @@ function App() {
       remaining={remaining}
       recommendations={recommendations}
       todayEntries={todayEntries}
-      onAdd={() => setScreen('add')}
       onProfile={() => setScreen('profile')}
       onMeal={(meal) => {
         setSelectedMeal(meal)
@@ -398,7 +399,7 @@ function Onboarding({ onFinish }) {
   )
 }
 
-function Home({ target, total, remaining, recommendations, todayEntries, onAdd, onProfile, onMeal }) {
+function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
   const [activePlan, setActivePlan] = useState(0)
   const selectedPlan = recommendations[activePlan] || recommendations[0]
@@ -513,16 +514,9 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
         ) : null}
       </section>
 
-      <div className="bottomAddWrap">
-        <button className="primary wide bottomAddButton" onClick={onAdd}>
-          ＋ Protein Ekle
-        </button>
-      </div>
-
-      <nav className="bottomNav">
+      <nav className="bottomNav fourItems">
         <button className="active">⌂<span>Ana Sayfa</span></button>
         <button>▥<span>Geçmiş</span></button>
-        <button className="fab" onClick={onAdd}>＋<span>Ekle</span></button>
         <button>💡<span>Öneriler</span></button>
         <button onClick={onProfile}>◯<span>Profil</span></button>
       </nav>
@@ -530,7 +524,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onAdd, 
   )
 }
 
-function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = null }) {
+function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = null, presetMeal = '' }) {
   const initialFood = editingEntry
     ? foods.find((f) => f.food_id === editingEntry.foodId) || null
     : null
@@ -538,7 +532,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   const [query, setQuery] = useState(initialFood?.name || '')
   const [selected, setSelected] = useState(initialFood)
   const [amount, setAmount] = useState(editingEntry?.amount || initialFood?.default_portion || '')
-  const [meal, setMeal] = useState(editingEntry?.meal || '')
+  const [meal, setMeal] = useState(editingEntry?.meal || presetMeal || '')
   const [showResults, setShowResults] = useState(false)
   const [showProteinEditor, setShowProteinEditor] = useState(false)
   const [customProteinPerBase, setCustomProteinPerBase] = useState(
@@ -640,21 +634,30 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
         <span />
       </header>
 
-      <section className="mealChooser">
-        <div className="mealChooserTitle">Hangi öğüne ekliyorsun?</div>
-        <div className="mealChooserGrid">
-          {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((option) => (
-            <button
-              key={option}
-              type="button"
-              className={meal === option ? 'mealChoice selected' : 'mealChoice'}
-              onClick={() => setMeal(option)}
-            >
-              {option}
-            </button>
-          ))}
+      {!presetMeal && !editingEntry && (
+        <section className="mealChooser">
+          <div className="mealChooserTitle">Hangi öğüne ekliyorsun?</div>
+          <div className="mealChooserGrid">
+            {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={meal === option ? 'mealChoice selected' : 'mealChoice'}
+                onClick={() => setMeal(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {presetMeal && !editingEntry && (
+        <div className="presetMealBanner">
+          <span>Öğün</span>
+          <strong>{presetMeal}</strong>
         </div>
-      </section>
+      )}
 
       <input
         className="search"
@@ -773,7 +776,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   )
 }
 
-function MealDetails({ meal, entries, onBack, onDelete, onEdit }) {
+function MealDetails({ meal, entries, onBack, onDelete, onEdit, onAdd }) {
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
 
   return (
@@ -791,6 +794,10 @@ function MealDetails({ meal, entries, onBack, onDelete, onEdit }) {
             <strong>{total.toFixed(1)} g</strong>
           </div>
         </div>
+
+        <button className="primary wide mealAddButton" onClick={onAdd}>
+          + {meal} için protein ekle
+        </button>
 
         {entries.length === 0 ? (
           <div className="emptyMeal">
