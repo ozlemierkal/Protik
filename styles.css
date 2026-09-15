@@ -620,16 +620,6 @@ button{cursor:pointer}
   line-height:1.45;
 }
 
-.historyTestNote{
-  margin:0 0 14px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:#fff7da;
-  border:1px solid #f1df9c;
-  color:#756326;
-  font-size:12px;
-  font-weight:700;
-}
 
 .historyList{
   display:grid;
@@ -2416,16 +2406,6 @@ body{
   background:#f2e8ff!important;
   color:#6f34a8!important;
 }
-.historyTestNote{
-  background:#f3edff;
-  color:#6f34a8;
-  border:1px solid #e3d8f5;
-  border-radius:14px;
-  padding:10px 12px;
-  font-weight:700;
-  font-size:13px;
-  margin-bottom:12px;
-}
 .historyProgressFill,
 .chartBar{
   background:linear-gradient(180deg,#c894ff 0%,#7a41b9 100%)!important;
@@ -2928,20 +2908,6 @@ p, span, small, label, input, select, button{
 .historySectionHeading h2{
   font-size:22px!important;
   font-weight:800!important;
-}
-.historyTestNote{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  background:#f1e9fb!important;
-  color:#6a2bac!important;
-  border:1px solid #dfcff2!important;
-  font-size:12px!important;
-  font-weight:600!important;
-  padding:9px 11px!important;
-}
-.historyTestNote span{
-  color:inherit!important;
 }
 .richHistoryDay{
   grid-template-columns:104px minmax(0,1fr) 102px 16px!important;
@@ -3465,7 +3431,7 @@ p, span, small, label, input, select, button{
   }
 }
 
-/* v0.28 — Modern Mor onboarding + kullanıcı adı + güvenli onboarding önizleme */
+/* v0.28 — Modern Mor onboarding + kullanıcı adı */
 .modernOnboarding{
   min-height:100dvh;
   display:flex;
@@ -3617,27 +3583,12 @@ p, span, small, label, input, select, button{
   color:#552181;
   background:#fff;
 }
-.onboardingPreviewBox{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  margin:18px 0 4px;
-  padding:15px;
-  border:1px solid #dfd2ec;
-  border-radius:18px;
-  background:#f7f1fc;
-}
-.onboardingPreviewBox strong{display:block;color:#35184d;font-size:15px}
 .onboardingPreviewBox span{display:block;margin-top:4px;color:#75687f;font-size:12px;line-height:1.35}
-.onboardingPreviewBox .secondaryButton{white-space:nowrap}
 
 @media (max-width:390px){
   .modernOnboarding .panel{padding:18px 16px 8px}
   .modernOnboarding .welcomeStep h1{font-size:34px}
   .modernOnboarding .onboardingActions{padding-left:16px;padding-right:16px}
-  .onboardingPreviewBox{align-items:flex-start;flex-direction:column}
-  .onboardingPreviewBox .secondaryButton{width:100%}
 }
 
 

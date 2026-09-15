@@ -57,6 +57,13 @@ function save(key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 function App() {
   const [profile, setProfile] = useState(loadProfile)
   const [entries, setEntries] = useState(loadEntries)
@@ -66,7 +73,7 @@ function App() {
   const [selectedHistoryDate, setSelectedHistoryDate] = useState(null)
   const [editingEntry, setEditingEntry] = useState(null)
 
-  const todayKey = new Date().toISOString().slice(0, 10)
+  const todayKey = localDateKey()
   const todayEntries = entries.filter((e) => e.date === todayKey)
   const totalProtein = todayEntries.reduce((sum, e) => sum + Number(e.protein || 0), 0)
 
@@ -113,7 +120,7 @@ function App() {
   }
 
   function addEntry(entry) {
-    const next = [...entries, { ...entry, id: Date.now(), date: todayKey }]
+    const next = [...entries, { ...entry, id: Date.now(), date: localDateKey() }]
     save('protik_entries', next)
     setEntries(next)
     setScreen(selectedMeal ? 'meal' : 'home')
@@ -233,7 +240,6 @@ function App() {
         onBack={() => setScreen('home')}
         onHome={() => setScreen('home')}
         onHistory={() => setScreen('history')}
-        onShowOnboarding={() => setScreen('onboarding')}
         onSave={(next) => {
           save('protik_profile', next)
           setProfile(next)
@@ -848,10 +854,7 @@ function dateKeyOffset(daysAgo) {
   const date = new Date()
   date.setHours(12, 0, 0, 0)
   date.setDate(date.getDate() - daysAgo)
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
+  return localDateKey(date)
 }
 
 function formatHistoryDate(dateKey, withYear = false) {
@@ -864,64 +867,9 @@ function formatHistoryDate(dateKey, withYear = false) {
   }).format(date)
 }
 
-function createHistoryTestEntries() {
-  const templates = [
-    {
-      day: 1,
-      rows: [
-        ['Kahvaltı', 'Yumurta', 2, 'adet', 13.0],
-        ['Kahvaltı', 'İnek sütü', 200, 'ml', 6.6],
-        ['Öğle Yemeği', 'Tavuk göğsü, pişmiş', 120, 'g', 37.2],
-        ['Akşam Yemeği', 'Süzme yoğurt', 200, 'g', 18.0],
-      ],
-    },
-    {
-      day: 2,
-      rows: [
-        ['Kahvaltı', 'Pınar protein yoğurt', 1, 'kase', 25.0],
-        ['Öğle Yemeği', 'Somon, pişmiş', 120, 'g', 26.4],
-        ['Ara Öğün', 'Badem', 30, 'g', 6.3],
-      ],
-    },
-    {
-      day: 3,
-      rows: [
-        ['Kahvaltı', 'Yumurta', 2, 'adet', 13.0],
-        ['Öğle Yemeği', 'Ton balığı, süzülmüş', 100, 'g', 25.0],
-        ['Akşam Yemeği', 'Tofu', 150, 'g', 19.5],
-        ['Akşam Yemeği', 'Süzme yoğurt', 150, 'g', 13.5],
-        ['Ara Öğün', 'İnek sütü', 250, 'ml', 8.3],
-      ],
-    },
-  ]
-
-  let id = 900000
-  return templates.flatMap((template) =>
-    template.rows.map(([meal, name, amount, unit, protein]) => ({
-      id: id++,
-      date: dateKeyOffset(template.day),
-      meal,
-      name,
-      amount,
-      unit,
-      protein,
-      foodId: `test-${id}`,
-      isHistoryTest: true,
-    }))
-  )
-}
-
 function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
-  const testEntries = createHistoryTestEntries()
   const today = dateKeyOffset(0)
-  const realRecentEntries = entries.filter((entry) => entry.date <= today)
-
-  // Test aşamasında gerçek kaydı olmayan geçmiş günleri örnek verilerle dolduruyoruz.
-  const historyEntries = [...realRecentEntries]
-  testEntries.forEach((testEntry) => {
-    const hasRealDataForDay = realRecentEntries.some((entry) => entry.date === testEntry.date)
-    if (!hasRealDataForDay) historyEntries.push(testEntry)
-  })
+  const historyEntries = entries.filter((entry) => entry.date <= today)
 
   // Bugün + önceki 6 gün.
   const days = Array.from({ length: 7 }, (_, index) => dateKeyOffset(index))
@@ -1008,7 +956,6 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         <h2>Son günlerin</h2>
       </div>
 
-      <div className="historyTestNote"><UiIcon name="info" size={17} /><span>Test için bazı geçmiş günlere örnek kayıtlar eklendi.</span></div>
 
       <section className="historyList historyListRich">
         {totalsByDay.map(({ date, dayEntries, total }) => {
@@ -1095,11 +1042,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
 }
 
 function HistoryDay({ date, entries, target, onBack }) {
-  const testEntries = createHistoryTestEntries()
-  const realDayEntries = entries.filter((entry) => entry.date === date)
-  const dayEntries = realDayEntries.length > 0
-    ? realDayEntries
-    : testEntries.filter((entry) => entry.date === date)
+  const dayEntries = entries.filter((entry) => entry.date === date)
 
   const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
@@ -1965,7 +1908,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
           </section>
 
           {barcodeOpen && (
-            <section className="barcodeTestPanel" aria-label="Barkod tarama testi">
+            <section className="barcodeTestPanel" aria-label="Barkod tarama">
               <div className="barcodeTestPanelHead">
                 <div>
                   <strong>Barkod tara</strong>
@@ -2083,7 +2026,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
   )
 }
 
-function Profile({ profile, onBack, onHome, onHistory, onShowOnboarding, onSave }) {
+function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   const [p, setP] = useState(profile)
   const [editing, setEditing] = useState(false)
 
@@ -2224,16 +2167,6 @@ function Profile({ profile, onBack, onHome, onHistory, onShowOnboarding, onSave 
               onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
             />
           </Field>
-
-          <div className="onboardingPreviewBox">
-            <div>
-              <strong>Onboarding önizleme</strong>
-              <span>Mevcut bilgilerini silmeden 5 adımı yeniden görüntüle.</span>
-            </div>
-            <button type="button" className="secondaryButton" onClick={onShowOnboarding}>
-              Yeniden göster
-            </button>
-          </div>
 
           <div className="profileEditActions">
             <button className="secondaryButton" onClick={() => { setP(profile); setEditing(false) }}>İptal</button>
