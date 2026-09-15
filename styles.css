@@ -1987,3 +1987,622 @@ body{
     radial-gradient(circle at 6% 100%, rgba(249,221,198,.45), transparent 28%),
     linear-gradient(135deg,#FFF8F3 0%,#F7EEF3 100%)!important;
 }
+
+/* =========================================================
+   v0.25 – Modern Mor tema (soft lavantadan daha güçlü görünüm)
+   ========================================================= */
+:root{
+  --protik-purple:#6f34a8;
+  --protik-purple-dark:#43185f;
+  --protik-purple-deep:#2a123f;
+  --protik-purple-mid:#8d58c1;
+  --protik-lilac:#efd8ff;
+  --protik-lilac-soft:#f7efff;
+  --protik-amber:#f1b72c;
+  --protik-bg:#f6f1fb;
+  --protik-card:#ffffff;
+  --protik-text:#241532;
+  --protik-muted:#776b86;
+  --protik-line:#eadff5;
+  --protik-shadow:0 14px 34px rgba(58,27,86,.10);
+}
+
+body{
+  background:linear-gradient(180deg,#f7f2fb 0%,#f4eef9 100%)!important;
+  color:var(--protik-text)!important;
+}
+
+.appShell{
+  background:transparent;
+}
+
+.modernHomeShell{
+  background:
+    radial-gradient(circle at top left, rgba(193,152,255,.20), transparent 22%),
+    linear-gradient(180deg,#f8f3fc 0%,#f5eff9 100%)!important;
+  padding-top:18px;
+}
+
+.homeHeroPanel{
+  background:linear-gradient(180deg,#54207f 0%,#431562 100%);
+  border-radius:34px;
+  padding:20px 18px 18px;
+  color:#fff;
+  box-shadow:0 18px 36px rgba(64,22,98,.22);
+}
+
+.homeTopbarDark{
+  align-items:flex-start;
+}
+.modernHomeShell .brandName{
+  color:#fff!important;
+  font-size:34px;
+}
+.modernHomeShell .brandSub{
+  color:rgba(255,255,255,.82)!important;
+  font-size:13px;
+}
+.modernHomeShell .logoMark{
+  background:linear-gradient(145deg,#ffffff,#efe1ff)!important;
+  color:#5c2590;
+  box-shadow:0 10px 18px rgba(25,8,39,.18);
+}
+.modernHomeShell .logoMark:after{
+  background:#ffca39;
+}
+.heroActionButton{
+  border:1px solid rgba(255,255,255,.18)!important;
+  background:rgba(255,255,255,.14)!important;
+  color:#fff!important;
+  box-shadow:none;
+}
+.heroDate{
+  margin-top:10px;
+  font-size:16px;
+  font-weight:700;
+  color:rgba(255,255,255,.9);
+}
+.homeDashboard{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:14px;
+  align-items:stretch;
+}
+.heroRingPanel,
+.heroInsightCard{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:26px;
+  backdrop-filter:blur(6px);
+}
+.heroRingPanel{
+  padding:16px;
+  display:grid;
+  grid-template-columns:126px minmax(0,1fr);
+  align-items:center;
+  gap:14px;
+}
+.modernHeroRing{
+  width:124px;
+  height:124px;
+  background:conic-gradient(#ebb6ff var(--pct), rgba(255,255,255,.18) 0)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.modernHeroRing:before{
+  width:90px;
+  height:90px;
+  background:#4c1970!important;
+}
+.modernHeroRing span{
+  color:#fff!important;
+  z-index:1;
+  font-size:21px;
+}
+.heroRingCopy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.heroRingValue{
+  font-size:48px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-1.6px;
+}
+.heroRingTarget{
+  margin-top:4px;
+  font-size:24px;
+  font-weight:700;
+  color:rgba(255,255,255,.88);
+}
+.heroRingPercent{
+  margin-top:8px;
+  font-size:22px;
+  font-weight:800;
+  color:#f0d8ff;
+}
+.heroInsightStack{
+  display:grid;
+  gap:14px;
+}
+.heroInsightCard{
+  padding:16px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.encouragementCard strong,
+.remainingCard strong{
+  display:block;
+  color:#fff;
+}
+.encouragementCard strong{
+  font-size:28px;
+  line-height:1.15;
+  letter-spacing:-.4px;
+}
+.encouragementCard span{
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,.82);
+  font-size:13px;
+  line-height:1.45;
+}
+.insightIcon{
+  width:42px;
+  height:42px;
+  border-radius:16px;
+  background:rgba(255,255,255,.16);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  flex:0 0 auto;
+}
+.remainingCard{
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+}
+.insightLabel{
+  color:rgba(255,255,255,.8);
+  font-size:14px;
+  font-weight:700;
+}
+.remainingCard strong{
+  margin-top:6px;
+  font-size:42px;
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+.homeMealsSection,
+.modernRecommendation{
+  margin-top:16px;
+  border-radius:28px!important;
+  padding:18px!important;
+  background:#fff!important;
+  border:1px solid rgba(111,52,168,.09)!important;
+  box-shadow:var(--protik-shadow)!important;
+}
+.sectionTitleSpaced{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+}
+.sectionTitleSpaced h2{
+  margin:0;
+  font-size:27px!important;
+  color:#271239!important;
+  letter-spacing:-.6px;
+}
+.sectionTitleSpaced span{
+  color:#8a7d99;
+  font-size:12px;
+  font-weight:700;
+  text-align:right;
+}
+.proMealList{
+  gap:12px!important;
+}
+.proMealCard{
+  grid-template-columns:52px minmax(0,1fr)!important;
+  border-radius:22px!important;
+  border:1px solid #ece2f5!important;
+  padding:14px 15px!important;
+  box-shadow:none!important;
+}
+.proMealCard .mealSummaryTop strong{
+  font-size:23px!important;
+  letter-spacing:-.5px;
+}
+.mealGlyph{
+  width:44px!important;
+  height:44px!important;
+  border-radius:15px!important;
+}
+.mealGlyph.breakfast{background:#fff5d8!important;color:#eaa11b!important}
+.mealGlyph.lunch{background:#f1e6ff!important;color:#8f52d2!important}
+.mealGlyph.snack{background:#ffeeda!important;color:#df8a22!important}
+.mealGlyph.dinner{background:#efe5ff!important;color:#7646c0!important}
+.mealSummaryRight b{
+  font-size:24px;
+}
+.mealActionPill{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#f2e9ff;
+  color:#6f34a8;
+  font-size:11px;
+  font-weight:800;
+}
+.mealAddPrompt{
+  background:#f2e9ff!important;
+  color:#6f34a8!important;
+  font-size:12px!important;
+}
+.compactMealFoods{
+  font-size:14px!important;
+  color:#7c7088!important;
+  padding-top:6px!important;
+}
+.compactMealFoods small{
+  font-size:13px;
+  font-weight:800;
+  color:#6f34a8;
+}
+.mealEmptyText{
+  font-size:14px!important;
+  color:#9b8fa7!important;
+  padding-top:6px!important;
+}
+
+.modernRecommendation{
+  background:linear-gradient(180deg,#ffffff 0%,#fcf8ff 100%)!important;
+}
+.recommendationToggle{
+  padding:4px 2px 0 2px!important;
+  grid-template-columns:52px minmax(0,1fr) 24px!important;
+}
+.recommendationIcon{
+  width:46px!important;
+  height:46px!important;
+  background:#fff5d8!important;
+  color:#e3a319!important;
+  border-radius:16px!important;
+}
+.recommendationToggleCopy strong{
+  font-size:19px!important;
+  color:#271239!important;
+}
+.recommendationToggleCopy span{
+  font-size:13px!important;
+  color:#867991!important;
+}
+.recommendationBody{
+  padding:16px 0 0!important;
+  margin-top:14px;
+}
+.proPlanTabs{
+  gap:10px;
+}
+.proPlanTabs .planTab{
+  padding:11px 14px!important;
+  border-radius:14px!important;
+  font-weight:800!important;
+}
+.proPlanTabs .planTab.selected{
+  background:linear-gradient(135deg,#6f34a8,#8a4dc7)!important;
+}
+.proPlanCard{
+  margin-top:14px;
+  border-radius:20px!important;
+  border:1px solid #ebe1f5!important;
+  box-shadow:none!important;
+}
+.proPlanCard .planTop strong{
+  font-size:20px;
+}
+.proPlanCard .planTop b{
+  color:#6f34a8!important;
+  font-size:24px;
+}
+.proPlanCard .planTop span,
+.planFoodRow span{
+  color:#786d84;
+}
+.planFoodRow small{
+  color:#6f34a8!important;
+  font-weight:800;
+}
+.proSuccessBox{
+  border-radius:16px;
+}
+
+.proNav{
+  width:min(520px,100%)!important;
+  height:86px!important;
+  border-top-left-radius:24px;
+  border-top-right-radius:24px;
+  background:rgba(255,255,255,.98)!important;
+  border-top:1px solid #eadef6!important;
+  box-shadow:0 -12px 34px rgba(52,22,77,.08)!important;
+}
+.proNav button{
+  gap:6px!important;
+}
+.proNav button span{
+  font-size:12px!important;
+}
+.proNav button.active{
+  color:#6f34a8!important;
+}
+
+/* Light screens use a cleaner white card system */
+.historyShell,
+.historyDayShell,
+.detailShell,
+.profileShell{
+  background:linear-gradient(180deg,#f8f4fc 0%,#f4eff8 100%)!important;
+}
+.screenHeader,
+.historyHeader{
+  margin-bottom:12px;
+}
+.screenHeader h1,
+.historyHeader h1{
+  font-size:31px!important;
+  letter-spacing:-.7px;
+  color:#2d1444!important;
+}
+.back,
+.settingsButton,
+.roundIconButton{
+  box-shadow:none;
+}
+.back{
+  color:#6f34a8!important;
+  background:#f2ebfa!important;
+  border:1px solid #e7dcf3!important;
+}
+.card,
+.section{
+  border-radius:24px!important;
+}
+.search,
+.field input,
+.field select,
+.mealSearch{
+  border-radius:16px!important;
+  border:1px solid #e4d9f0!important;
+}
+.primary,
+.profileEditActions .primary,
+.inlineSaveButton{
+  background:linear-gradient(135deg,#6f34a8,#8c50c6)!important;
+}
+.secondaryButton,
+.smallAction{
+  border-color:#ddd0eb!important;
+}
+.textAction{
+  color:#6f34a8!important;
+}
+
+/* History polish */
+.historyIntroCompact p{
+  margin:0 0 14px;
+  color:#7d708b;
+  font-weight:600;
+}
+.weeklySummaryCard,
+.weeklyChartCard,
+.historyDayCard,
+.historyDaySummary,
+.historyMealCard{
+  background:#fff!important;
+  border:1px solid #eadef6!important;
+  box-shadow:var(--protik-shadow)!important;
+}
+.weeklySummaryHeader h2,
+.weeklyChartHeader h2,
+.historySectionHeading h2{
+  color:#2a1240!important;
+}
+.summaryMetricIcon{
+  background:#f2e8ff!important;
+  color:#6f34a8!important;
+}
+.historyTestNote{
+  background:#f3edff;
+  color:#6f34a8;
+  border:1px solid #e3d8f5;
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:12px;
+}
+.historyProgressFill,
+.chartBar{
+  background:linear-gradient(180deg,#c894ff 0%,#7a41b9 100%)!important;
+}
+.chartTargetLine,
+.legendLine{
+  border-color:#e6a9d4!important;
+}
+.legendDot{
+  background:#7a41b9!important;
+}
+.historyStatus.done{
+  background:#ecf8ef;
+  color:#378b4b;
+}
+.historyStatus.close{
+  background:#f0ebff;
+  color:#6f34a8;
+}
+.historyStatus.more{
+  background:#fff4dc;
+  color:#b67c05;
+}
+.historyStatus.low,
+.historyStatus.neutral{
+  background:#f4eff8;
+  color:#7e708d;
+}
+
+/* Profile refinements */
+.profileShell{
+  padding-top:18px;
+}
+.profileHeaderClean{
+  grid-template-columns:42px 1fr 42px;
+}
+.profileHeaderClean h1{
+  text-align:center;
+  margin:0;
+}
+.profileQuoteLarge,
+.profileMotivationLarge,
+.profileInfoCard,
+.proteinGoalCard,
+.profileEditCard{
+  box-shadow:var(--protik-shadow)!important;
+}
+.profileQuoteLarge{
+  min-height:124px!important;
+  background:
+    radial-gradient(circle at 95% 18%, rgba(227,198,255,.75), transparent 24%),
+    linear-gradient(135deg,#fff9f3 0%,#fff 50%,#f8f0ff 100%)!important;
+}
+.quoteText{
+  color:#64348a!important;
+  font-size:18px!important;
+  max-width:84%!important;
+}
+.quoteHeart{
+  font-size:20px!important;
+}
+.quoteLeaf{
+  color:#d1a8f2!important;
+  opacity:.55!important;
+}
+.profileInfoStatic{
+  min-height:64px!important;
+}
+.profileInfoIcon{
+  width:40px!important;
+  height:40px!important;
+  border-radius:14px!important;
+}
+.profileInfoRow > span{
+  font-size:14px!important;
+}
+.profileInfoRow > strong{
+  font-size:14px!important;
+}
+.profileInfoIcon.violet{background:#f0e5ff!important;color:#7742b3!important}
+.profileInfoIcon.pink{background:#ffe6f2!important;color:#d63b8a!important}
+.profileInfoIcon.blue{background:#e5f0ff!important;color:#2877da!important}
+.profileInfoIcon.green{background:#e4f7ef!important;color:#1e9a7c!important}
+.profileInfoIcon.orange{background:#fff0dd!important;color:#e06c13!important}
+.profileInfoIcon.purple{background:#efe8ff!important;color:#7a41b9!important}
+.proteinGoalCard{
+  min-height:88px!important;
+  background:linear-gradient(135deg,#fff 0%,#faf5ff 100%)!important;
+}
+.proteinGoalCard strong{
+  font-size:32px!important;
+}
+.targetTone{
+  background:#efe3ff!important;
+  color:#7a41b9!important;
+}
+.profileMotivationLarge{
+  min-height:150px!important;
+  background:
+    radial-gradient(circle at 94% 84%, rgba(221,190,255,.45), transparent 32%),
+    radial-gradient(circle at 8% 100%, rgba(255,220,191,.45), transparent 26%),
+    linear-gradient(135deg,#fff8f1 0%,#fff 40%,#f7efff 100%)!important;
+}
+.profileMotivationLarge strong{
+  font-size:22px!important;
+  color:#6a348f!important;
+}
+.profileMotivationLarge span{
+  font-size:13px!important;
+}
+
+/* Detail screens */
+.mealDetailRedesign,
+.addCard{
+  background:#fff!important;
+  border:1px solid #eadef6!important;
+  box-shadow:var(--protik-shadow)!important;
+}
+.mealDetailHeader strong,
+.mealSummaryText strong,
+.proteinValue,
+.proteinResult b{
+  color:#6f34a8!important;
+}
+.addEmptyState{
+  border:1px dashed #e2d2f1!important;
+  background:#fbf7ff!important;
+}
+.addEmptyIcon{
+  background:linear-gradient(135deg,#6f34a8,#8c50c6)!important;
+}
+.inlineSelectedFood{
+  border-radius:20px;
+  padding:4px 0;
+}
+.proteinEditor,
+.customProductBox,
+.successBox{
+  border-radius:18px;
+}
+
+@media (max-width:520px){
+  .homeHeroPanel{
+    border-radius:28px;
+    padding:18px 16px 16px;
+  }
+  .homeDashboard{
+    grid-template-columns:1fr;
+  }
+  .heroRingPanel{
+    grid-template-columns:110px minmax(0,1fr);
+  }
+  .modernHeroRing{
+    width:108px;
+    height:108px;
+  }
+  .modernHeroRing:before{
+    width:78px;
+    height:78px;
+  }
+  .heroRingValue{
+    font-size:40px;
+  }
+  .encouragementCard strong{
+    font-size:22px;
+  }
+  .remainingCard strong{
+    font-size:34px;
+  }
+  .sectionTitleSpaced{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .proMealCard .mealSummaryTop strong{
+    font-size:19px!important;
+  }
+  .mealSummaryRight b{
+    font-size:20px;
+  }
+}

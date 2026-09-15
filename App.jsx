@@ -486,39 +486,76 @@ function Onboarding({ onFinish }) {
   )
 }
 
+
+function formatLongDateTR(date = new Date()) {
+  return new Intl.DateTimeFormat('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    weekday: 'long',
+  }).format(date)
+}
+
 function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onHistory, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
   const [activePlan, setActivePlan] = useState(0)
   const [showPlans, setShowPlans] = useState(false)
   const selectedPlan = recommendations[activePlan] || recommendations[0]
+  const statusText = remaining <= 0
+    ? 'Hedef tamamlandı!'
+    : pct >= 85
+      ? 'Hedefine çok yakınsın!'
+      : pct >= 55
+        ? 'Harika gidiyorsun!'
+        : 'Bugün iyi bir başlangıç yap.'
+  const dateLabel = formatLongDateTR(new Date())
 
   return (
-    <main className="appShell themedShell">
-      <header className="topbar proTopbar">
-        <Logo />
-        <button className="roundIconButton" onClick={onProfile} aria-label="Profil">
-          <UiIcon name="profile" size={20} />
-        </button>
-      </header>
+    <main className="appShell themedShell modernHomeShell">
+      <section className="homeHeroPanel">
+        <header className="topbar proTopbar homeTopbarDark">
+          <Logo />
+          <button className="roundIconButton heroActionButton" onClick={onProfile} aria-label="Profil ve ayarlar">
+            <UiIcon name="settings" size={20} />
+          </button>
+        </header>
 
-      <div className="hello proHello">
-        <h1>Merhaba!</h1>
-        <p>Bugün hedefin için harika gidiyorsun. <span>♥</span></p>
-      </div>
+        <div className="heroDate">{dateLabel}</div>
 
-      <section className="card progressCard proProgressCard">
-        <div className="progressCopy">
-          <span className="eyebrow">Bugünkü protein</span>
-          <div className="proteinValue">{Math.round(total)} <small>/ {target} g</small></div>
-          <div className="remaining">{remaining > 0 ? `${Math.round(remaining)} g kaldı` : 'Hedef tamamlandı ✓'}</div>
-        </div>
-        <div className="ring proRing" style={{ '--pct': `${pct * 3.6}deg` }}>
-          <span>%{pct}</span>
+        <div className="homeDashboard">
+          <div className="heroRingPanel">
+            <div className="ring proRing modernHeroRing" style={{ '--pct': `${pct * 3.6}deg` }}>
+              <span>%{pct}</span>
+            </div>
+            <div className="heroRingCopy">
+              <div className="heroRingValue">{Math.round(total)} g</div>
+              <div className="heroRingTarget">/ {target} g</div>
+              <div className="heroRingPercent">%{pct}</div>
+            </div>
+          </div>
+
+          <div className="heroInsightStack">
+            <div className="heroInsightCard encouragementCard">
+              <div className="insightIcon">🌱</div>
+              <div>
+                <strong>{statusText}</strong>
+                <span>Bugünkü ilerleyişini takip etmeye devam et.</span>
+              </div>
+            </div>
+
+            <div className="heroInsightCard remainingCard">
+              <span className="insightLabel">Kalan</span>
+              <strong>{remaining > 0 ? `${Math.round(remaining)} g` : '0 g'}</strong>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="section warmSection">
-        <div className="sectionTitle"><h2>Bugünkü öğünlerin</h2></div>
+      <section className="section warmSection homeMealsSection">
+        <div className="sectionTitle sectionTitleSpaced">
+          <h2>Bugünkü öğünlerin</h2>
+          <span>Öğüne dokun ve kayıt ekle</span>
+        </div>
         <div className="mealSummaryList proMealList">
           {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
             const mealEntries = todayEntries.filter((e) => e.meal === meal)
@@ -537,7 +574,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
                       {sum > 0 ? (
                         <>
                           <b>{sum.toFixed(1)} g</b>
-                          <UiIcon name="chevron" size={16} />
+                          <span className="mealActionPill">Aç</span>
                         </>
                       ) : (
                         <span className="mealAddPrompt">
@@ -562,7 +599,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
         </div>
       </section>
 
-      <section className={`section proRecommendation ${showPlans ? 'open' : ''}`}>
+      <section className={`section proRecommendation modernRecommendation ${showPlans ? 'open' : ''}`}>
         <button
           type="button"
           className="recommendationToggle"
@@ -760,7 +797,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   const lastDate = chartDays[chartDays.length - 1]
 
   return (
-    <main className="appShell">
+    <main className="appShell historyShell">
       <header className="screenHeader historyHeader">
         <button className="back" onClick={onBackHome}>‹</button>
         <h1>Geçmiş</h1>
@@ -899,7 +936,7 @@ function HistoryDay({ date, entries, target, onBack }) {
   const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
 
   return (
-    <main className="appShell">
+    <main className="appShell historyDayShell">
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}</h1>
@@ -1043,7 +1080,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
     selected && Math.abs(effectiveProteinPerBase - Number(selected.protein_per_base || 0)) > 0.01
 
   return (
-    <main className="appShell">
+    <main className="appShell detailShell">
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{editingEntry ? 'Kaydı Düzenle' : 'Protein Ekle'}</h1>
@@ -1290,7 +1327,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   }
 
   return (
-    <main className="appShell">
+    <main className="appShell detailShell">
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{meal}</h1>
@@ -1494,7 +1531,9 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   return (
     <main className="appShell themedShell profileShell">
       <header className="screenHeader proScreenHeader profileHeaderClean">
-        <span />
+        <button className="back" onClick={onBack} aria-label="Geri">
+          ‹
+        </button>
         <h1>Profil</h1>
         <button
           className={`settingsButton ${editing ? 'active' : ''}`}
