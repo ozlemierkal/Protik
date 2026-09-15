@@ -4051,3 +4051,149 @@ p, span, small, label, input, select, button{
   .modernOnboarding .welcomeFeatureCard{min-height:98px;padding:10px 12px}
   .modernOnboarding .welcomeFeatureVisual{min-height:74px}
 }
+
+/* v0.33 — onboarding ilk ekranı: son referans görsele sadık gerçek UI */
+.modernOnboarding .welcomeStep{
+  max-width:520px;
+  padding:34px 0 14px;
+}
+.modernOnboarding .welcomeArt{margin:0 auto 30px}
+.modernOnboarding .welcomeGlow{
+  width:190px;height:190px;opacity:.48;
+  background:radial-gradient(circle,rgba(183,110,255,.20) 0%,rgba(245,177,76,.10) 38%,rgba(255,255,255,0) 72%);
+}
+.modernOnboarding .welcomeLogoWrap{
+  padding:15px 22px;
+  border:1px solid rgba(104,37,160,.09);
+  border-radius:22px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 12px 34px rgba(77,26,126,.10);
+}
+.modernOnboarding .welcomeStep h1{
+  max-width:430px;
+  font-size:41px;
+  line-height:1.02;
+  letter-spacing:-1.4px;
+  margin:0 auto 17px;
+}
+.modernOnboarding .welcomeStep>p{
+  max-width:430px;
+  font-size:16px;
+  line-height:1.45;
+  color:#6f6478;
+}
+.modernOnboarding .welcomeFeatureStack{
+  max-width:470px;
+  margin:34px auto 0;
+  gap:16px;
+}
+.modernOnboarding .welcomeFeatureCard{
+  grid-template-columns:156px 1fr;
+  min-height:150px;
+  align-items:center;
+  gap:20px;
+  padding:15px 22px 15px 18px;
+  border-radius:29px;
+  border:1px solid #eee3f5;
+  background:linear-gradient(145deg,#fff 0%,#fcf9ff 100%);
+  box-shadow:0 14px 34px rgba(76,28,119,.07);
+  overflow:visible;
+}
+.modernOnboarding .welcomeFeatureVisual{
+  min-height:118px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+}
+.modernOnboarding .welcomeFeatureCard strong{
+  display:block;
+  font-size:24px;
+  line-height:1.05;
+  letter-spacing:-.35px;
+  color:#301047;
+  margin-bottom:9px;
+}
+.modernOnboarding .welcomeFeatureCard>div:last-child span{
+  display:block;
+  max-width:245px;
+  font-size:15px;
+  line-height:1.36;
+  color:#6f6478;
+  font-weight:500;
+}
+.modernOnboarding .targetIllustration{width:138px;height:126px}
+.modernOnboarding .targetIllustrationSvg{width:138px;height:126px;overflow:visible}
+.modernOnboarding .targetPercent{
+  left:2px;top:4px;z-index:4;
+  padding:7px 13px;
+  border-radius:18px;
+  background:#f0dcff;
+  color:#6823b8;
+  font-size:17px;
+  font-weight:850;
+  box-shadow:0 5px 12px rgba(103,36,184,.09);
+}
+.modernOnboarding .addIllustration{width:132px;height:118px}
+.modernOnboarding .addIllustrationSheet{
+  left:5px;top:16px;width:108px;min-height:88px;
+  padding:12px 10px;
+  border-radius:18px;
+  box-shadow:0 10px 20px rgba(91,33,145,.10);
+}
+.modernOnboarding .addIllustrationSheet span{grid-template-columns:25px 1fr auto;column-gap:6px;padding:4px 0}
+.modernOnboarding .addIllustrationSheet b{font-size:20px}
+.modernOnboarding .addIllustrationSheet em{font-size:11px}
+.modernOnboarding .addIllustrationSheet strong{font-size:11px}
+.modernOnboarding .addIllustrationPlus{
+  right:4px;top:0;width:39px;height:39px;font-size:29px;border:4px solid #efe0fb;
+}
+.modernOnboarding .ideaIllustration{width:132px;height:118px}
+.modernOnboarding .ideaBulb{left:45px;top:-7px;font-size:42px}
+.modernOnboarding .ideaBubble{left:6px;top:38px;width:112px;padding:10px 7px;border-radius:16px;font-size:10px}
+.modernOnboarding .ideaFoods{bottom:-2px;gap:8px}
+.modernOnboarding .ideaFoods span{width:31px;height:29px;border-radius:10px;font-size:17px}
+.modernOnboarding .welcomeFeatureCard .targetIllustration,
+.modernOnboarding .welcomeFeatureCard .addIllustration,
+.modernOnboarding .welcomeFeatureCard .ideaIllustration{transform:none}
+.modernOnboarding .onboardingActions{
+  padding-top:16px;
+}
+.modernOnboarding .onboardingActions .primary{
+  min-height:58px;
+  border-radius:18px;
+  font-size:17px;
+  font-weight:800;
+  box-shadow:0 13px 24px rgba(116,39,186,.20);
+}
+/* Son hedef ekranında aynı hedef ikon dili */
+.modernOnboarding .targetWarmIcon{
+  width:98px;height:98px;border-radius:28px;
+  background:linear-gradient(145deg,#f3e8ff,#fff6df);
+  box-shadow:0 12px 28px rgba(93,31,160,.11);
+}
+.modernOnboarding .targetWarmIcon .targetIllustration{width:92px;height:92px;transform:none}
+.modernOnboarding .targetWarmIcon .targetIllustrationSvg{width:92px;height:92px}
+
+@media (max-width:430px){
+  .modernOnboarding .welcomeStep{padding-top:24px}
+  .modernOnboarding .welcomeArt{margin-bottom:22px}
+  .modernOnboarding .welcomeStep h1{font-size:35px;max-width:360px}
+  .modernOnboarding .welcomeStep>p{font-size:14px;max-width:350px}
+  .modernOnboarding .welcomeFeatureStack{max-width:390px;margin-top:25px;gap:12px}
+  .modernOnboarding .welcomeFeatureCard{
+    grid-template-columns:124px 1fr;
+    min-height:128px;
+    gap:14px;
+    padding:12px 14px;
+    border-radius:23px;
+  }
+  .modernOnboarding .welcomeFeatureVisual{min-height:100px}
+  .modernOnboarding .welcomeFeatureCard strong{font-size:19px;margin-bottom:6px}
+  .modernOnboarding .welcomeFeatureCard>div:last-child span{font-size:12.5px;line-height:1.32}
+  .modernOnboarding .targetIllustration{width:116px;height:106px}
+  .modernOnboarding .targetIllustrationSvg{width:116px;height:106px}
+  .modernOnboarding .targetPercent{font-size:14px;padding:6px 10px}
+  .modernOnboarding .addIllustration{transform:scale(.92)!important}
+  .modernOnboarding .ideaIllustration{transform:scale(.91)!important}
+}

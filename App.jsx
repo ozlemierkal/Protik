@@ -288,14 +288,31 @@ function TargetIllustration({ compact = false }) {
   return (
     <div className={`targetIllustration ${compact ? 'compact' : ''}`} aria-hidden="true">
       {!compact && <span className="targetPercent">75%</span>}
-      <svg viewBox="0 0 120 120" className="targetIllustrationSvg">
-        <circle cx="53" cy="63" r="35" fill="#eee0fb" stroke="#fff" strokeWidth="4"/>
-        <circle cx="53" cy="63" r="25" fill="#dbc0f4"/>
-        <circle cx="53" cy="63" r="15" fill="#8a48c9"/>
-        <circle cx="53" cy="63" r="6" fill="#5d1fa0"/>
-        <path d="M57 58 88 28" stroke="#ffad17" strokeWidth="8" strokeLinecap="round"/>
-        <path d="m85 30 2-15 11 11-13 4Z" fill="#ffbd29"/>
-        <path d="m88 28 14-2-11-11-3 13Z" fill="#f29400"/>
+      <svg viewBox="0 0 140 140" className="targetIllustrationSvg">
+        <defs>
+          <linearGradient id="targetOuter" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stopColor="#b56cff"/>
+            <stop offset="1" stopColor="#6c22c6"/>
+          </linearGradient>
+          <linearGradient id="targetArrow" x1="0" x2="1">
+            <stop offset="0" stopColor="#ffc23c"/>
+            <stop offset="1" stopColor="#ff9700"/>
+          </linearGradient>
+          <filter id="targetShadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="#6e2bb7" floodOpacity=".18"/>
+          </filter>
+        </defs>
+        <g filter="url(#targetShadow)">
+          <circle cx="58" cy="78" r="43" fill="#f3e8ff" stroke="#fff" strokeWidth="5"/>
+          <circle cx="58" cy="78" r="34" fill="url(#targetOuter)"/>
+          <circle cx="58" cy="78" r="24" fill="#f6ecff"/>
+          <circle cx="58" cy="78" r="14" fill="#7a2ec4"/>
+          <circle cx="58" cy="78" r="5.5" fill="#5c149f"/>
+        </g>
+        <path d="M62 73 101 34" stroke="url(#targetArrow)" strokeWidth="9" strokeLinecap="round"/>
+        <path d="M98 38 100 19 113 32 98 38Z" fill="#ffc33b"/>
+        <path d="M101 34 120 32 107 19 101 34Z" fill="#f59a00"/>
+        {!compact && <><path d="M10 73h10" stroke="#a66bf0" strokeWidth="5" strokeLinecap="round"/><path d="M15 55l9 4" stroke="#c59af5" strokeWidth="5" strokeLinecap="round"/></>}
       </svg>
     </div>
   )
