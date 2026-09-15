@@ -1754,7 +1754,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                   {(barcodeProduct || (barcodeManualName.trim() && Number(barcodeManualProtein) >= 0 && barcodeManualProtein !== '')) && (
                     <div className="barcodeProteinPreview">
                       <span>Bu miktarda yaklaşık</span>
-                      <strong>{((Number(barcodeAmount || 0) / 100) * Number(barcodeProduct?.protein100 ?? barcodeManualProtein || 0)).toFixed(1)} g protein</strong>
+                      <strong>{((Number(barcodeAmount || 0) / 100) * Number(barcodeProduct?.protein100 ?? (barcodeManualProtein || 0))).toFixed(1)} g protein</strong>
                     </div>
                   )}
 
