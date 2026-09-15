@@ -3464,3 +3464,178 @@ p, span, small, label, input, select, button{
     height:44px!important;
   }
 }
+
+/* v0.28 — Modern Mor onboarding + kullanıcı adı + güvenli onboarding önizleme */
+.modernOnboarding{
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  overflow:hidden;
+  background:linear-gradient(180deg,#4f1696 0 30%,#f7f3fb 30% 100%);
+  color:#251337;
+}
+.modernOnboarding .onboardingTopline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:58px;
+  padding:calc(12px + env(safe-area-inset-top)) 20px 10px;
+  color:#fff;
+}
+.modernOnboarding .topDots{
+  position:static;
+  width:auto;
+  margin:0;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.modernOnboarding .onboardingClose{
+  border:0;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  border-radius:999px;
+  padding:8px 13px;
+  font-weight:800;
+}
+.modernOnboarding .panel{
+  flex:1;
+  margin:0;
+  padding:22px 20px 10px;
+  border-radius:30px 30px 0 0;
+  background:#f7f3fb;
+  box-shadow:0 -10px 30px rgba(40,8,77,.12);
+  overflow:auto;
+}
+.modernOnboarding .onboardingStep{min-height:0}
+.modernOnboarding .welcomeStep{
+  min-height:calc(100dvh - 190px);
+  padding:22px 0 8px;
+  justify-content:center;
+}
+.modernOnboarding .welcomeGlow{
+  width:220px;
+  height:220px;
+  background:radial-gradient(circle,rgba(255,206,84,.38) 0%,rgba(134,73,211,.14) 48%,transparent 72%);
+}
+.modernOnboarding .welcomeLogoWrap{
+  padding:20px 24px;
+  border-radius:26px;
+  border:1px solid #e5d8f0;
+  background:#fff;
+  box-shadow:0 16px 35px rgba(75,24,137,.13);
+}
+.modernOnboarding .welcomeStep h1,
+.modernOnboarding .stepIntro h2{color:#32105e;letter-spacing:-.025em}
+.modernOnboarding .welcomeStep h1{font-size:40px}
+.modernOnboarding .welcomeStep p,
+.modernOnboarding .muted{color:#665a72;font-weight:500}
+.modernOnboarding .miniFeature{
+  background:#f1e8fb;
+  border:1px solid #ddc9f1;
+  color:#522181;
+}
+.modernOnboarding .formCard,
+.modernOnboarding .targetSummaryCard{
+  background:#fff;
+  border:1px solid #e5d9ef;
+  box-shadow:0 14px 34px rgba(68,24,112,.08);
+}
+.modernOnboarding .field{border-bottom:1px solid #eee8f3}
+.modernOnboarding .field:last-child{border-bottom:0}
+.modernOnboarding .field span{color:#382249;font-weight:750}
+.modernOnboarding .field input,
+.modernOnboarding .field select{
+  border:1px solid #d9c8e8;
+  background:#fbf9fd;
+  color:#28143b;
+  font-weight:600;
+  outline:none;
+}
+.modernOnboarding .field input:focus,
+.modernOnboarding .field select:focus{
+  border-color:#6c2eb9;
+  box-shadow:0 0 0 3px rgba(108,46,185,.11);
+}
+.modernOnboarding .helperText{
+  color:#59337d;
+  background:#f1e8fb;
+  border-color:#ddc9f1;
+}
+.modernOnboarding .choiceStep{min-height:0;padding-top:10px;justify-content:flex-start}
+.modernOnboarding .richChoiceCard{
+  border:1px solid #dfd3ea;
+  background:#fff;
+  box-shadow:0 8px 20px rgba(60,20,100,.04);
+}
+.modernOnboarding .richChoiceCard strong{color:#301646}
+.modernOnboarding .richChoiceCard span{color:#6e6475;font-weight:500}
+.modernOnboarding .choiceIcon{
+  background:#f2e8fb;
+  color:#6829ad;
+}
+.modernOnboarding .richChoiceCard.selected{
+  border:2px solid #6424ae;
+  background:linear-gradient(180deg,#f5edfd 0%,#fff 100%);
+  box-shadow:0 12px 26px rgba(89,31,150,.12);
+}
+.modernOnboarding .richChoiceCard.selected .choiceIcon{background:#6424ae;color:#fff}
+.modernOnboarding .targetPreviewCircle{
+  background:conic-gradient(#6424ae 0 280deg,#eadcf7 280deg 360deg);
+  box-shadow:0 18px 34px rgba(82,26,143,.16);
+}
+.modernOnboarding .targetPreviewCircle:before{background:#fff}
+.modernOnboarding .targetPreviewContent span{color:#5a1da2}
+.modernOnboarding .range{accent-color:#6424ae}
+.modernOnboarding .targetMetaRow span{
+  background:#f2e9fb;
+  color:#5b2a83;
+  border-color:#decaf0;
+}
+.modernOnboarding .onboardingActions{
+  flex:0 0 auto;
+  margin:0;
+  padding:12px 20px calc(16px + env(safe-area-inset-bottom));
+  background:#f7f3fb;
+  border-top:1px solid #ece4f2;
+}
+.modernOnboarding .onboardingActions .primary{
+  min-height:52px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#6524af,#4b168f);
+  box-shadow:0 10px 22px rgba(79,21,145,.22);
+}
+.modernOnboarding .onboardingActions .primary:disabled{opacity:.42;box-shadow:none}
+.modernOnboarding .ghost{
+  border-color:#d9c9e8;
+  color:#552181;
+  background:#fff;
+}
+.onboardingPreviewBox{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin:18px 0 4px;
+  padding:15px;
+  border:1px solid #dfd2ec;
+  border-radius:18px;
+  background:#f7f1fc;
+}
+.onboardingPreviewBox strong{display:block;color:#35184d;font-size:15px}
+.onboardingPreviewBox span{display:block;margin-top:4px;color:#75687f;font-size:12px;line-height:1.35}
+.onboardingPreviewBox .secondaryButton{white-space:nowrap}
+
+@media (max-width:390px){
+  .modernOnboarding .panel{padding:18px 16px 8px}
+  .modernOnboarding .welcomeStep h1{font-size:34px}
+  .modernOnboarding .onboardingActions{padding-left:16px;padding-right:16px}
+  .onboardingPreviewBox{align-items:flex-start;flex-direction:column}
+  .onboardingPreviewBox .secondaryButton{width:100%}
+}

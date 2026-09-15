@@ -99,7 +99,13 @@ function App() {
   }
 
   if (screen === 'onboarding') {
-    return <Onboarding onFinish={finishOnboarding} />
+    return (
+      <Onboarding
+        onFinish={finishOnboarding}
+        initialProfile={profile}
+        onExit={profile ? () => setScreen('profile') : null}
+      />
+    )
   }
 
   if (screen === 'edit' && editingEntry) {
@@ -171,6 +177,7 @@ function App() {
         onBack={() => setScreen('home')}
         onHome={() => setScreen('home')}
         onHistory={() => setScreen('history')}
+        onShowOnboarding={() => setScreen('onboarding')}
         onSave={(next) => {
           save('protik_profile', next)
           setProfile(next)
@@ -276,17 +283,18 @@ function mealIconName(meal) {
 }
 
 
-function Onboarding({ onFinish }) {
+function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState({
-    age: '',
-    gender: '',
-    height: '',
-    weight: '',
-    activity: '',
-    goal: '',
+    name: initialProfile?.name || '',
+    age: initialProfile?.age || '',
+    gender: initialProfile?.gender || '',
+    height: initialProfile?.height || '',
+    weight: initialProfile?.weight || '',
+    activity: initialProfile?.activity || '',
+    goal: initialProfile?.goal || '',
   })
-  const [manualTarget, setManualTarget] = useState(null)
+  const [manualTarget, setManualTarget] = useState(initialProfile?.proteinTarget || null)
 
   const weightNumber = Number(form.weight)
   const multiplier = getProteinMultiplier(form.activity, form.goal)
@@ -322,6 +330,7 @@ function Onboarding({ onFinish }) {
   function complete() {
     if (!isBasicsValid(form) || !form.activity || !form.goal) return
     onFinish({
+      name: form.name.trim(),
       age: Number(form.age),
       gender: form.gender || 'Belirtmek istemiyorum',
       height: Number(form.height),
@@ -333,8 +342,13 @@ function Onboarding({ onFinish }) {
   }
 
   return (
-    <main className="appShell onboarding warmBackground">
-      <div className="topDots">{step + 1} / 5</div>
+    <main className="appShell onboarding modernOnboarding">
+      <div className="onboardingTopline">
+        <div className="topDots">{step + 1} / 5</div>
+        {onExit && (
+          <button type="button" className="onboardingClose" onClick={onExit}>Kapat</button>
+        )}
+      </div>
 
       <div className="panel">
         {step === 0 && (
@@ -366,6 +380,14 @@ function Onboarding({ onFinish }) {
               </p>
             </div>
             <div className="formCard warmCard">
+              <Field label="Sana nasıl hitap edelim?">
+                <input
+                  type="text"
+                  placeholder="Örn. Özlem"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+              </Field>
               <Field label="Yaşın">
                 <input
                   type="number"
@@ -1512,7 +1534,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   )
 }
 
-function Profile({ profile, onBack, onHome, onHistory, onSave }) {
+function Profile({ profile, onBack, onHome, onHistory, onShowOnboarding, onSave }) {
   const [p, setP] = useState(profile)
   const [editing, setEditing] = useState(false)
 
@@ -1522,6 +1544,7 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   }
 
   const rows = [
+    { key: 'name', label: 'Adın', icon: 'profile', value: p.name || '—', tone: 'violet' },
     { key: 'age', label: 'Yaşın', icon: 'age', value: p.age ? `${p.age}` : '—', tone: 'violet' },
     { key: 'gender', label: 'Cinsiyetin', icon: 'gender', value: p.gender || '—', tone: 'pink' },
     { key: 'weight', label: 'Kilon', icon: 'weight', value: p.weight ? `${p.weight} kg` : '—', tone: 'blue' },
@@ -1599,6 +1622,15 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
             <p>Değişikliklerini kaydettiğinde profilin güncellenecek.</p>
           </div>
 
+          <Field label="Sana nasıl hitap edelim?">
+            <input
+              type="text"
+              placeholder="Örn. Özlem"
+              value={p.name || ''}
+              onChange={(e) => setP({ ...p, name: e.target.value })}
+            />
+          </Field>
+
           <Field label="Yaşın">
             <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
           </Field>
@@ -1643,6 +1675,16 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
               onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
             />
           </Field>
+
+          <div className="onboardingPreviewBox">
+            <div>
+              <strong>Onboarding önizleme</strong>
+              <span>Mevcut bilgilerini silmeden 5 adımı yeniden görüntüle.</span>
+            </div>
+            <button type="button" className="secondaryButton" onClick={onShowOnboarding}>
+              Yeniden göster
+            </button>
+          </div>
 
           <div className="profileEditActions">
             <button className="secondaryButton" onClick={() => { setP(profile); setEditing(false) }}>İptal</button>

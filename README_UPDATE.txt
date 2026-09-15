@@ -1,9 +1,11 @@
-Protik v0.27
+Protik v0.28 — onboarding ve kullanıcı adı güncellemesi
 
-- Ana sayfadaki protein özetinde rakam taşması giderildi.
-- Halka içinde yalnızca yüzde bırakıldı; 84 g / 85 g alanı tek satır ve okunur hale getirildi.
-- Kahvaltı, öğle, ara öğün, akşam ve ampul ikonları daha güçlü/kalın bir ikon ailesiyle değiştirildi.
-- Ara öğün ikonu belirgin şekilde yenilendi.
-- Geçmiş başlığı altındaki metin “Son 7 günün protein özeti.” olarak değiştirildi.
-- Profil bilgi ikonları daha büyük, canlı ve belirgin hale getirildi.
-- Mevcut fonksiyonlar ve ekran akışları korunmuştur.
+- v0.27 görsel/stabil referans üzerine hazırlanmıştır.
+- 5 onboarding ekranı Modern Mor görsel dile uyarlandı.
+- Temel bilgiler adımına isteğe bağlı “Sana nasıl hitap edelim?” alanı eklendi.
+- Kullanıcı adı profile kaydedilir ve Profil > Kişisel Bilgiler bölümünde gösterilir.
+- Profil düzenleme ekranından kullanıcı adı değiştirilebilir.
+- Profil/Ayarlar ekranına “Onboarding’i yeniden göster” test seçeneği eklendi.
+- Onboarding önizlemesi mevcut profil verilerini silmez; alanları mevcut bilgilerle açar.
+- Mevcut kullanıcı onboarding’i açtıysa “Kapat” ile profile dönebilir.
+- Barkod özelliği bu sürüme dahil edilmedi.
