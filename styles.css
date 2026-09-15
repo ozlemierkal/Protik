@@ -1156,3 +1156,9 @@ button{cursor:pointer}
     font-size:9px;
   }
 }
+
+
+/* v0.21 - alt menü sadeleştirme */
+.bottomNav.threeItems{
+  grid-template-columns:repeat(3,1fr);
+}

@@ -538,10 +538,9 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
         ) : null}
       </section>
 
-      <nav className="bottomNav fourItems">
+      <nav className="bottomNav threeItems">
         <button className="active">⌂<span>Ana Sayfa</span></button>
         <button onClick={onHistory}>▥<span>Geçmiş</span></button>
-        <button>💡<span>Öneriler</span></button>
         <button onClick={onProfile}>◯<span>Profil</span></button>
       </nav>
     </main>
@@ -788,10 +787,9 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         </div>
       </section>
 
-      <nav className="bottomNav fourItems">
+      <nav className="bottomNav threeItems">
         <button onClick={onBackHome}>⌂<span>Ana Sayfa</span></button>
         <button className="active">▥<span>Geçmiş</span></button>
-        <button>💡<span>Öneriler</span></button>
         <button onClick={onProfile}>◯<span>Profil</span></button>
       </nav>
     </main>
@@ -845,7 +843,6 @@ function HistoryDay({ date, entries, target, onBack }) {
         })}
       </section>
 
-      <div className="historyReadonlyNote">Geçmiş kayıtlar yalnızca görüntülenir.</div>
     </main>
   )
 }
