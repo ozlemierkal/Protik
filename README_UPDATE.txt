@@ -1,11 +1,9 @@
-Protik v0.23 – Profil ekranı düzeltmeleri
+Protik v0.24 – Modern Mürdüm renk düzeltmesi
 
-- Üstteki yaş kartı tamamen kaldırıldı.
-- “50 yaşında” tekrar metni kaldırıldı.
-- Yaş artık yalnızca Kişisel Bilgiler içinde gösteriliyor.
-- Tek düzenleme kontrolü üst sağdaki ayarlar ikonudur.
-- “Profili Düzenle”, “Düzenle” ve hedef kartındaki ikinci düzenleme yazıları kaldırıldı.
-- Kişisel bilgi ikonları daha canlı ve renkli hale getirildi.
-- Alt motivasyon kartı büyütüldü ve görsel olarak güçlendirildi.
-- Profil alt navigasyonu korunuyor.
-- Telefon görünümünde kart yükseklikleri artırılarak ekran daha dengeli dolduruluyor.
+- v0.23'teki parlak mor/lila palet, daha gerçek mürdüm tonlarına çekildi.
+- Ana renk: koyu mürdüm
+- İkincil tonlar: gül kurusu / yumuşak mürdüm
+- Açık yüzeyler: kırık beyaz + pudramsı mürdüm
+- Sarı/amber vurgu korunuyor
+- Grafik, buton, logo ve seçili durum renkleri yeni palete uyarlandı
+- Profildeki renkli kişisel ikonlar canlı kalıyor
