@@ -4197,3 +4197,49 @@ p, span, small, label, input, select, button{
   .modernOnboarding .addIllustration{transform:scale(.92)!important}
   .modernOnboarding .ideaIllustration{transform:scale(.91)!important}
 }
+
+/* v0.35 — ücretsiz barkod mini test */
+.barcodeTestEntry{margin-top:12px}
+.barcodeTestButton{
+  width:100%;border:1px solid #eadcf4;background:#fff;border-radius:17px;
+  min-height:58px;padding:10px 13px;display:grid;grid-template-columns:42px 1fr auto;
+  align-items:center;gap:10px;text-align:left;color:#35124e;box-shadow:0 7px 20px rgba(71,25,105,.05);
+}
+.barcodeTestButton>span:nth-child(2){display:flex;flex-direction:column;gap:1px}
+.barcodeTestButton strong{font-size:14.5px;font-weight:800}
+.barcodeTestButton small{font-size:11px;font-weight:700;color:#8e789b}
+.barcodeTestButton>b{font-size:25px;line-height:1;color:#7c35b7;font-weight:600}
+.barcodeGlyph{
+  width:38px;height:38px;border-radius:12px;background:#f2e7fb;display:flex;align-items:center;
+  justify-content:center;gap:2px;padding:9px 8px;box-sizing:border-box;
+}
+.barcodeGlyph i{display:block;height:20px;background:#6823a8;border-radius:1px}
+.barcodeGlyph i:nth-child(1){width:2px}.barcodeGlyph i:nth-child(2){width:4px}.barcodeGlyph i:nth-child(3){width:2px}.barcodeGlyph i:nth-child(4){width:5px}.barcodeGlyph i:nth-child(5){width:2px}
+.barcodeTestPanel{
+  margin-top:12px;padding:13px;border:1px solid #eadcf4;border-radius:20px;background:linear-gradient(180deg,#fff,#fbf8fd);
+  box-shadow:0 10px 28px rgba(77,29,111,.07);
+}
+.barcodeTestPanelHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:11px}
+.barcodeTestPanelHead>div{display:flex;flex-direction:column;gap:2px}
+.barcodeTestPanelHead strong{font-size:15px;color:#33104b}
+.barcodeTestPanelHead span{font-size:11.5px;line-height:1.35;color:#8a7795;font-weight:500}
+.barcodeCloseButton{
+  border:0;background:#f1e7f7;color:#6b2c98;width:32px;height:32px;border-radius:50%;font-size:21px;line-height:1;flex:0 0 auto;
+}
+.barcodeCameraFrame{overflow:hidden;border-radius:16px;background:#17121a;min-height:210px}
+#protik-barcode-reader{width:100%;min-height:210px}
+#protik-barcode-reader video{width:100%!important;border-radius:16px;object-fit:cover}
+#protik-barcode-reader img{display:none!important}
+#protik-barcode-reader__dashboard{padding:7px!important;background:#fff}
+#protik-barcode-reader__dashboard_section_csr button,
+#protik-barcode-reader__dashboard_section_swaplink{
+  font-family:inherit!important;border:0!important;border-radius:10px!important;background:#6f2db4!important;color:#fff!important;padding:8px 10px!important;
+}
+.barcodeStatus{text-align:center;font-size:12px;font-weight:700;color:#6e4f7f;margin-top:9px}
+.barcodeSuccess{padding:12px 4px 4px;text-align:center}
+.barcodeSuccess>span{display:block;font-size:12px;color:#8b7798;font-weight:700;margin-bottom:5px}
+.barcodeSuccess>strong{display:block;font-size:23px;letter-spacing:.7px;color:#321049;margin-bottom:8px;word-break:break-all}
+.barcodeSuccess p,.barcodeErrorBox p{font-size:12.5px;line-height:1.45;color:#776682;margin:0 auto 12px;max-width:330px}
+.barcodeSuccess .secondaryButton,.barcodeErrorBox .secondaryButton{width:100%}
+.barcodeErrorBox{text-align:center;padding:10px 4px 4px}
+.barcodeErrorBox strong{display:block;color:#7b2447;margin-bottom:5px}

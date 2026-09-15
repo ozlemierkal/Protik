@@ -1,5 +1,33 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import foods from './foods.json'
+
+
+
+let barcodeLibraryPromise = null
+
+function loadBarcodeLibrary() {
+  if (window.Html5Qrcode) return Promise.resolve(window.Html5Qrcode)
+  if (barcodeLibraryPromise) return barcodeLibraryPromise
+
+  barcodeLibraryPromise = new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[data-protik-barcode]')
+    if (existing) {
+      existing.addEventListener('load', () => resolve(window.Html5Qrcode), { once: true })
+      existing.addEventListener('error', () => reject(new Error('Barkod kütüphanesi yüklenemedi.')), { once: true })
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js'
+    script.async = true
+    script.dataset.protikBarcode = 'true'
+    script.onload = () => resolve(window.Html5Qrcode)
+    script.onerror = () => reject(new Error('Barkod kütüphanesi yüklenemedi.'))
+    document.head.appendChild(script)
+  })
+
+  return barcodeLibraryPromise
+}
 
 function loadProfile() {
   try {
@@ -1351,6 +1379,79 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   const [showProteinEditor, setShowProteinEditor] = useState(false)
   const [customProteinPerBase, setCustomProteinPerBase] = useState('')
   const [customProductName, setCustomProductName] = useState('')
+  const [barcodeOpen, setBarcodeOpen] = useState(false)
+  const [barcodeResult, setBarcodeResult] = useState('')
+  const [barcodeStatus, setBarcodeStatus] = useState('')
+  const [barcodeError, setBarcodeError] = useState('')
+  const barcodeScannerRef = useRef(null)
+
+  useEffect(() => {
+    if (!barcodeOpen) return undefined
+
+    let cancelled = false
+    let startTimer = null
+
+    async function bootScanner() {
+      try {
+        setBarcodeError('')
+        setBarcodeStatus('Kamera hazırlanıyor…')
+        await loadBarcodeLibrary()
+        if (cancelled || !window.Html5Qrcode) return
+
+        const scanner = new window.Html5Qrcode('protik-barcode-reader')
+        barcodeScannerRef.current = scanner
+
+        await scanner.start(
+          { facingMode: 'environment' },
+          {
+            fps: 10,
+            qrbox: { width: 260, height: 150 },
+            aspectRatio: 1.777778,
+          },
+          async (decodedText) => {
+            if (!decodedText || cancelled) return
+            setBarcodeResult(decodedText)
+            setBarcodeStatus('Barkod okundu ✓')
+            try {
+              if (scanner.isScanning) await scanner.stop()
+              scanner.clear()
+            } catch {
+              // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
+            }
+          },
+          () => {}
+        )
+
+        if (!cancelled) setBarcodeStatus('Barkodu çerçevenin içine getir.')
+      } catch (error) {
+        if (cancelled) return
+        const message = String(error?.message || error || '')
+        const permissionDenied = /permission|notallowed|denied/i.test(message)
+        setBarcodeError(
+          permissionDenied
+            ? 'Kamera izni verilmedi. Safari ayarlarından kamera iznini açıp tekrar deneyebilirsin.'
+            : 'Kamera başlatılamadı. Sayfayı yenileyip tekrar deneyebilirsin.'
+        )
+        setBarcodeStatus('')
+      }
+    }
+
+    startTimer = window.setTimeout(bootScanner, 60)
+
+    return () => {
+      cancelled = true
+      if (startTimer) window.clearTimeout(startTimer)
+      const scanner = barcodeScannerRef.current
+      barcodeScannerRef.current = null
+      if (scanner) {
+        Promise.resolve(scanner.isScanning ? scanner.stop() : null)
+          .catch(() => null)
+          .finally(() => {
+            try { scanner.clear() } catch {}
+          })
+      }
+    }
+  }, [barcodeOpen])
 
   const filtered = foods.filter((f) =>
     f.name.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')) ||
@@ -1471,6 +1572,79 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
             onFocus={() => query && setShowResults(true)}
           />
           <div className="mealSearchHint">Yazarak veya arayarak ekleyebilirsin.</div>
+
+          <div className="barcodeTestEntry">
+            <button
+              type="button"
+              className="barcodeTestButton"
+              onClick={() => {
+                setBarcodeResult('')
+                setBarcodeError('')
+                setBarcodeStatus('')
+                setBarcodeOpen(true)
+              }}
+            >
+              <span className="barcodeGlyph" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+              <span>
+                <strong>Barkod Tara</strong>
+                <small>Mini test</small>
+              </span>
+              <b>›</b>
+            </button>
+          </div>
+
+          {barcodeOpen && (
+            <section className="barcodeTestPanel" aria-label="Barkod tarama testi">
+              <div className="barcodeTestPanelHead">
+                <div>
+                  <strong>Barkod tarama testi</strong>
+                  <span>Şimdilik yalnızca barkod numarasını okuyacağız.</span>
+                </div>
+                <button
+                  type="button"
+                  className="barcodeCloseButton"
+                  aria-label="Barkod tarayıcıyı kapat"
+                  onClick={() => setBarcodeOpen(false)}
+                >×</button>
+              </div>
+
+              {!barcodeResult && !barcodeError && (
+                <div className="barcodeCameraFrame">
+                  <div id="protik-barcode-reader" />
+                </div>
+              )}
+
+              {barcodeStatus && <div className="barcodeStatus">{barcodeStatus}</div>}
+
+              {barcodeResult && (
+                <div className="barcodeSuccess">
+                  <span>Okunan barkod</span>
+                  <strong>{barcodeResult}</strong>
+                  <p>Harika — kamera ve barkod okuma çalışıyor. Sonraki aşamada bu numarayla ürün ve protein bilgisini arayacağız.</p>
+                  <button
+                    type="button"
+                    className="secondaryButton"
+                    onClick={() => {
+                      setBarcodeOpen(false)
+                      window.setTimeout(() => {
+                        setBarcodeOpen(true)
+                        setBarcodeResult('')
+                        setBarcodeError('')
+                      }, 80)
+                    }}
+                  >Başka barkod dene</button>
+                </div>
+              )}
+
+              {barcodeError && (
+                <div className="barcodeErrorBox">
+                  <strong>Kamera açılamadı</strong>
+                  <p>{barcodeError}</p>
+                  <button type="button" className="secondaryButton" onClick={() => setBarcodeOpen(false)}>Kapat</button>
+                </div>
+              )}
+            </section>
+          )}
 
           {showResults && query && (
             <div className="searchResults inlineResults">
