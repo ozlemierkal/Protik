@@ -414,6 +414,15 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
     goal: '',
   })
   const [manualTarget, setManualTarget] = useState(null)
+  const onboardingPanelRef = useRef(null)
+
+  useEffect(() => {
+    // Her onboarding adımı kendi başlangıcından açılsın.
+    if (onboardingPanelRef.current) {
+      onboardingPanelRef.current.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [step])
 
   const weightNumber = Number(form.weight)
   const multiplier = getProteinMultiplier(form.activity, form.goal)
@@ -474,7 +483,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
         )}
       </div>
 
-      <div className="panel">
+      <div className="panel" ref={onboardingPanelRef}>
         {step === 0 && (
           <section className="onboardingStep centered welcomeStep">
             <div className="welcomeArt">
@@ -644,7 +653,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
 
       <div className="onboardingActions">
         {step > 0 && (
-          <button className="ghost" onClick={() => setStep(step - 1)}>
+          <button className="ghost" onClick={() => setStep((current) => Math.max(0, current - 1))}>
             Geri
           </button>
         )}

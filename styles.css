@@ -4842,3 +4842,28 @@ input,select,button{
     border-top-right-radius:24px!important;
   }
 }
+
+
+/* =========================================================
+   v0.48 – onboarding adım değişiminde scroll sıfırlama
+   ========================================================= */
+.modernOnboarding{
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow:hidden!important;
+}
+.modernOnboarding .panel{
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  scroll-behavior:auto!important;
+}
+.modernOnboarding .onboardingActions{
+  flex:0 0 auto;
+  position:relative;
+  z-index:32;
+  background:rgba(248,244,252,.98);
+  padding-bottom:max(12px, env(safe-area-inset-bottom));
+}
