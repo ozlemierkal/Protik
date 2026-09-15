@@ -1483,74 +1483,80 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   }
 
   const rows = [
-    { key: 'gender', label: 'Cinsiyetin', icon: 'gender', value: p.gender || '—' },
-    { key: 'weight', label: 'Kilon', icon: 'weight', value: p.weight ? `${p.weight} kg` : '—' },
-    { key: 'height', label: 'Boyun', icon: 'height', value: p.height ? `${p.height} cm` : '—' },
-    { key: 'goal', label: 'Hedefin', icon: 'goal', value: p.goal || '—' },
-    { key: 'activity', label: 'Hareket düzeyin', icon: 'activity', value: p.activity || '—' },
+    { key: 'age', label: 'Yaşın', icon: 'age', value: p.age ? `${p.age}` : '—', tone: 'violet' },
+    { key: 'gender', label: 'Cinsiyetin', icon: 'gender', value: p.gender || '—', tone: 'pink' },
+    { key: 'weight', label: 'Kilon', icon: 'weight', value: p.weight ? `${p.weight} kg` : '—', tone: 'blue' },
+    { key: 'height', label: 'Boyun', icon: 'height', value: p.height ? `${p.height} cm` : '—', tone: 'green' },
+    { key: 'goal', label: 'Hedefin', icon: 'goal', value: p.goal || '—', tone: 'orange' },
+    { key: 'activity', label: 'Hareket düzeyin', icon: 'activity', value: p.activity || '—', tone: 'purple' },
   ]
 
   return (
     <main className="appShell themedShell profileShell">
-      <header className="screenHeader proScreenHeader">
-        <button className="back proBack" onClick={onBack}><UiIcon name="back" size={20} /></button>
+      <header className="screenHeader proScreenHeader profileHeaderClean">
+        <span />
         <h1>Profil</h1>
-        <button className="settingsButton" onClick={() => setEditing((v) => !v)} aria-label="Profili düzenle">
+        <button
+          className={`settingsButton ${editing ? 'active' : ''}`}
+          onClick={() => setEditing((v) => !v)}
+          aria-label="Profili düzenle"
+        >
           <UiIcon name="settings" size={21} />
         </button>
       </header>
 
-      <section className="profileHero card">
-        <div className="avatarCircle">
-          <UiIcon name="profile" size={34} />
+      <section className="profileQuote profileQuoteLarge card">
+        <div className="quoteText">
+          “İyi beslenmek sadece bir hedef değil,<br />
+          daha iyi bir yaşam biçimidir.”
         </div>
-        <div className="profileHeroCopy">
-          <span>Yaşın</span>
-          <strong>{p.age || '—'}</strong>
-          <small>{p.age ? `${p.age} yaşında` : 'Yaş bilgisi eklenmedi'}</small>
-        </div>
-        <button className="profileEditPill" onClick={() => setEditing(true)}>Profili Düzenle</button>
-      </section>
-
-      <section className="profileQuote card">
-        <span>“İyi beslenmek sadece bir hedef değil,<br />daha iyi bir yaşam biçimidir.”</span>
-        <b>♥</b>
+        <div className="quoteHeart">♥</div>
+        <div className="quoteLeaf">❧</div>
       </section>
 
       {!editing ? (
         <>
           <div className="profileSectionTitle">
             <h2>Kişisel Bilgiler</h2>
-            <button onClick={() => setEditing(true)}>Düzenle</button>
           </div>
 
           <section className="profileInfoCard card">
             {rows.map((row) => (
-              <button className="profileInfoRow" key={row.key} onClick={() => setEditing(true)}>
-                <div className="profileInfoIcon"><UiIcon name={row.icon} size={19} /></div>
+              <div className="profileInfoRow profileInfoStatic" key={row.key}>
+                <div className={`profileInfoIcon ${row.tone}`}>
+                  <UiIcon name={row.icon} size={20} />
+                </div>
                 <span>{row.label}</span>
                 <strong>{row.value}</strong>
-                <UiIcon name="chevron" size={15} />
-              </button>
+              </div>
             ))}
           </section>
 
           <section className="proteinGoalCard card">
-            <div className="profileInfoIcon goalLarge"><UiIcon name="goal" size={24} /></div>
+            <div className="profileInfoIcon goalLarge targetTone">
+              <UiIcon name="goal" size={25} />
+            </div>
             <div>
               <span>Günlük protein hedefin</span>
               <strong>{p.proteinTarget} g</strong>
             </div>
-            <button onClick={() => setEditing(true)}>Düzenle</button>
           </section>
 
-          <section className="profileMotivation card">
-            <span>🌿</span>
-            <p>Daha sağlıklı,<br />daha güçlü bir sen ♡</p>
+          <section className="profileMotivation profileMotivationLarge card">
+            <div className="motivationLeaf">🌿</div>
+            <div>
+              <strong>Daha sağlıklı,<br />daha güçlü bir sen ♡</strong>
+              <span>Küçük adımlar, büyük değişimler yaratır.</span>
+            </div>
           </section>
         </>
       ) : (
         <section className="card profileEditCard">
+          <div className="profileEditTitle">
+            <h2>Bilgilerini düzenle</h2>
+            <p>Değişikliklerini kaydettiğinde profilin güncellenecek.</p>
+          </div>
+
           <Field label="Yaşın">
             <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
           </Field>

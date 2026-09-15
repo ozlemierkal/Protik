@@ -1726,3 +1726,207 @@ button,input,select{
     width:100%;
   }
 }
+
+
+/* =========================================================
+   v0.23 – Profil ekranı sadeleştirme ve görsel güçlendirme
+   ========================================================= */
+
+.profileHeaderClean{
+  margin-bottom:10px;
+}
+.profileHeaderClean h1{
+  font-size:24px;
+  letter-spacing:-.5px;
+}
+.settingsButton.active{
+  background:#EEE2F8;
+  border-color:#CDB4E4;
+  box-shadow:0 0 0 3px rgba(100,48,185,.08);
+}
+
+.profileQuoteLarge{
+  min-height:108px;
+  padding:20px 22px;
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 90% 80%, rgba(220,197,246,.6), transparent 32%),
+    linear-gradient(135deg,#FFF9F3 0%,#FBF2FF 100%);
+}
+.profileQuoteLarge::after{
+  content:'';
+  position:absolute;
+  right:-14px;
+  bottom:-18px;
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(209,172,241,.25),transparent 68%);
+}
+.quoteText{
+  color:#5A2E6F;
+  font-size:16px;
+  line-height:1.5;
+  font-style:italic;
+  font-weight:600;
+  max-width:82%;
+}
+.quoteHeart{
+  position:absolute;
+  right:20px;
+  top:20px;
+  color:#F4B740;
+  font-size:18px;
+}
+.quoteLeaf{
+  position:absolute;
+  right:24px;
+  bottom:14px;
+  color:#B77BD7;
+  font-size:38px;
+  opacity:.45;
+  transform:rotate(-18deg);
+}
+
+.profileSectionTitle{
+  margin-top:20px;
+  margin-bottom:10px;
+}
+.profileSectionTitle h2{
+  font-size:17px;
+  color:#24122E;
+}
+
+.profileInfoCard{
+  padding:0 14px;
+}
+.profileInfoStatic{
+  cursor:default;
+  grid-template-columns:40px minmax(0,1fr) auto;
+  min-height:58px;
+}
+.profileInfoStatic strong{
+  font-size:13px;
+}
+.profileInfoIcon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+}
+.profileInfoIcon.violet{
+  background:#F0E5FA;
+  color:#6A2EB1;
+}
+.profileInfoIcon.pink{
+  background:#FFE5F2;
+  color:#C5287C;
+}
+.profileInfoIcon.blue{
+  background:#E5F0FF;
+  color:#2877DA;
+}
+.profileInfoIcon.green{
+  background:#E3F7EF;
+  color:#148E77;
+}
+.profileInfoIcon.orange{
+  background:#FFF0E0;
+  color:#E16613;
+}
+.profileInfoIcon.purple{
+  background:#EFE4FB;
+  color:#6D2BC0;
+}
+
+.proteinGoalCard{
+  min-height:76px;
+  padding:15px 16px;
+}
+.targetTone{
+  background:#F0E3FB!important;
+  color:#6726B5!important;
+}
+.proteinGoalCard span{
+  font-size:12px;
+}
+.proteinGoalCard strong{
+  font-size:28px;
+  line-height:1.05;
+}
+
+.profileMotivationLarge{
+  min-height:126px;
+  padding:20px 22px;
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:
+    radial-gradient(circle at 92% 88%, rgba(214,177,244,.45), transparent 34%),
+    radial-gradient(circle at 6% 100%, rgba(255,217,188,.45), transparent 28%),
+    linear-gradient(135deg,#FFF7F0 0%,#F8EDFF 100%);
+}
+.profileMotivationLarge .motivationLeaf{
+  font-size:32px;
+}
+.profileMotivationLarge strong{
+  display:block;
+  color:#5F2A8E;
+  font-size:19px;
+  line-height:1.35;
+}
+.profileMotivationLarge span{
+  display:block;
+  margin-top:6px;
+  color:#8D8393;
+  font-size:11px;
+}
+
+.profileEditTitle{
+  margin-bottom:14px;
+}
+.profileEditTitle h2{
+  margin:0 0 4px;
+  font-size:18px;
+  color:#26142F;
+}
+.profileEditTitle p{
+  margin:0;
+  color:#8A818E;
+  font-size:11px;
+  line-height:1.45;
+}
+
+/* iPad/web görünümünde profil içeriğini telefondaki kadar boş bırakma */
+@media(min-width:700px){
+  .profileShell{
+    min-height:100vh;
+  }
+  .profileQuoteLarge,
+  .profileInfoCard,
+  .proteinGoalCard,
+  .profileMotivationLarge,
+  .profileEditCard{
+    width:100%;
+  }
+}
+
+/* Telefonda kartlar ekranı daha dengeli doldursun */
+@media(max-width:520px){
+  .profileShell{
+    padding-bottom:96px;
+  }
+  .profileQuoteLarge{
+    min-height:112px;
+  }
+  .profileInfoStatic{
+    min-height:60px;
+  }
+  .profileMotivationLarge{
+    min-height:132px;
+  }
+}
