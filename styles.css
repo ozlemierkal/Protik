@@ -4711,3 +4711,134 @@ p, span, small, label, input, select, button{
 .recentFoodsSection{
   margin-top:0;
 }
+
+/* =========================================================
+   v0.47 – mobil ekran düzeni / sabit yerleşim iyileştirmesi
+   ========================================================= */
+html,body,#root{
+  min-height:100%;
+  height:100%;
+}
+html{
+  overflow-x:hidden;
+  background:#f6f1fb;
+}
+body{
+  overflow-x:hidden;
+  overscroll-behavior-x:none;
+  -webkit-text-size-adjust:100%;
+}
+#root{
+  overflow-x:hidden;
+}
+
+.appShell{
+  min-height:100dvh!important;
+  padding-top:calc(14px + env(safe-area-inset-top))!important;
+  padding-bottom:calc(102px + env(safe-area-inset-bottom))!important;
+  overflow-x:hidden!important;
+  overflow-y:visible;
+  scroll-padding-top:88px;
+  scroll-padding-bottom:118px;
+}
+
+/* yatay taşmaları kapat */
+.homeHeroPanel,
+.homeDashboard,
+.heroRingPanel,
+.heroInsightStack,
+.homeMealsSection,
+.modernRecommendation,
+.weeklySummaryCard,
+.weeklyChartCard,
+.historyDayCard,
+.historyDaySummary,
+.historyMealCard,
+.profileQuoteLarge,
+.profileInfoCard,
+.proteinGoalCard,
+.profileMotivationLarge,
+.mealDetailRedesign,
+.addCard,
+.card,
+.section{
+  max-width:100%;
+  overflow:hidden;
+}
+
+/* Başlıklar ekranda kalıcı hissedilsin */
+.screenHeader,
+.historyHeader,
+.modernOnboarding .onboardingTopline{
+  position:sticky;
+  top:0;
+  z-index:24;
+}
+
+.screenHeader,
+.historyHeader{
+  padding-top:6px;
+  padding-bottom:10px;
+  margin:-4px -2px 12px!important;
+  padding-left:2px;
+  padding-right:2px;
+  background:linear-gradient(180deg, rgba(248,244,252,.96) 0%, rgba(248,244,252,.90) 72%, rgba(248,244,252,0) 100%);
+  backdrop-filter:blur(10px);
+}
+
+.historyShell .historyHeader,
+.historyDayShell .screenHeader,
+.detailShell .screenHeader,
+.profileShell .screenHeader{
+  background:linear-gradient(180deg, rgba(248,244,252,.97) 0%, rgba(248,244,252,.92) 72%, rgba(248,244,252,0) 100%)!important;
+}
+
+.modernOnboarding .onboardingTopline{
+  top:0;
+  z-index:30;
+}
+.modernOnboarding .panel{
+  padding-bottom:calc(20px + env(safe-area-inset-bottom));
+}
+
+/* Alt menü sabit ve home indicator ile uyumlu */
+.bottomNav,
+.proNav{
+  position:fixed!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  bottom:0!important;
+  width:min(520px,100%)!important;
+  padding-bottom:max(10px, env(safe-area-inset-bottom))!important;
+  z-index:40!important;
+}
+
+/* kısa ekranlarda da içerik altta nav altında kaybolmasın */
+.section:last-of-type,
+.card:last-of-type{
+  margin-bottom:6px;
+}
+
+/* form ekranlarında klavye açıldığında erişimi koru */
+input,select,button{
+  scroll-margin-bottom:140px;
+}
+
+@media (max-width:520px){
+  .appShell{
+    padding-top:calc(10px + env(safe-area-inset-top))!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+    padding-bottom:calc(102px + env(safe-area-inset-bottom))!important;
+  }
+  .screenHeader,
+  .historyHeader{
+    margin-bottom:10px!important;
+  }
+  .bottomNav,
+  .proNav{
+    width:100%!important;
+    border-top-left-radius:24px!important;
+    border-top-right-radius:24px!important;
+  }
+}
