@@ -3728,3 +3728,190 @@ p, span, small, label, input, select, button{
   .modernOnboarding .welcomeStep h1{font-size:32px}
   .modernOnboarding .stepIntro h2{font-size:27px}
 }
+
+/* v0.30 — onboarding dengeleme + sıcak özellik görselleri */
+.modernOnboarding .onboardingStep:not(.welcomeStep){
+  min-height:calc(100dvh - 205px);
+  justify-content:center;
+  padding-top:18px;
+  padding-bottom:18px;
+}
+.modernOnboarding .choiceStep,
+.modernOnboarding .targetStep{
+  justify-content:center;
+}
+.modernOnboarding .formCard{
+  width:100%;
+  max-width:430px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.modernOnboarding .helperText{
+  width:100%;
+  max-width:430px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* İlk ekran: üç küçük buton yerine dikey, görsel anlatımlı kartlar */
+.modernOnboarding .welcomeStep{
+  padding-top:34px;
+  padding-bottom:22px;
+}
+.modernOnboarding .welcomeArt{margin-bottom:18px}
+.modernOnboarding .welcomeStep h1{margin-bottom:8px}
+.modernOnboarding .welcomeFeatureStack{
+  width:100%;
+  max-width:430px;
+  display:grid;
+  gap:10px;
+  margin:24px auto 0;
+}
+.modernOnboarding .welcomeFeatureCard{
+  display:grid;
+  grid-template-columns:116px 1fr;
+  align-items:center;
+  gap:15px;
+  min-height:108px;
+  padding:14px 16px;
+  border:1px solid #e6d9f0;
+  border-radius:22px;
+  background:linear-gradient(145deg,#fff 0%,#fbf7ff 100%);
+  box-shadow:0 10px 25px rgba(71,22,120,.06);
+  text-align:left;
+}
+.modernOnboarding .welcomeFeatureCard strong{
+  display:block;
+  color:#37105f;
+  font-size:18px;
+  line-height:1.15;
+  margin-bottom:5px;
+  font-weight:850;
+}
+.modernOnboarding .welcomeFeatureCard>div:last-child span{
+  display:block;
+  color:#6c6175;
+  font-size:13px;
+  line-height:1.35;
+  font-weight:550;
+}
+.modernOnboarding .welcomeFeatureVisual{
+  position:relative;
+  min-height:78px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#6a25b1;
+  background:linear-gradient(145deg,#f4eafd,#ead9fb);
+  overflow:hidden;
+}
+.modernOnboarding .targetVisual{
+  color:#6c25b5;
+  background:radial-gradient(circle at 65% 35%,#fff3c9 0 18%,transparent 19%),linear-gradient(145deg,#f3e9fc,#e5d3f8);
+}
+.modernOnboarding .featureBadge{
+  position:absolute;
+  top:7px;
+  left:8px;
+  z-index:2;
+  padding:3px 7px;
+  border-radius:999px;
+  background:#fff;
+  color:#6b23b4;
+  font-size:11px;
+  font-weight:850;
+  box-shadow:0 4px 10px rgba(73,21,125,.08);
+}
+.modernOnboarding .targetVisual svg{filter:drop-shadow(0 4px 5px rgba(91,26,155,.15))}
+.modernOnboarding .addVisual{
+  flex-direction:column;
+  gap:3px;
+  align-items:stretch;
+  padding:10px;
+  background:linear-gradient(145deg,#f7effd,#efe2fa);
+}
+.modernOnboarding .featurePlus{
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:26px;
+  height:26px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(135deg,#6b24b6,#8c49d1);
+  font-size:20px;
+  font-weight:800;
+  box-shadow:0 5px 12px rgba(90,28,151,.22);
+}
+.modernOnboarding .miniFoodLine{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:7px 8px;
+  border-radius:10px;
+  background:rgba(255,255,255,.82);
+  color:#523462;
+  font-size:11px;
+  font-weight:650;
+}
+.modernOnboarding .miniFoodLine b{color:#6420aa}
+.modernOnboarding .ideaVisual{
+  flex-direction:column;
+  gap:5px;
+  color:#f0a000;
+  background:linear-gradient(145deg,#fff7dd,#f6eafb);
+}
+.modernOnboarding .ideaVisual small{
+  color:#5d2b78;
+  font-size:9.5px;
+  font-weight:800;
+  text-align:center;
+  line-height:1.2;
+  max-width:90px;
+}
+
+/* Son ekran: hedef simgesiyle biraz sıcaklık */
+.modernOnboarding .targetWarmIcon{
+  position:relative;
+  width:72px;
+  height:72px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 14px;
+  border-radius:22px;
+  color:#6b24b3;
+  background:linear-gradient(145deg,#f3e8fd,#fff4d8);
+  border:1px solid #e5d4ef;
+  box-shadow:0 12px 28px rgba(86,29,145,.10);
+}
+.modernOnboarding .targetWarmIcon span{
+  position:absolute;
+  width:12px;
+  height:12px;
+  right:11px;
+  top:10px;
+  border-radius:50%;
+  background:#ffb51e;
+  box-shadow:0 0 0 4px rgba(255,181,30,.16);
+}
+
+@media (max-width:390px){
+  .modernOnboarding .onboardingStep:not(.welcomeStep){
+    min-height:calc(100dvh - 190px);
+    padding-top:12px;
+    padding-bottom:12px;
+  }
+  .modernOnboarding .welcomeStep{padding-top:24px}
+  .modernOnboarding .welcomeFeatureCard{
+    grid-template-columns:94px 1fr;
+    min-height:96px;
+    padding:12px;
+    gap:12px;
+  }
+  .modernOnboarding .welcomeFeatureVisual{min-height:72px}
+  .modernOnboarding .welcomeFeatureCard strong{font-size:16px}
+  .modernOnboarding .welcomeFeatureCard>div:last-child span{font-size:12px}
+}

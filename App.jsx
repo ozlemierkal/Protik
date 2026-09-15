@@ -363,10 +363,38 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
               <strong> Protik </strong>
               sana önersin.
             </p>
-            <div className="miniFeatureRow">
-              <div className="miniFeature">Hedefini gör</div>
-              <div className="miniFeature">Kolayca ekle</div>
-              <div className="miniFeature">Eksik kalanı tamamla</div>
+            <div className="welcomeFeatureStack">
+              <div className="welcomeFeatureCard">
+                <div className="welcomeFeatureVisual targetVisual">
+                  <div className="featureBadge">75%</div>
+                  <UiIcon name="goal" size={34} />
+                </div>
+                <div>
+                  <strong>Hedefini gör</strong>
+                  <span>Günlük protein hedefini anında gör, ilerlemeni kolayca takip et.</span>
+                </div>
+              </div>
+              <div className="welcomeFeatureCard">
+                <div className="welcomeFeatureVisual addVisual">
+                  <div className="featurePlus">+</div>
+                  <span className="miniFoodLine">Tavuk <b>24 g</b></span>
+                  <span className="miniFoodLine">Yoğurt <b>10 g</b></span>
+                </div>
+                <div>
+                  <strong>Kolayca ekle</strong>
+                  <span>Yediklerini saniyeler içinde ekle, protein hesabın otomatik güncellensin.</span>
+                </div>
+              </div>
+              <div className="welcomeFeatureCard">
+                <div className="welcomeFeatureVisual ideaVisual">
+                  <UiIcon name="bulb" size={34} />
+                  <small>Bugün 20 g daha alabilirsin</small>
+                </div>
+                <div>
+                  <strong>Eksik kalanı tamamla</strong>
+                  <span>Hedefine ulaşman için sana özel, pratik öneriler sunsun.</span>
+                </div>
+              </div>
             </div>
           </section>
         )}
@@ -460,6 +488,10 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
 
         {step === 4 && (
           <section className="onboardingStep centered targetStep warmTargetStep">
+            <div className="targetWarmIcon" aria-hidden="true">
+              <UiIcon name="goal" size={34} />
+              <span></span>
+            </div>
             <div className="stepIntro centered narrow">
               <h2>Önerilen başlangıç hedefin</h2>
               <p className="muted">Kilon, hareket düzeyin ve hedefine göre hesaplandı.</p>
