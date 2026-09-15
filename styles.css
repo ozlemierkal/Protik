@@ -3915,3 +3915,139 @@ p, span, small, label, input, select, button{
   .modernOnboarding .welcomeFeatureCard strong{font-size:16px}
   .modernOnboarding .welcomeFeatureCard>div:last-child span{font-size:12px}
 }
+
+/* v0.31 — onboarding mockup illustration match */
+.modernOnboarding .welcomeFeatureVisual{overflow:visible;background:transparent}
+.modernOnboarding .targetVisual,.modernOnboarding .addVisual,.modernOnboarding .ideaVisual{background:transparent}
+.targetIllustration{position:relative;width:104px;height:84px;display:grid;place-items:center}
+.targetIllustrationSvg{width:92px;height:92px;filter:drop-shadow(0 8px 10px rgba(83,27,135,.12))}
+.targetPercent{position:absolute;z-index:3;left:2px;top:0;padding:5px 10px;border-radius:14px;background:#ead7fb;color:#5d1fa0;font-size:13px;font-weight:850;box-shadow:0 5px 12px rgba(93,31,160,.10)}
+.targetIllustration.compact{width:70px;height:70px}.targetIllustration.compact .targetIllustrationSvg{width:70px;height:70px}
+.addIllustration{position:relative;width:104px;height:82px;display:grid;place-items:center}
+.addIllustrationSheet{width:92px;padding:10px 9px;border-radius:16px;background:linear-gradient(145deg,#fff,#f8f0ff);box-shadow:0 8px 18px rgba(80,24,130,.12);border:1px solid #eadcf5}
+.addIllustrationSheet span{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:4px;padding:5px 3px;color:#4e2b65;font-size:10px}
+.addIllustrationSheet span+span{border-top:1px solid #eee3f5}
+.addIllustrationSheet b{font-size:14px}.addIllustrationSheet em{font-style:normal;font-weight:700}.addIllustrationSheet strong{font-size:10px;color:#5f2797;margin:0}
+.addIllustrationPlus{position:absolute;z-index:3;right:1px;top:0;width:33px;height:33px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,#8b49cf,#6320ab);color:#fff;font-size:25px;font-weight:700;box-shadow:0 6px 12px rgba(95,32,171,.24)}
+.ideaIllustration{position:relative;width:106px;height:86px;display:grid;place-items:center}
+.ideaBulb{position:absolute;top:-2px;left:38px;font-size:32px;filter:drop-shadow(0 5px 8px rgba(244,160,0,.15))}
+.ideaBubble{position:absolute;left:3px;top:31px;width:92px;padding:8px 5px;border-radius:13px;background:#fff;color:#58266f;font-size:9px;line-height:1.1;font-weight:800;text-align:center;box-shadow:0 7px 16px rgba(73,27,117,.10);border:1px solid #eee1f5}
+.ideaFoods{position:absolute;bottom:-3px;display:flex;gap:7px}.ideaFoods span{width:26px;height:24px;display:grid;place-items:center;border-radius:9px;background:#fff8e8;font-size:14px;border:1px solid #f2e5d0}
+.modernOnboarding .targetWarmIcon{width:82px;height:82px;border-radius:24px;background:linear-gradient(145deg,#f4e9fd,#fff6df);overflow:visible}
+.modernOnboarding .targetWarmIcon .targetIllustration{transform:scale(.95)}
+
+/* v0.32 — onboarding 1. ekran: IMG_0769 referans düzeni */
+.modernOnboarding .welcomeStep{
+  width:100%;
+  max-width:500px;
+  margin:0 auto;
+  padding:34px 0 18px;
+  justify-content:flex-start;
+}
+.modernOnboarding .welcomeArt{
+  margin:0 auto 28px;
+}
+.modernOnboarding .welcomeGlow{
+  width:170px;
+  height:170px;
+  opacity:.55;
+}
+.modernOnboarding .welcomeLogoWrap{
+  padding:16px 22px;
+  border-radius:20px;
+  box-shadow:0 14px 30px rgba(75,24,137,.11);
+}
+.modernOnboarding .welcomeLogoWrap .brandName{font-size:28px}
+.modernOnboarding .welcomeLogoWrap .brandSub{font-size:12px}
+.modernOnboarding .welcomeLogoWrap .logoMark{width:48px;height:48px;border-radius:14px;font-size:28px}
+.modernOnboarding .welcomeStep h1{
+  max-width:430px;
+  margin:0 auto 16px;
+  font-size:38px;
+  line-height:1.06;
+  text-align:center;
+}
+.modernOnboarding .welcomeStep>p{
+  max-width:420px;
+  margin:0 auto;
+  font-size:16px;
+  line-height:1.45;
+  text-align:center;
+}
+.modernOnboarding .welcomeFeatureStack{
+  width:100%;
+  max-width:450px;
+  margin:32px auto 0;
+  gap:14px;
+}
+.modernOnboarding .welcomeFeatureCard{
+  grid-template-columns:150px 1fr;
+  min-height:134px;
+  gap:18px;
+  padding:16px 18px;
+  border-radius:26px;
+  border:1px solid #eadff2;
+  background:linear-gradient(145deg,#fff 0%,#fbf8fe 100%);
+  box-shadow:0 12px 30px rgba(73,27,117,.065);
+}
+.modernOnboarding .welcomeFeatureVisual{
+  min-height:100px;
+  width:100%;
+}
+.modernOnboarding .welcomeFeatureCard strong{
+  font-size:21px;
+  line-height:1.1;
+  margin-bottom:8px;
+}
+.modernOnboarding .welcomeFeatureCard>div:last-child span{
+  font-size:14px;
+  line-height:1.4;
+}
+.modernOnboarding .welcomeFeatureCard .targetIllustration{
+  transform:scale(1.18);
+}
+.modernOnboarding .welcomeFeatureCard .addIllustration{
+  transform:scale(1.12);
+}
+.modernOnboarding .welcomeFeatureCard .ideaIllustration{
+  transform:scale(1.08);
+}
+.modernOnboarding .onboardingActions{
+  padding-top:10px;
+}
+.modernOnboarding .onboardingActions .primary{
+  min-height:54px;
+  border-radius:15px;
+  font-size:16px;
+}
+
+@media (max-width:430px){
+  .modernOnboarding .welcomeStep{padding-top:26px}
+  .modernOnboarding .welcomeArt{margin-bottom:22px}
+  .modernOnboarding .welcomeStep h1{font-size:34px;max-width:360px;margin-bottom:13px}
+  .modernOnboarding .welcomeStep>p{font-size:14px;max-width:360px}
+  .modernOnboarding .welcomeFeatureStack{margin-top:24px;gap:11px;max-width:390px}
+  .modernOnboarding .welcomeFeatureCard{
+    grid-template-columns:124px 1fr;
+    min-height:116px;
+    padding:13px 14px;
+    gap:13px;
+    border-radius:22px;
+  }
+  .modernOnboarding .welcomeFeatureVisual{min-height:88px}
+  .modernOnboarding .welcomeFeatureCard strong{font-size:18px;margin-bottom:5px}
+  .modernOnboarding .welcomeFeatureCard>div:last-child span{font-size:12px;line-height:1.32}
+  .modernOnboarding .welcomeFeatureCard .targetIllustration{transform:scale(1.05)}
+  .modernOnboarding .welcomeFeatureCard .addIllustration{transform:scale(1.00)}
+  .modernOnboarding .welcomeFeatureCard .ideaIllustration{transform:scale(.98)}
+}
+
+@media (max-height:760px){
+  .modernOnboarding .welcomeStep{padding-top:18px}
+  .modernOnboarding .welcomeArt{margin-bottom:16px}
+  .modernOnboarding .welcomeStep h1{font-size:31px;margin-bottom:8px}
+  .modernOnboarding .welcomeStep>p{font-size:13px}
+  .modernOnboarding .welcomeFeatureStack{margin-top:18px;gap:8px}
+  .modernOnboarding .welcomeFeatureCard{min-height:98px;padding:10px 12px}
+  .modernOnboarding .welcomeFeatureVisual{min-height:74px}
+}

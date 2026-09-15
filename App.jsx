@@ -283,6 +283,46 @@ function mealIconName(meal) {
 }
 
 
+
+function TargetIllustration({ compact = false }) {
+  return (
+    <div className={`targetIllustration ${compact ? 'compact' : ''}`} aria-hidden="true">
+      {!compact && <span className="targetPercent">75%</span>}
+      <svg viewBox="0 0 120 120" className="targetIllustrationSvg">
+        <circle cx="53" cy="63" r="35" fill="#eee0fb" stroke="#fff" strokeWidth="4"/>
+        <circle cx="53" cy="63" r="25" fill="#dbc0f4"/>
+        <circle cx="53" cy="63" r="15" fill="#8a48c9"/>
+        <circle cx="53" cy="63" r="6" fill="#5d1fa0"/>
+        <path d="M57 58 88 28" stroke="#ffad17" strokeWidth="8" strokeLinecap="round"/>
+        <path d="m85 30 2-15 11 11-13 4Z" fill="#ffbd29"/>
+        <path d="m88 28 14-2-11-11-3 13Z" fill="#f29400"/>
+      </svg>
+    </div>
+  )
+}
+
+function AddIllustration() {
+  return (
+    <div className="addIllustration" aria-hidden="true">
+      <span className="addIllustrationPlus">+</span>
+      <div className="addIllustrationSheet">
+        <span><b>🍗</b><em>Tavuk</em><strong>24 g</strong></span>
+        <span><b>🥣</b><em>Yoğurt</em><strong>10 g</strong></span>
+      </div>
+    </div>
+  )
+}
+
+function IdeaIllustration() {
+  return (
+    <div className="ideaIllustration" aria-hidden="true">
+      <div className="ideaBulb">💡</div>
+      <div className="ideaBubble">Bugün 20 g<br/>daha alabilirsin</div>
+      <div className="ideaFoods"><span>🥛</span><span>🥚</span><span>🥜</span></div>
+    </div>
+  )
+}
+
 function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState({
@@ -366,8 +406,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
             <div className="welcomeFeatureStack">
               <div className="welcomeFeatureCard">
                 <div className="welcomeFeatureVisual targetVisual">
-                  <div className="featureBadge">75%</div>
-                  <UiIcon name="goal" size={34} />
+                  <TargetIllustration />
                 </div>
                 <div>
                   <strong>Hedefini gör</strong>
@@ -376,9 +415,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
               </div>
               <div className="welcomeFeatureCard">
                 <div className="welcomeFeatureVisual addVisual">
-                  <div className="featurePlus">+</div>
-                  <span className="miniFoodLine">Tavuk <b>24 g</b></span>
-                  <span className="miniFoodLine">Yoğurt <b>10 g</b></span>
+                  <AddIllustration />
                 </div>
                 <div>
                   <strong>Kolayca ekle</strong>
@@ -387,8 +424,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
               </div>
               <div className="welcomeFeatureCard">
                 <div className="welcomeFeatureVisual ideaVisual">
-                  <UiIcon name="bulb" size={34} />
-                  <small>Bugün 20 g daha alabilirsin</small>
+                  <IdeaIllustration />
                 </div>
                 <div>
                   <strong>Eksik kalanı tamamla</strong>
@@ -489,8 +525,7 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
         {step === 4 && (
           <section className="onboardingStep centered targetStep warmTargetStep">
             <div className="targetWarmIcon" aria-hidden="true">
-              <UiIcon name="goal" size={34} />
-              <span></span>
+              <TargetIllustration compact />
             </div>
             <div className="stepIntro centered narrow">
               <h2>Önerilen başlangıç hedefin</h2>
