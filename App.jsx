@@ -1398,6 +1398,44 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   )
 }
 
+function naturalPortionsFor(food) {
+  if (!food) return []
+  const name = String(food.name || '').toLocaleLowerCase('tr')
+  const unit = String(food.default_unit || food.base_unit || 'g').toLocaleLowerCase('tr')
+
+  const make = (label, amount) => ({ label, amount })
+
+  if (/(yumurta|egg)/.test(name) && unit.includes('adet')) {
+    return [make('1 adet', 1), make('2 adet', 2), make('3 adet', 3)]
+  }
+
+  if (/(süt|kefir|ayran)/.test(name) && unit.includes('ml')) {
+    return [make('1 bardak · 200 ml', 200), make('1 büyük bardak · 250 ml', 250)]
+  }
+
+  if (/(yoğurt|yogurt)/.test(name) && (unit === 'g' || unit.includes('gram'))) {
+    return [make('1 küçük kase · 150 g', 150), make('1 kase · 200 g', 200)]
+  }
+
+  if (/(peynir|kaşar|lor|cottage)/.test(name) && (unit === 'g' || unit.includes('gram'))) {
+    return [make('1 dilim · 30 g', 30), make('2 dilim · 60 g', 60), make('50 g', 50)]
+  }
+
+  if (/(tavuk|hindi|somon|ton balığı|balık|et|köfte)/.test(name) && (unit === 'g' || unit.includes('gram'))) {
+    return [make('100 g', 100), make('150 g', 150), make('200 g', 200)]
+  }
+
+  if (unit === 'g' || unit.includes('gram')) {
+    return [make('50 g', 50), make('100 g', 100), make('150 g', 150)]
+  }
+
+  if (unit.includes('ml')) {
+    return [make('200 ml', 200), make('250 ml', 250)]
+  }
+
+  return []
+}
+
 function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete, onEdit, onSave, onSaveCustomFood, onHome, onHistory, onProfile }) {
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const [query, setQuery] = useState('')
@@ -1696,7 +1734,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
             <section className="recentFoodsSection">
               <div className="recentFoodsHead">
                 <div>
-                  <strong>Son kullandıkların</strong>
+                  <strong>Son eklediklerin</strong>
                   <span>Tekrar eklemek için dokun.</span>
                 </div>
               </div>
@@ -1899,6 +1937,27 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
                   <p>{selected.category}</p>
                 </div>
               </div>
+
+              {naturalPortionsFor(selected).length > 0 && (
+                <div className="naturalPortionBox">
+                  <div className="naturalPortionHead">
+                    <strong>Kolay porsiyon seç</strong>
+                    <span>İstersen aşağıdan miktarı kendin de girebilirsin.</span>
+                  </div>
+                  <div className="naturalPortionChips">
+                    {naturalPortionsFor(selected).map((portion) => (
+                      <button
+                        type="button"
+                        key={`${portion.label}-${portion.amount}`}
+                        className={Number(amount) === Number(portion.amount) ? 'naturalPortionChip selected' : 'naturalPortionChip'}
+                        onClick={() => setAmount(portion.amount)}
+                      >
+                        {portion.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <Field label={`Miktar (${selected.default_unit})`}>
                 <input
