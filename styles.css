@@ -4243,3 +4243,88 @@ p, span, small, label, input, select, button{
 .barcodeSuccess .secondaryButton,.barcodeErrorBox .secondaryButton{width:100%}
 .barcodeErrorBox{text-align:center;padding:10px 4px 4px}
 .barcodeErrorBox strong{display:block;color:#7b2447;margin-bottom:5px}
+
+/* v0.36 — barkod ürün veritabanı + ana ekran taşma düzeltmesi */
+.homeHeroPanel{
+  overflow:hidden!important;
+}
+.homeDashboard{
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  min-width:0!important;
+}
+.heroInsightStack{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+.heroInsightCard{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.encouragementCard>div:last-child{
+  min-width:0!important;
+}
+.encouragementCard strong,
+.encouragementCard span{
+  overflow-wrap:anywhere;
+}
+
+.barcodeLookupResult{padding:4px 0 2px}
+.barcodeNumberLine{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  padding:8px 10px;border-radius:12px;background:#f7f1fb;margin-bottom:10px;
+}
+.barcodeNumberLine span{font-size:11px;color:#8b7798;font-weight:700}
+.barcodeNumberLine strong{font-size:13px;color:#47205e;letter-spacing:.25px;word-break:break-all}
+.barcodeProductCard{
+  display:grid;grid-template-columns:64px minmax(0,1fr);gap:11px;align-items:center;
+  padding:11px;border:1px solid #eadcf4;border-radius:16px;background:#fff;margin-bottom:10px;
+}
+.barcodeProductCard img,.barcodeProductFallback{
+  width:64px;height:64px;border-radius:13px;object-fit:contain;background:#f6f1f8;
+}
+.barcodeProductFallback{display:grid;place-items:center;font-size:28px;color:#7b37ad}
+.barcodeProductCard>div:last-child{display:flex;flex-direction:column;gap:3px;min-width:0}
+.barcodeProductCard strong{font-size:14.5px;color:#301144;line-height:1.25}
+.barcodeProductCard span{font-size:11.5px;color:#8a7795;font-weight:600}
+.barcodeProductCard b{font-size:12.5px;color:#6c25a7;margin-top:2px}
+.barcodeManualBox{
+  padding:11px;border:1px solid #eadcf4;border-radius:16px;background:#fff;margin-bottom:10px;
+}
+.barcodeManualBox>strong{display:block;font-size:14px;color:#34124c;margin-bottom:3px}
+.barcodeManualBox>p{font-size:11.5px;line-height:1.4;color:#877492;margin:0 0 10px}
+.barcodeManualBox label,.barcodeAmountField{display:block;margin-top:8px}
+.barcodeManualBox label>span,.barcodeAmountField>span{display:block;font-size:11px;color:#74617f;font-weight:700;margin-bottom:5px}
+.barcodeManualBox input,.barcodeAmountField input{
+  width:100%;box-sizing:border-box;border:1px solid #e4d8eb;border-radius:12px;background:#fff;
+  min-height:42px;padding:9px 11px;font:inherit;font-size:14px;color:#2f123f;outline:none;
+}
+.barcodeManualBox input:focus,.barcodeAmountField input:focus{border-color:#9b5acc;box-shadow:0 0 0 3px rgba(128,60,177,.09)}
+.barcodeAmountField{margin:10px 0 0}
+.barcodeAmountField>div{display:grid;grid-template-columns:1fr 38px;align-items:center;border:1px solid #e4d8eb;border-radius:12px;background:#fff;overflow:hidden}
+.barcodeAmountField>div input{border:0;border-radius:0;min-height:42px}
+.barcodeAmountField>div b{text-align:center;font-size:13px;color:#715b7e}
+.barcodeProteinPreview{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin:10px 0;padding:10px 11px;border-radius:13px;background:linear-gradient(135deg,#f2e7fb,#fff7df);
+}
+.barcodeProteinPreview span{font-size:11.5px;color:#766281;font-weight:700}
+.barcodeProteinPreview strong{font-size:16px;color:#6324a0;white-space:nowrap}
+.barcodeAddButton{margin-top:4px}
+.barcodeAddButton:disabled{opacity:.45;cursor:not-allowed}
+.barcodeRetryButton{
+  width:100%;border:0;background:transparent;color:#7130a6;font:inherit;font-size:12px;font-weight:800;
+  padding:10px 6px 3px;
+}
+@media(max-width:520px){
+  .homeDashboard{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr)!important;gap:10px!important}
+  .heroInsightCard{padding-left:10px!important;padding-right:10px!important}
+  .encouragementCard .insightIcon{flex:0 0 auto}
+  .encouragementCard strong{font-size:16px!important;line-height:1.05!important}
+  .encouragementCard span{font-size:10.5px!important;line-height:1.35!important}
+}

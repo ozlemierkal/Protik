@@ -1383,7 +1383,101 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   const [barcodeResult, setBarcodeResult] = useState('')
   const [barcodeStatus, setBarcodeStatus] = useState('')
   const [barcodeError, setBarcodeError] = useState('')
+  const [barcodeProduct, setBarcodeProduct] = useState(null)
+  const [barcodeAmount, setBarcodeAmount] = useState('100')
+  const [barcodeManualName, setBarcodeManualName] = useState('')
+  const [barcodeManualProtein, setBarcodeManualProtein] = useState('')
   const barcodeScannerRef = useRef(null)
+
+  async function lookupBarcode(code) {
+    const normalized = String(code || '').trim()
+    if (!normalized) return
+
+    setBarcodeError('')
+    setBarcodeProduct(null)
+    setBarcodeManualName('')
+    setBarcodeManualProtein('')
+    setBarcodeAmount('100')
+
+    const localProduct = foods.find((food) => String(food.barcode || '') === normalized)
+    if (localProduct) {
+      setBarcodeProduct({
+        code: normalized,
+        name: localProduct.name,
+        brand: localProduct.brand || 'Kayıtlı ürünün',
+        protein100: Number(localProduct.protein_per_base || 0),
+        source: 'Protik',
+      })
+      setBarcodeStatus('Ürün Protik kayıtlarında bulundu ✓')
+      return
+    }
+
+    setBarcodeStatus('Ürün bilgisi aranıyor…')
+    try {
+      const fields = 'code,product_name,product_name_tr,brands,nutriments,serving_size,image_front_small_url'
+      const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(normalized)}.json?fields=${fields}`)
+      if (!response.ok) throw new Error('network')
+      const data = await response.json()
+      const product = data?.product
+      const protein100 = Number(product?.nutriments?.proteins_100g)
+      const name = (product?.product_name_tr || product?.product_name || '').trim()
+
+      if (data?.status === 1 && product && name && Number.isFinite(protein100) && protein100 >= 0) {
+        setBarcodeProduct({
+          code: normalized,
+          name,
+          brand: (product.brands || '').split(',')[0]?.trim() || '',
+          protein100,
+          servingSize: product.serving_size || '',
+          image: product.image_front_small_url || '',
+          source: 'Open Food Facts',
+        })
+        setBarcodeManualName(name)
+        setBarcodeManualProtein(String(protein100))
+        setBarcodeStatus('Ürün bulundu ✓')
+      } else {
+        setBarcodeStatus('Ürün bulunamadı. Etiketteki bilgiyi bir kez ekleyebilirsin.')
+        setBarcodeManualName(name || '')
+      }
+    } catch {
+      setBarcodeStatus('Veritabanına ulaşılamadı. Ürünü elle ekleyebilirsin.')
+    }
+  }
+
+  function addBarcodeProduct() {
+    const protein100 = Number(barcodeProduct?.protein100 ?? barcodeManualProtein)
+    const amount = Number(barcodeAmount)
+    const name = (barcodeProduct?.name || barcodeManualName || '').trim()
+    if (!barcodeResult || !name || !Number.isFinite(protein100) || protein100 < 0 || !Number.isFinite(amount) || amount <= 0) return
+
+    const savedFood = onSaveCustomFood({
+      food_id: `barcode-${barcodeResult}`,
+      name,
+      base_amount: 100,
+      base_unit: 'g',
+      protein_per_base: protein100,
+      default_portion: 100,
+      default_unit: 'g',
+      protein_per_default_portion: protein100,
+      icon_name: 'custom_food',
+      barcode: barcodeResult,
+      brand: barcodeProduct?.brand || '',
+      aliases: [name, barcodeProduct?.brand].filter(Boolean),
+      is_custom: true,
+    })
+
+    onSave({
+      foodId: savedFood.food_id,
+      name: savedFood.name,
+      amount,
+      unit: 'g',
+      protein: (amount / 100) * protein100,
+      proteinPerBase: protein100,
+      meal,
+    })
+    setBarcodeOpen(false)
+    setBarcodeProduct(null)
+  }
 
   useEffect(() => {
     if (!barcodeOpen) return undefined
@@ -1412,6 +1506,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
             if (!decodedText || cancelled) return
             setBarcodeResult(decodedText)
             setBarcodeStatus('Barkod okundu ✓')
+            lookupBarcode(decodedText)
             try {
               if (scanner.isScanning) await scanner.stop()
               scanner.clear()
@@ -1581,13 +1676,17 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                 setBarcodeResult('')
                 setBarcodeError('')
                 setBarcodeStatus('')
+                setBarcodeProduct(null)
+                setBarcodeManualName('')
+                setBarcodeManualProtein('')
+                setBarcodeAmount('100')
                 setBarcodeOpen(true)
               }}
             >
               <span className="barcodeGlyph" aria-hidden="true"><i /><i /><i /><i /><i /></span>
               <span>
                 <strong>Barkod Tara</strong>
-                <small>Mini test</small>
+                <small>Ürünü bul ve proteini ekle</small>
               </span>
               <b>›</b>
             </button>
@@ -1597,8 +1696,8 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
             <section className="barcodeTestPanel" aria-label="Barkod tarama testi">
               <div className="barcodeTestPanelHead">
                 <div>
-                  <strong>Barkod tarama testi</strong>
-                  <span>Şimdilik yalnızca barkod numarasını okuyacağız.</span>
+                  <strong>Barkod tara</strong>
+                  <span>Ürünü bulalım, miktarı seç ve öğününe ekle.</span>
                 </div>
                 <button
                   type="button"
@@ -1617,22 +1716,71 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
               {barcodeStatus && <div className="barcodeStatus">{barcodeStatus}</div>}
 
               {barcodeResult && (
-                <div className="barcodeSuccess">
-                  <span>Okunan barkod</span>
-                  <strong>{barcodeResult}</strong>
-                  <p>Harika — kamera ve barkod okuma çalışıyor. Sonraki aşamada bu numarayla ürün ve protein bilgisini arayacağız.</p>
+                <div className="barcodeLookupResult">
+                  <div className="barcodeNumberLine">
+                    <span>Barkod</span>
+                    <strong>{barcodeResult}</strong>
+                  </div>
+
+                  {barcodeProduct ? (
+                    <div className="barcodeProductCard">
+                      {barcodeProduct.image ? <img src={barcodeProduct.image} alt="" /> : <div className="barcodeProductFallback">▥</div>}
+                      <div>
+                        <strong>{barcodeProduct.name}</strong>
+                        {barcodeProduct.brand && <span>{barcodeProduct.brand}</span>}
+                        <b>{Number(barcodeProduct.protein100).toFixed(1)} g protein / 100 g</b>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="barcodeManualBox">
+                      <strong>Ürünü bir kez kaydedelim</strong>
+                      <p>Paketteki ürün adını ve 100 g’daki protein değerini gir.</p>
+                      <label>
+                        <span>Ürün adı</span>
+                        <input value={barcodeManualName} onChange={(e) => setBarcodeManualName(e.target.value)} placeholder="Örn. Protein yoğurt" />
+                      </label>
+                      <label>
+                        <span>Protein / 100 g</span>
+                        <input type="number" inputMode="decimal" min="0" step="0.1" value={barcodeManualProtein} onChange={(e) => setBarcodeManualProtein(e.target.value)} placeholder="Örn. 10" />
+                      </label>
+                    </div>
+                  )}
+
+                  <label className="barcodeAmountField">
+                    <span>Yediğin miktar</span>
+                    <div><input type="number" inputMode="decimal" min="1" step="1" value={barcodeAmount} onChange={(e) => setBarcodeAmount(e.target.value)} /><b>g</b></div>
+                  </label>
+
+                  {(barcodeProduct || (barcodeManualName.trim() && Number(barcodeManualProtein) >= 0 && barcodeManualProtein !== '')) && (
+                    <div className="barcodeProteinPreview">
+                      <span>Bu miktarda yaklaşık</span>
+                      <strong>{((Number(barcodeAmount || 0) / 100) * Number(barcodeProduct?.protein100 ?? barcodeManualProtein || 0)).toFixed(1)} g protein</strong>
+                    </div>
+                  )}
+
                   <button
                     type="button"
-                    className="secondaryButton"
+                    className="primary wide barcodeAddButton"
+                    disabled={!Number(barcodeAmount) || !(barcodeProduct || (barcodeManualName.trim() && barcodeManualProtein !== '' && Number(barcodeManualProtein) >= 0))}
+                    onClick={addBarcodeProduct}
+                  >Öğüne ekle</button>
+                  <button
+                    type="button"
+                    className="barcodeRetryButton"
                     onClick={() => {
                       setBarcodeOpen(false)
                       window.setTimeout(() => {
-                        setBarcodeOpen(true)
                         setBarcodeResult('')
                         setBarcodeError('')
+                        setBarcodeStatus('')
+                        setBarcodeProduct(null)
+                        setBarcodeManualName('')
+                        setBarcodeManualProtein('')
+                        setBarcodeAmount('100')
+                        setBarcodeOpen(true)
                       }, 80)
                     }}
-                  >Başka barkod dene</button>
+                  >Başka barkod tara</button>
                 </div>
               )}
 
