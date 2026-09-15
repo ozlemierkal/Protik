@@ -216,28 +216,31 @@ function UiIcon({ name, size = 20 }) {
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: 'currentColor',
-    strokeWidth: 1.9,
+    strokeWidth: 2.35,
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
     'aria-hidden': true,
   }
 
   const paths = {
-    home: <><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/></>,
-    history: <><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-8"/><path d="M22 19V3"/></>,
-    profile: <><circle cx="12" cy="8" r="3.2"/><path d="M5 21c.8-4.2 3.2-6.3 7-6.3s6.2 2.1 7 6.3"/></>,
-    settings: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1A1.7 1.7 0 0 0 4.6 15 1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></>,
-    bulb: <><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 15.3A6.2 6.2 0 1 1 15.8 15.3c-1.2.9-1.6 1.7-1.7 2.7h-4.2c-.1-1-.5-1.8-1.7-2.7Z"/></>,
-    breakfast: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></>,
-    lunch: <><path d="M5 3v8M8 3v8M5 7h3M6.5 11v10"/><path d="M16 3v18"/><path d="M19 3c0 4-1 6-3 7"/></>,
-    snack: <><path d="M7 8h10l-1 12H8L7 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></>,
-    dinner: <><path d="M15.5 4a7 7 0 1 0 4.5 12.4A7 7 0 0 1 15.5 4Z"/></>,
-    gender: <><circle cx="10" cy="10" r="4"/><path d="m13 7 5-5M14 2h4v4"/></>,
-    weight: <><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M9 10a3 3 0 0 1 6 0"/><path d="M12 10l2-1"/></>,
+    home: <><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.7V21h13V9.7"/><path d="M9.3 21v-6.2h5.4V21"/></>,
+    history: <><path d="M4 20V11"/><path d="M9.4 20V5"/><path d="M14.8 20v-8"/><path d="M20.2 20V8"/></>,
+    profile: <><circle cx="12" cy="7.5" r="3.5"/><path d="M4.8 20.5c.8-4.5 3.3-6.8 7.2-6.8s6.4 2.3 7.2 6.8"/></>,
+    settings: <><circle cx="12" cy="12" r="3.1"/><path d="M19.3 14.8a1.8 1.8 0 0 0 .3 2l.1.1-2.8 2.8-.1-.1a1.8 1.8 0 0 0-2-.3 1.8 1.8 0 0 0-1 1.6v.2H10v-.2a1.8 1.8 0 0 0-1-1.6 1.8 1.8 0 0 0-2 .3l-.1.1-2.8-2.8.1-.1a1.8 1.8 0 0 0 .3-2 1.8 1.8 0 0 0-1.6-1H2.7V10h.2a1.8 1.8 0 0 0 1.6-1 1.8 1.8 0 0 0-.3-2l-.1-.1 2.8-2.8.1.1a1.8 1.8 0 0 0 2 .3 1.8 1.8 0 0 0 1-1.6v-.2h3.8v.2a1.8 1.8 0 0 0 1 1.6 1.8 1.8 0 0 0 2-.3l.1-.1 2.8 2.8-.1.1a1.8 1.8 0 0 0-.3 2 1.8 1.8 0 0 0 1.6 1h.2v3.8h-.2a1.8 1.8 0 0 0-1.6 1Z"/></>,
+    bulb: <><path d="M8.2 14.7a6.2 6.2 0 1 1 7.6 0c-1.1.8-1.6 1.7-1.7 2.7H9.9c-.1-1-.6-1.9-1.7-2.7Z"/><path d="M9.5 18.7h5M10.5 21.5h3"/></>,
+    breakfast: <><circle cx="12" cy="12" r="4.4"/><path d="M12 1.8v2.7M12 19.5v2.7M1.8 12h2.7M19.5 12h2.7M4.7 4.7l1.9 1.9M17.4 17.4l1.9 1.9M19.3 4.7l-1.9 1.9M6.6 17.4l-1.9 1.9"/></>,
+    lunch: <><path d="M4.7 3v7.2M8 3v7.2M4.7 6.4H8M6.4 10.2V21"/><path d="M15.2 3v18"/><path d="M19.2 3c0 4.2-1.4 6.4-4 7.2"/></>,
+    snack: <><path d="M6.2 7.2h9.5v11.3a2 2 0 0 1-2 2H8.2a2 2 0 0 1-2-2V7.2Z"/><path d="M15.7 10h1.5a3 3 0 0 1 0 6h-1.5"/><path d="M8.2 4.6h5.5"/></>,
+    dinner: <><path d="M15.6 3.7a7.8 7.8 0 1 0 4.7 13.8A8 8 0 0 1 15.6 3.7Z"/></>,
+    gender: <><circle cx="10" cy="10" r="4"/><path d="m13 7 5-5M14.5 2H18v3.5"/></>,
+    weight: <><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8.7 10a3.3 3.3 0 0 1 6.6 0"/><path d="M12 10l2.2-1.2"/></>,
     height: <><path d="M8 3h8M8 21h8M12 3v18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3"/></>,
     goal: <><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12 19 5"/></>,
     activity: <><circle cx="12" cy="4" r="2"/><path d="m10 9 3-2 2 4 3 2"/><path d="m11 10-2 5-3 2M13 12l1 6 3 3"/></>,
     age: <><circle cx="12" cy="8" r="3"/><path d="M8 21v-3a4 4 0 0 1 8 0v3"/></>,
+    trophy: <><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 12v5M8 21h8M9 17h6"/></>,
+    chart: <><path d="M4 20V11M10 20V6M16 20v-9M22 20V3"/></>,
+    info: <><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></>,
     chevron: <path d="m9 18 6-6-6-6"/>,
     back: <path d="m15 18-6-6 6-6"/>,
     plus: <><path d="M12 5v14M5 12h14"/></>,
@@ -564,7 +567,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
             return (
               <button className="mealSummaryCard proMealCard" key={meal} onClick={() => onMeal(meal)}>
                 <div className={`mealGlyph ${mealIconName(meal)}`}>
-                  <UiIcon name={mealIconName(meal)} size={21} />
+                  <UiIcon name={mealIconName(meal)} size={25} />
                 </div>
 
                 <div className="mealCardBody">
@@ -606,7 +609,7 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
           onClick={() => setShowPlans((value) => !value)}
         >
           <div className="recommendationIcon">
-            <UiIcon name="bulb" size={24} />
+            <UiIcon name="bulb" size={28} />
           </div>
           <div className="recommendationToggleCopy">
             <strong>Kalan proteinini nasıl tamamlayabilirsin?</strong>
@@ -816,7 +819,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
 
         <div className="weeklySummaryGrid">
           <div className="summaryMetric">
-            <div className="summaryMetricIcon">▥</div>
+            <div className="summaryMetricIcon"><UiIcon name="chart" size={24} /></div>
             <div>
               <span>Günlük ortalama</span>
               <strong>{average.toFixed(0)} g <small>/ {target} g</small></strong>
@@ -825,7 +828,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
           </div>
 
           <div className="summaryMetric summaryMetricRight">
-            <div className="summaryMetricIcon trophy">🏆</div>
+            <div className="summaryMetricIcon trophy"><UiIcon name="trophy" size={24} /></div>
             <div>
               <span>Hedef tamamlanan gün</span>
               <strong>{completedDays} <small>/ 7 gün</small></strong>
@@ -839,7 +842,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         <h2>Son günlerin</h2>
       </div>
 
-      <div className="historyTestNote">Test için bazı geçmiş günlere örnek kayıtlar eklendi.</div>
+      <div className="historyTestNote"><UiIcon name="info" size={17} /><span>Test için bazı geçmiş günlere örnek kayıtlar eklendi.</span></div>
 
       <section className="historyList historyListRich">
         {totalsByDay.map(({ date, dayEntries, total }) => {
@@ -903,8 +906,8 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
             return (
               <div className="chartColumn" key={item.date}>
                 <div className="chartBarArea">
-                  <div className="chartBarWrap" style={{ height: `${height}%` }}>
-                    {item.total > 0 && <span className="chartValue">{item.total.toFixed(0)} g</span>}
+                  <div className={`chartBarWrap ${item.total <= 0 ? 'zeroBar' : ''}`} style={{ height: `${height}%` }}>
+                    <span className="chartValue">{item.total.toFixed(0)} g</span>
                     <div className="chartBar" />
                   </div>
                 </div>
@@ -1525,7 +1528,7 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
     { key: 'weight', label: 'Kilon', icon: 'weight', value: p.weight ? `${p.weight} kg` : '—', tone: 'blue' },
     { key: 'height', label: 'Boyun', icon: 'height', value: p.height ? `${p.height} cm` : '—', tone: 'green' },
     { key: 'goal', label: 'Hedefin', icon: 'goal', value: p.goal || '—', tone: 'orange' },
-    { key: 'activity', label: 'Hareket düzeyin', icon: 'activity', value: p.activity || '—', tone: 'purple' },
+    { key: 'activity', label: 'Hareket düzenin', icon: 'activity', value: p.activity || '—', tone: 'purple' },
   ]
 
   return (
@@ -1573,12 +1576,13 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
 
           <section className="proteinGoalCard card">
             <div className="profileInfoIcon goalLarge targetTone">
-              <UiIcon name="goal" size={25} />
+              <UiIcon name="goal" size={27} />
             </div>
             <div>
               <span>Günlük protein hedefin</span>
               <strong>{p.proteinTarget} g</strong>
             </div>
+            <button className="goalEditPill" onClick={() => setEditing(true)}>Düzenle <UiIcon name="chevron" size={15} /></button>
           </section>
 
           <section className="profileMotivation profileMotivationLarge card">

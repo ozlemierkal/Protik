@@ -1,17 +1,30 @@
-Protik v0.25 – Modern Mor tema güncellemesi
+Protik v0.26 – Toplu görsel revizyon
 
-Bu paket App.jsx ve styles.css güncellemelerini içerir.
+Bu sürümde üç ana ekran birlikte güncellendi:
 
-Başlıca değişiklikler:
-- Soft lavanta yerine daha güçlü “Modern Mor” tasarım dili uygulandı.
-- Ana sayfa üst alanı koyu mor hero panel olarak yeniden tasarlandı.
-- Protein halkası, kalan protein kartı ve motivasyon kartı daha belirgin hale getirildi.
-- Öğün kartları beyaz kart + daha canlı ikon sistemiyle güncellendi.
-- “Kalan proteinini nasıl tamamlayabilirsin?” kartı modern beyaz kart stiline taşındı.
-- Profil ekranına geri butonu eklendi; ikonlar ve kartlar daha canlı hale getirildi.
-- Geçmiş / detay / profil ekranlarında genel görsel sistem güçlendirildi.
-- Alt menü beyaz, daha temiz ve daha profesyonel hale getirildi.
+ANA SAYFA
+- Modern Mor üst panel korundu ve protein rakamları taşmayacak şekilde yeniden yerleştirildi.
+- 84 g / 85 g ve yüzde değeri artık satır kırmıyor.
+- Öğün ikonları güçlendirildi; kahvaltı, öğle, ara öğün ve akşam ikonları daha belirgin.
+- Ara öğün ikonu kupa/atıştırmalık simgesine çevrildi.
+- Ampul ikonu aynı kalın ikon ailesine alındı ve büyütüldü.
+- Normal metinler koyulaştırıldı; font aynı kaldı, okunabilirlik artırıldı.
 
-Not:
-- Bu paket önceki sürümün üstüne geçecek şekilde hazırlanmıştır.
-- foods.json gibi mevcut proje dosyaları ana projeden gelmeye devam eder.
+GEÇMİŞ
+- Haftalık özet ikonları güçlendirildi.
+- Günlük ortalama ve hedef tamamlanan gün alanları daha görünür hale getirildi.
+- Gün satırlarında boşluk ve hizalar iyileştirildi.
+- Hedefe yakın / Biraz daha var / Kayıt yok rozetleri güçlendirildi.
+- Test notu daha küçük ve sakin hale getirildi.
+- Grafik mor palete çekildi, hedef çizgisi pembe/lila yapıldı.
+- 0 g günlerinde de değer etiketi gösterilir.
+
+PROFİL
+- Mevcut yaş düzeni korunuyor.
+- Kişisel bilgi ikonları büyütüldü ve daha canlı renkler verildi.
+- Normal metinler koyulaştırıldı ve weight 500 seviyesine yaklaştırıldı.
+- Protein hedefi kartı güçlendirildi.
+- Motivasyon kartı büyütüldü.
+- Alt menü bütün ekranlarda aynı görsel aileye çekildi.
+
+Telefon ekranlarında içerik 100dvh mantığıyla daha dengeli yerleşir ve alt navigasyon ekranın dibinde kalır.

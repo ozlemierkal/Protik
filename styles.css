@@ -2606,3 +2606,728 @@ body{
     font-size:20px;
   }
 }
+
+/* =========================================================
+   v0.26 – Final three-screen visual pass
+   ========================================================= */
+:root{
+  --protik-purple:#6b2db0;
+  --protik-purple-dark:#4a166e;
+  --protik-purple-deep:#281139;
+  --protik-purple-mid:#8e52cf;
+  --protik-purple-soft:#f0e5ff;
+  --protik-lilac:#ead7ff;
+  --protik-lilac-soft:#f7f0ff;
+  --protik-amber:#f4ad17;
+  --protik-orange:#f47b2a;
+  --protik-bg:#f6f1fb;
+  --protik-card:#ffffff;
+  --protik-text:#241432;
+  --protik-muted:#6f6480;
+  --protik-muted-2:#8a8096;
+  --protik-line:#e8def2;
+  --protik-shadow:0 14px 34px rgba(58,27,86,.10);
+}
+
+body{
+  background:linear-gradient(180deg,#f7f2fb 0%,#f3edf9 100%)!important;
+  color:var(--protik-text)!important;
+}
+
+/* Make body copy more readable without making everything bold */
+p, span, small, label, input, select, button{
+  color:inherit;
+}
+.muted,
+.brandSub,
+.compactMealFoods,
+.mealEmptyText,
+.recommendationToggleCopy span,
+.weeklyChartHeader p,
+.historyIntro p,
+.historyFoodRow span,
+.historyFoodRow small,
+.profileInfoRow > span,
+.proteinGoalCard span,
+.profileMotivationLarge span,
+.profileEditTitle p,
+.mealSearchHint{
+  color:var(--protik-muted)!important;
+  font-weight:500;
+}
+
+/* Phone-height layout: content fills screen and nav stays at the bottom */
+.appShell{
+  min-height:100dvh!important;
+  padding-bottom:104px!important;
+}
+.modernHomeShell,
+.historyShell,
+.profileShell,
+.detailShell,
+.historyDayShell{
+  display:flex;
+  flex-direction:column;
+}
+.homeMealsSection,
+.modernRecommendation,
+.weeklyChartCard,
+.profileMotivationLarge{
+  flex-shrink:0;
+}
+.proNav{
+  position:fixed!important;
+  bottom:0!important;
+}
+
+/* ========================= HOME ========================= */
+.modernHomeShell{
+  background:linear-gradient(180deg,#f8f3fc 0%,#f3edf8 100%)!important;
+}
+.homeHeroPanel{
+  background:
+    radial-gradient(circle at 92% 8%, rgba(178,114,229,.16), transparent 25%),
+    linear-gradient(180deg,#54217f 0%,#421260 100%)!important;
+  border-radius:34px!important;
+  padding:20px 18px 18px!important;
+  box-shadow:0 18px 38px rgba(69,22,101,.24)!important;
+}
+.modernHomeShell .brandName{
+  font-size:34px!important;
+  font-weight:800!important;
+  color:#fff!important;
+}
+.modernHomeShell .brandSub{
+  color:rgba(255,255,255,.84)!important;
+  font-size:13px!important;
+  font-weight:500!important;
+}
+.heroDate{
+  color:#fff!important;
+  font-size:17px!important;
+  font-weight:700!important;
+}
+.homeDashboard{
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important;
+  gap:14px!important;
+}
+.heroRingPanel{
+  grid-template-columns:128px minmax(0,1fr)!important;
+  gap:12px!important;
+  padding:16px!important;
+  overflow:hidden;
+}
+.modernHeroRing{
+  width:124px!important;
+  height:124px!important;
+  flex:0 0 124px!important;
+}
+.modernHeroRing:before{
+  width:88px!important;
+  height:88px!important;
+}
+.modernHeroRing span{
+  font-size:20px!important;
+  font-weight:800!important;
+}
+.heroRingCopy{
+  min-width:0;
+  align-items:flex-start!important;
+}
+.heroRingValue{
+  font-size:46px!important;
+  line-height:.95!important;
+  white-space:nowrap!important;
+  letter-spacing:-1.6px!important;
+}
+.heroRingTarget{
+  font-size:24px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  margin-top:8px!important;
+}
+.heroRingPercent{
+  font-size:18px!important;
+  white-space:nowrap!important;
+  margin-top:10px!important;
+}
+.heroInsightStack{
+  gap:12px!important;
+}
+.encouragementCard{
+  min-height:148px;
+}
+.encouragementCard strong{
+  font-size:26px!important;
+  line-height:1.08!important;
+}
+.encouragementCard span{
+  font-size:13px!important;
+  line-height:1.4!important;
+  color:rgba(255,255,255,.88)!important;
+  font-weight:500!important;
+}
+.remainingCard{
+  min-height:94px;
+}
+.remainingCard strong{
+  font-size:40px!important;
+}
+
+.homeMealsSection{
+  padding:18px!important;
+  border-radius:28px!important;
+}
+.sectionTitleSpaced h2{
+  font-size:28px!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+}
+.sectionTitleSpaced span{
+  font-size:12px!important;
+  color:#756a82!important;
+  font-weight:600!important;
+}
+.proMealCard{
+  min-height:82px;
+  grid-template-columns:54px minmax(0,1fr)!important;
+  padding:14px 15px!important;
+  border-radius:22px!important;
+}
+.mealGlyph{
+  width:46px!important;
+  height:46px!important;
+  border-radius:50%!important;
+  border:0!important;
+}
+.mealGlyph.breakfast{
+  background:#fff2cf!important;
+  color:#f1a40a!important;
+}
+.mealGlyph.lunch{
+  background:#fff0d7!important;
+  color:#f06e27!important;
+}
+.mealGlyph.snack{
+  background:#fff0d7!important;
+  color:#ed6d2e!important;
+}
+.mealGlyph.dinner{
+  background:#efe2ff!important;
+  color:#7b2cc5!important;
+}
+.proMealCard .mealSummaryTop strong{
+  font-size:21px!important;
+  font-weight:800!important;
+  color:#261437!important;
+}
+.mealSummaryRight b{
+  font-size:22px!important;
+  font-weight:800!important;
+  color:#6c27b2!important;
+}
+.mealActionPill{
+  padding:7px 11px!important;
+  background:#f0e4ff!important;
+  color:#6c27b2!important;
+  font-size:12px!important;
+}
+.mealAddPrompt{
+  padding:8px 12px!important;
+  background:#f0e4ff!important;
+  color:#6c27b2!important;
+  font-size:12px!important;
+}
+.compactMealFoods,
+.mealEmptyText{
+  font-size:14px!important;
+  line-height:1.35!important;
+}
+
+.modernRecommendation{
+  border-radius:24px!important;
+  padding:17px!important;
+}
+.recommendationToggle{
+  grid-template-columns:58px minmax(0,1fr) 22px!important;
+  gap:13px!important;
+}
+.recommendationIcon{
+  width:52px!important;
+  height:52px!important;
+  border-radius:50%!important;
+  background:#fff2cf!important;
+  color:#efa30a!important;
+}
+.recommendationToggleCopy strong{
+  font-size:18px!important;
+  line-height:1.15!important;
+  font-weight:800!important;
+}
+.recommendationToggleCopy span{
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+
+/* ========================= HISTORY ========================= */
+.historyShell{
+  background:linear-gradient(180deg,#f8f4fc 0%,#f3edf9 100%)!important;
+}
+.historyHeader{
+  display:grid!important;
+  grid-template-columns:42px 1fr 42px!important;
+  align-items:center!important;
+}
+.historyHeader h1{
+  text-align:center!important;
+  font-size:31px!important;
+}
+.historyIntroCompact p{
+  font-size:15px!important;
+  color:#62566f!important;
+  font-weight:600!important;
+}
+.weeklySummaryCard{
+  padding:18px 18px 20px!important;
+  border-radius:24px!important;
+}
+.weeklySummaryHeader h2{
+  font-size:21px!important;
+  font-weight:800!important;
+}
+.weeklySummaryHeader span{
+  font-size:12px!important;
+  color:#6f647c!important;
+  font-weight:700!important;
+}
+.summaryMetricIcon{
+  width:46px!important;
+  height:46px!important;
+  border-radius:50%!important;
+  background:#f0e4ff!important;
+  color:#712ab8!important;
+}
+.summaryMetricIcon.trophy{
+  background:#fff0d3!important;
+  color:#cf8200!important;
+}
+.summaryMetric > div:last-child > span{
+  color:#786d84!important;
+  font-size:12px!important;
+  font-weight:600!important;
+}
+.summaryMetric strong{
+  font-size:28px!important;
+  color:#32164a!important;
+}
+.summaryMetric p{
+  font-size:12px!important;
+  color:#726679!important;
+  font-weight:500!important;
+}
+.historySectionHeading h2{
+  font-size:22px!important;
+  font-weight:800!important;
+}
+.historyTestNote{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  background:#f1e9fb!important;
+  color:#6a2bac!important;
+  border:1px solid #dfcff2!important;
+  font-size:12px!important;
+  font-weight:600!important;
+  padding:9px 11px!important;
+}
+.historyTestNote span{
+  color:inherit!important;
+}
+.richHistoryDay{
+  grid-template-columns:104px minmax(0,1fr) 102px 16px!important;
+  gap:12px!important;
+  min-height:72px!important;
+  padding:12px 14px!important;
+  border-radius:20px!important;
+}
+.historyRichDate strong{
+  font-size:15px!important;
+  color:#261437!important;
+}
+.historyRichDate span{
+  font-size:11px!important;
+  color:#7a6f86!important;
+  font-weight:500!important;
+}
+.historyProteinLine b{
+  font-size:18px!important;
+  color:#261437!important;
+}
+.historyProteinLine b small{
+  font-size:12px!important;
+  color:#73677f!important;
+}
+.historyProteinLine > span{
+  font-size:12px!important;
+  color:#6c27b2!important;
+  font-weight:800!important;
+}
+.historyProgressTrack{
+  height:6px!important;
+  background:#eee9f3!important;
+}
+.historyProgressFill{
+  background:linear-gradient(90deg,#7c3cc0,#9b5ed9)!important;
+}
+.historyStatus{
+  min-width:94px!important;
+  padding:8px 10px!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+.historyStatus.close{
+  background:#efe5ff!important;
+  color:#6a27b0!important;
+}
+.historyStatus.more{
+  background:#fff0d8!important;
+  color:#b57300!important;
+}
+.historyStatus.neutral,
+.historyStatus.low{
+  background:#f1eef4!important;
+  color:#8a8093!important;
+}
+.weeklyChartCard{
+  padding:18px!important;
+  border-radius:24px!important;
+}
+.weeklyChartHeader{
+  align-items:flex-start!important;
+}
+.weeklyChartHeader h2{
+  font-size:20px!important;
+  font-weight:800!important;
+}
+.weeklyChartHeader p{
+  font-size:12px!important;
+}
+.chartLegend{
+  font-size:10px!important;
+  color:#665b73!important;
+}
+.weeklyChart{
+  height:220px!important;
+  padding-top:18px!important;
+}
+.chartBarWrap{
+  min-height:0!important;
+}
+.chartBarWrap .chartBar{
+  max-width:34px!important;
+  border-radius:7px 7px 2px 2px!important;
+  background:linear-gradient(180deg,#9a5ed6 0%,#6c2cad 100%)!important;
+}
+.chartBarWrap.zeroBar{
+  height:3px!important;
+}
+.chartBarWrap.zeroBar .chartBar{
+  opacity:.12!important;
+  height:3px!important;
+}
+.chartBarWrap .chartValue{
+  top:-18px!important;
+  font-size:10px!important;
+  color:#5f249f!important;
+  font-weight:800!important;
+}
+.chartTargetLine{
+  border-top:2px dashed #ee8eda!important;
+}
+.chartDay{
+  font-size:11px!important;
+  color:#62576f!important;
+  font-weight:600!important;
+}
+.legendDot{
+  background:#6c2cad!important;
+}
+.legendLine{
+  border-color:#ee8eda!important;
+}
+
+/* ========================= PROFILE ========================= */
+.profileShell{
+  background:linear-gradient(180deg,#f8f4fc 0%,#f3edf9 100%)!important;
+}
+.profileHeaderClean{
+  display:grid!important;
+  grid-template-columns:42px 1fr 42px!important;
+  align-items:center!important;
+}
+.profileHeaderClean h1{
+  font-size:31px!important;
+  text-align:center!important;
+}
+.settingsButton{
+  background:#f5effb!important;
+  color:#6a2bac!important;
+  border:1px solid #e2d6ef!important;
+}
+.profileQuoteLarge{
+  min-height:132px!important;
+  padding:22px 22px!important;
+  border-radius:24px!important;
+}
+.quoteText{
+  font-size:18px!important;
+  line-height:1.45!important;
+  color:#5d2b83!important;
+  font-weight:600!important;
+}
+.quoteHeart{
+  color:#ffae31!important;
+  font-size:20px!important;
+}
+.quoteLeaf{
+  color:#d0a8f0!important;
+  opacity:.65!important;
+}
+.profileSectionTitle h2{
+  font-size:22px!important;
+  font-weight:800!important;
+}
+.profileInfoCard{
+  padding:0 16px!important;
+  border-radius:24px!important;
+}
+.profileInfoStatic{
+  grid-template-columns:48px minmax(0,1fr) auto!important;
+  min-height:70px!important;
+}
+.profileInfoIcon{
+  width:46px!important;
+  height:46px!important;
+  border-radius:16px!important;
+}
+.profileInfoIcon.violet{background:#efe3ff!important;color:#7029b7!important}
+.profileInfoIcon.pink{background:#ffe4eb!important;color:#df3f5d!important}
+.profileInfoIcon.blue{background:#e2f0ff!important;color:#1f7de6!important}
+.profileInfoIcon.green{background:#e0f7ef!important;color:#0da98a!important}
+.profileInfoIcon.orange{background:#fff0dd!important;color:#ef6516!important}
+.profileInfoIcon.purple{background:#efe3ff!important;color:#7029b7!important}
+.profileInfoRow > span{
+  font-size:16px!important;
+  color:#63586f!important;
+  font-weight:500!important;
+}
+.profileInfoRow > strong{
+  font-size:16px!important;
+  color:#241432!important;
+  font-weight:700!important;
+}
+.proteinGoalCard{
+  min-height:94px!important;
+  grid-template-columns:52px minmax(0,1fr) auto!important;
+  padding:16px 18px!important;
+  border-radius:24px!important;
+}
+.goalLarge{
+  width:48px!important;
+  height:48px!important;
+}
+.proteinGoalCard span{
+  font-size:13px!important;
+  color:#655a72!important;
+}
+.proteinGoalCard strong{
+  font-size:32px!important;
+  color:#6b27b1!important;
+}
+.goalEditPill{
+  border:0;
+  background:#f0e4ff;
+  color:#6b27b1;
+  border-radius:18px;
+  padding:10px 13px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-weight:700;
+  font-size:12px;
+}
+.profileMotivationLarge{
+  min-height:162px!important;
+  padding:24px!important;
+  border-radius:26px!important;
+}
+.profileMotivationLarge .motivationLeaf{
+  font-size:38px!important;
+}
+.profileMotivationLarge strong{
+  font-size:24px!important;
+  line-height:1.25!important;
+  color:#61308a!important;
+}
+.profileMotivationLarge span{
+  font-size:13px!important;
+  color:#756a81!important;
+}
+
+/* ========================= NAV ========================= */
+.proNav{
+  height:90px!important;
+  border-radius:28px 28px 0 0!important;
+  box-shadow:0 -12px 34px rgba(52,22,77,.08)!important;
+}
+.proNav button{
+  color:#7d748a!important;
+}
+.proNav button.active{
+  color:#6b27b1!important;
+}
+.proNav button svg{
+  stroke-width:2.5;
+}
+.proNav button span{
+  font-size:12px!important;
+  font-weight:600!important;
+}
+.proNav button.active span{
+  font-weight:800!important;
+}
+
+@media(max-width:520px){
+  .appShell{
+    padding:14px 14px 104px!important;
+  }
+  .homeHeroPanel{
+    border-radius:28px!important;
+    padding:17px 15px 16px!important;
+  }
+  .modernHomeShell .brandName{
+    font-size:28px!important;
+  }
+  .modernHomeShell .brandSub{
+    font-size:11px!important;
+  }
+  .heroDate{
+    font-size:14px!important;
+  }
+  .homeDashboard{
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+  }
+  .heroRingPanel{
+    grid-template-columns:92px minmax(0,1fr)!important;
+    padding:12px!important;
+  }
+  .modernHeroRing{
+    width:90px!important;
+    height:90px!important;
+  }
+  .modernHeroRing:before{
+    width:64px!important;
+    height:64px!important;
+  }
+  .modernHeroRing span{
+    font-size:16px!important;
+  }
+  .heroRingValue{
+    font-size:34px!important;
+  }
+  .heroRingTarget{
+    font-size:18px!important;
+  }
+  .heroRingPercent{
+    font-size:15px!important;
+  }
+  .encouragementCard{
+    min-height:112px!important;
+    padding:12px!important;
+  }
+  .encouragementCard strong{
+    font-size:20px!important;
+  }
+  .encouragementCard span{
+    font-size:11px!important;
+  }
+  .insightIcon{
+    width:34px!important;
+    height:34px!important;
+    font-size:18px!important;
+  }
+  .remainingCard{
+    min-height:72px!important;
+    padding:12px!important;
+  }
+  .remainingCard strong{
+    font-size:30px!important;
+  }
+  .sectionTitleSpaced{
+    flex-direction:row!important;
+    align-items:flex-end!important;
+  }
+  .sectionTitleSpaced h2{
+    font-size:20px!important;
+  }
+  .sectionTitleSpaced span{
+    font-size:10px!important;
+  }
+  .proMealCard{
+    min-height:72px!important;
+    grid-template-columns:48px minmax(0,1fr)!important;
+    padding:12px!important;
+  }
+  .mealGlyph{
+    width:42px!important;
+    height:42px!important;
+  }
+  .proMealCard .mealSummaryTop strong{
+    font-size:17px!important;
+  }
+  .mealSummaryRight b{
+    font-size:18px!important;
+  }
+  .compactMealFoods,.mealEmptyText{
+    font-size:12px!important;
+  }
+  .recommendationToggleCopy strong{
+    font-size:16px!important;
+  }
+  .recommendationToggleCopy span{
+    font-size:11px!important;
+  }
+  .richHistoryDay{
+    grid-template-columns:78px minmax(0,1fr) 88px 12px!important;
+    gap:8px!important;
+    padding:10px!important;
+  }
+  .historyRichDate strong{
+    font-size:13px!important;
+  }
+  .historyProteinLine b{
+    font-size:16px!important;
+  }
+  .historyStatus{
+    min-width:80px!important;
+    font-size:9px!important;
+    padding:7px 8px!important;
+  }
+  .profileInfoStatic{
+    min-height:62px!important;
+  }
+  .profileInfoIcon{
+    width:40px!important;
+    height:40px!important;
+  }
+  .profileInfoRow > span,.profileInfoRow > strong{
+    font-size:14px!important;
+  }
+  .profileMotivationLarge{
+    min-height:140px!important;
+  }
+  .profileMotivationLarge strong{
+    font-size:20px!important;
+  }
+}
