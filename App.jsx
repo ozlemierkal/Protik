@@ -127,6 +127,9 @@ function App() {
         onDelete={deleteEntry}
         onSave={addEntry}
         onSaveCustomFood={saveCustomFood}
+        onHome={() => setScreen('home')}
+        onHistory={() => setScreen('history')}
+        onProfile={() => setScreen('profile')}
         onEdit={(entry) => {
           setEditingEntry(entry)
           setScreen('edit')
@@ -166,6 +169,8 @@ function App() {
       <Profile
         profile={profile}
         onBack={() => setScreen('home')}
+        onHome={() => setScreen('home')}
+        onHistory={() => setScreen('history')}
         onSave={(next) => {
           save('protik_profile', next)
           setProfile(next)
@@ -203,6 +208,70 @@ function Logo() {
     </div>
   )
 }
+
+function UiIcon({ name, size = 20 }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.9,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
+  }
+
+  const paths = {
+    home: <><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/></>,
+    history: <><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-8"/><path d="M22 19V3"/></>,
+    profile: <><circle cx="12" cy="8" r="3.2"/><path d="M5 21c.8-4.2 3.2-6.3 7-6.3s6.2 2.1 7 6.3"/></>,
+    settings: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1A1.7 1.7 0 0 0 4.6 15 1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></>,
+    bulb: <><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 15.3A6.2 6.2 0 1 1 15.8 15.3c-1.2.9-1.6 1.7-1.7 2.7h-4.2c-.1-1-.5-1.8-1.7-2.7Z"/></>,
+    breakfast: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></>,
+    lunch: <><path d="M5 3v8M8 3v8M5 7h3M6.5 11v10"/><path d="M16 3v18"/><path d="M19 3c0 4-1 6-3 7"/></>,
+    snack: <><path d="M7 8h10l-1 12H8L7 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></>,
+    dinner: <><path d="M15.5 4a7 7 0 1 0 4.5 12.4A7 7 0 0 1 15.5 4Z"/></>,
+    gender: <><circle cx="10" cy="10" r="4"/><path d="m13 7 5-5M14 2h4v4"/></>,
+    weight: <><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M9 10a3 3 0 0 1 6 0"/><path d="M12 10l2-1"/></>,
+    height: <><path d="M8 3h8M8 21h8M12 3v18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3"/></>,
+    goal: <><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12 19 5"/></>,
+    activity: <><circle cx="12" cy="4" r="2"/><path d="m10 9 3-2 2 4 3 2"/><path d="m11 10-2 5-3 2M13 12l1 6 3 3"/></>,
+    age: <><circle cx="12" cy="8" r="3"/><path d="M8 21v-3a4 4 0 0 1 8 0v3"/></>,
+    chevron: <path d="m9 18 6-6-6-6"/>,
+    back: <path d="m15 18-6-6 6-6"/>,
+    plus: <><path d="M12 5v14M5 12h14"/></>,
+  }
+
+  return <svg {...common}>{paths[name] || paths.chevron}</svg>
+}
+
+function BottomNav({ active = 'home', onHome, onHistory, onProfile }) {
+  return (
+    <nav className="bottomNav proNav">
+      <button className={active === 'home' ? 'active' : ''} onClick={onHome}>
+        <UiIcon name="home" size={21} />
+        <span>Ana Sayfa</span>
+      </button>
+      <button className={active === 'history' ? 'active' : ''} onClick={onHistory}>
+        <UiIcon name="history" size={21} />
+        <span>Geçmiş</span>
+      </button>
+      <button className={active === 'profile' ? 'active' : ''} onClick={onProfile}>
+        <UiIcon name="profile" size={21} />
+        <span>Profil</span>
+      </button>
+    </nav>
+  )
+}
+
+function mealIconName(meal) {
+  if (meal === 'Kahvaltı') return 'breakfast'
+  if (meal === 'Öğle Yemeği') return 'lunch'
+  if (meal === 'Ara Öğün') return 'snack'
+  return 'dinner'
+}
+
 
 function Onboarding({ onFinish }) {
   const [step, setStep] = useState(0)
@@ -420,129 +489,151 @@ function Onboarding({ onFinish }) {
 function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onHistory, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
   const [activePlan, setActivePlan] = useState(0)
+  const [showPlans, setShowPlans] = useState(false)
   const selectedPlan = recommendations[activePlan] || recommendations[0]
 
   return (
-    <main className="appShell">
-      <header className="topbar">
+    <main className="appShell themedShell">
+      <header className="topbar proTopbar">
         <Logo />
-        <button className="iconButton" onClick={onProfile}>◯</button>
+        <button className="roundIconButton" onClick={onProfile} aria-label="Profil">
+          <UiIcon name="profile" size={20} />
+        </button>
       </header>
 
-      <div className="hello">
+      <div className="hello proHello">
         <h1>Merhaba!</h1>
-        <p>Bugün hedefin için bir adım daha at.</p>
+        <p>Bugün hedefin için harika gidiyorsun. <span>♥</span></p>
       </div>
 
-      <section className="card progressCard">
-        <div>
+      <section className="card progressCard proProgressCard">
+        <div className="progressCopy">
           <span className="eyebrow">Bugünkü protein</span>
           <div className="proteinValue">{Math.round(total)} <small>/ {target} g</small></div>
           <div className="remaining">{remaining > 0 ? `${Math.round(remaining)} g kaldı` : 'Hedef tamamlandı ✓'}</div>
         </div>
-        <div className="ring" style={{ '--pct': `${pct * 3.6}deg` }}>
+        <div className="ring proRing" style={{ '--pct': `${pct * 3.6}deg` }}>
           <span>%{pct}</span>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section warmSection">
         <div className="sectionTitle"><h2>Bugünkü öğünlerin</h2></div>
-        <div className="mealSummaryList">
+        <div className="mealSummaryList proMealList">
           {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
             const mealEntries = todayEntries.filter((e) => e.meal === meal)
             const sum = mealEntries.reduce((s, e) => s + Number(e.protein), 0)
 
             return (
-              <button className="mealSummaryCard" key={meal} onClick={() => onMeal(meal)}>
-                <div className="mealSummaryTop">
-                  <strong>{meal}</strong>
-                  <div className="mealSummaryRight">
-                    {sum > 0 ? (
-                      <>
-                        <b>{sum.toFixed(1)} g</b>
-                        <span className="mealChevron">›</span>
-                      </>
-                    ) : (
-                      <span className="mealAddPrompt">Ekle +</span>
-                    )}
-                  </div>
+              <button className="mealSummaryCard proMealCard" key={meal} onClick={() => onMeal(meal)}>
+                <div className={`mealGlyph ${mealIconName(meal)}`}>
+                  <UiIcon name={mealIconName(meal)} size={21} />
                 </div>
 
-                {mealEntries.length > 0 ? (
-                  <div className="mealFoods">
-                    {mealEntries.slice(0, 3).map((entry) => (
-                      <div className="mealFoodLine" key={entry.id}>
-                        <span>{entry.name}</span>
-                        <small>{Number(entry.protein).toFixed(1)} g</small>
-                      </div>
-                    ))}
-                    {mealEntries.length > 3 && (
-                      <div className="mealMore">+{mealEntries.length - 3} kayıt daha</div>
-                    )}
+                <div className="mealCardBody">
+                  <div className="mealSummaryTop">
+                    <strong>{meal}</strong>
+                    <div className="mealSummaryRight">
+                      {sum > 0 ? (
+                        <>
+                          <b>{sum.toFixed(1)} g</b>
+                          <UiIcon name="chevron" size={16} />
+                        </>
+                      ) : (
+                        <span className="mealAddPrompt">
+                          <UiIcon name="plus" size={13} /> Ekle
+                        </span>
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <div className="mealEmptyText">Henüz eklenmedi</div>
-                )}
+
+                  {mealEntries.length > 0 ? (
+                    <div className="mealFoods compactMealFoods">
+                      <span>{mealEntries.slice(0, 2).map((e) => e.name).join(', ')}</span>
+                      {mealEntries.length > 2 && <small> +{mealEntries.length - 2}</small>}
+                    </div>
+                  ) : (
+                    <div className="mealEmptyText">Henüz eklenmedi</div>
+                  )}
+                </div>
               </button>
             )
           })}
         </div>
       </section>
 
-      <section className="section compactRecommendation">
-        <div className="sectionTitle recommendationHeader">
-          <div>
-            <h2>Kalan proteinini nasıl tamamlayabilirsin?</h2>
-            {remaining > 0 && <p>{Math.round(remaining)} g kaldı. Sana uygun birkaç seçenek.</p>}
+      <section className={`section proRecommendation ${showPlans ? 'open' : ''}`}>
+        <button
+          type="button"
+          className="recommendationToggle"
+          onClick={() => setShowPlans((value) => !value)}
+        >
+          <div className="recommendationIcon">
+            <UiIcon name="bulb" size={24} />
           </div>
-        </div>
+          <div className="recommendationToggleCopy">
+            <strong>Kalan proteinini nasıl tamamlayabilirsin?</strong>
+            <span>
+              {remaining > 0
+                ? `${Math.round(remaining)} g kaldı. Sana uygun birkaç seçenek.`
+                : 'Bugünkü hedefini tamamladın.'}
+            </span>
+          </div>
+          <span className={`toggleChevron ${showPlans ? 'rotated' : ''}`}>
+            <UiIcon name="chevron" size={18} />
+          </span>
+        </button>
 
-        {remaining > 0 && recommendations.length > 0 ? (
-          <>
-            <div className="planTabs">
-              {recommendations.map((plan, index) => (
-                <button
-                  key={plan.id}
-                  type="button"
-                  className={activePlan === index ? 'planTab selected' : 'planTab'}
-                  onClick={() => setActivePlan(index)}
-                >
-                  {plan.title.replace(' seçenek', '')}
-                </button>
-              ))}
-            </div>
-
-            {selectedPlan && (
-              <div className="planCard featuredPlan">
-                <div className="planTop">
-                  <div>
-                    <strong>{selectedPlan.title}</strong>
-                    <span>{selectedPlan.subtitle}</span>
-                  </div>
-                  <b>≈ {selectedPlan.total.toFixed(1)} g</b>
-                </div>
-
-                <div className="planFoods">
-                  {selectedPlan.items.map((item) => (
-                    <div className="planFoodRow" key={`${selectedPlan.id}-${item.food_id}`}>
-                      <span>{item.label}</span>
-                      <small>{item.protein.toFixed(1)} g</small>
-                    </div>
+        {showPlans && (
+          <div className="recommendationBody">
+            {remaining > 0 && recommendations.length > 0 ? (
+              <>
+                <div className="planTabs proPlanTabs">
+                  {recommendations.map((plan, index) => (
+                    <button
+                      key={plan.id}
+                      type="button"
+                      className={activePlan === index ? 'planTab selected' : 'planTab'}
+                      onClick={() => setActivePlan(index)}
+                    >
+                      {plan.title.replace(' seçenek', '')}
+                    </button>
                   ))}
                 </div>
-              </div>
+
+                {selectedPlan && (
+                  <div className="planCard featuredPlan proPlanCard">
+                    <div className="planTop">
+                      <div>
+                        <strong>{selectedPlan.title}</strong>
+                        <span>{selectedPlan.subtitle}</span>
+                      </div>
+                      <b>≈ {selectedPlan.total.toFixed(1)} g</b>
+                    </div>
+                    <div className="planFoods">
+                      {selectedPlan.items.map((item) => (
+                        <div className="planFoodRow" key={`${selectedPlan.id}-${item.food_id}`}>
+                          <span>{item.label}</span>
+                          <small>{item.protein.toFixed(1)} g</small>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="successBox proSuccessBox">Bugünkü hedefini tamamladın. 🎉</div>
             )}
-          </>
-        ) : remaining <= 0 ? (
-          <div className="successBox">Bugünkü hedefini tamamladın. 🎉</div>
-        ) : null}
+          </div>
+        )}
       </section>
 
-      <nav className="bottomNav threeItems">
-        <button className="active">⌂<span>Ana Sayfa</span></button>
-        <button onClick={onHistory}>▥<span>Geçmiş</span></button>
-        <button onClick={onProfile}>◯<span>Profil</span></button>
-      </nav>
+      <BottomNav
+        active="home"
+        onHome={() => {}}
+        onHistory={onHistory}
+        onProfile={onProfile}
+      />
     </main>
   )
 }
@@ -787,11 +878,12 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
         </div>
       </section>
 
-      <nav className="bottomNav threeItems">
-        <button onClick={onBackHome}>⌂<span>Ana Sayfa</span></button>
-        <button className="active">▥<span>Geçmiş</span></button>
-        <button onClick={onProfile}>◯<span>Profil</span></button>
-      </nav>
+      <BottomNav
+        active="history"
+        onHome={onBackHome}
+        onHistory={() => {}}
+        onProfile={onProfile}
+      />
     </main>
   )
 }
@@ -1100,7 +1192,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   )
 }
 
-function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, onSaveCustomFood }) {
+function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, onSaveCustomFood, onHome, onHistory, onProfile }) {
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
@@ -1215,13 +1307,8 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
             )}
           </div>
 
-          <div className="mealVisual" aria-hidden="true">
-            <span>
-              {meal === 'Kahvaltı' ? '☕' :
-               meal === 'Öğle Yemeği' ? '🥗' :
-               meal === 'Ara Öğün' ? '🍎' :
-               '🍽️'}
-            </span>
+          <div className={`mealVisual ${mealIconName(meal)}`} aria-hidden="true">
+            <UiIcon name={mealIconName(meal)} size={38} />
           </div>
         </div>
 
@@ -1376,69 +1463,152 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
           </div>
         )}
       </section>
+      <BottomNav
+        active=""
+        onHome={onHome}
+        onHistory={onHistory}
+        onProfile={onProfile}
+      />
     </main>
   )
 }
 
-function Profile({ profile, onBack, onSave }) {
+function Profile({ profile, onBack, onHome, onHistory, onSave }) {
   const [p, setP] = useState(profile)
+  const [editing, setEditing] = useState(false)
+
+  const saveProfile = () => {
+    onSave(p)
+    setEditing(false)
+  }
+
+  const rows = [
+    { key: 'gender', label: 'Cinsiyetin', icon: 'gender', value: p.gender || '—' },
+    { key: 'weight', label: 'Kilon', icon: 'weight', value: p.weight ? `${p.weight} kg` : '—' },
+    { key: 'height', label: 'Boyun', icon: 'height', value: p.height ? `${p.height} cm` : '—' },
+    { key: 'goal', label: 'Hedefin', icon: 'goal', value: p.goal || '—' },
+    { key: 'activity', label: 'Hareket düzeyin', icon: 'activity', value: p.activity || '—' },
+  ]
 
   return (
-    <main className="appShell">
-      <header className="screenHeader">
-        <button className="back" onClick={onBack}>‹</button>
+    <main className="appShell themedShell profileShell">
+      <header className="screenHeader proScreenHeader">
+        <button className="back proBack" onClick={onBack}><UiIcon name="back" size={20} /></button>
         <h1>Profil</h1>
-        <span />
+        <button className="settingsButton" onClick={() => setEditing((v) => !v)} aria-label="Profili düzenle">
+          <UiIcon name="settings" size={21} />
+        </button>
       </header>
 
-      <section className="card">
-        <Field label="Yaşın">
-          <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
-        </Field>
-
-        <Field label="Cinsiyetin">
-          <select value={p.gender || ''} onChange={(e) => setP({ ...p, gender: e.target.value })}>
-            <option value="">Seç</option>
-            <option>Kadın</option>
-            <option>Erkek</option>
-            <option>Belirtmek istemiyorum</option>
-          </select>
-        </Field>
-
-        <Field label="Boyun (cm)">
-          <input type="number" value={p.height || ''} onChange={(e) => setP({ ...p, height: +e.target.value })} />
-        </Field>
-
-        <Field label="Kilon (kg)">
-          <input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} />
-        </Field>
-
-        <Field label="Hareket düzeyin">
-          <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
-            <option>Düşük</option>
-            <option>Orta</option>
-            <option>Yüksek</option>
-          </select>
-        </Field>
-
-        <Field label="Hedefin">
-          <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
-            <option>Genel sağlık</option>
-            <option>Kilo verme sürecinde</option>
-            <option>Kas koruma / geliştirme</option>
-          </select>
-        </Field>
-
-        <Field label="Günlük protein hedefin (g)">
-          <input
-            type="number"
-            value={p.proteinTarget}
-            onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
-          />
-        </Field>
-
-        <button className="primary wide" onClick={() => onSave(p)}>Kaydet</button>
+      <section className="profileHero card">
+        <div className="avatarCircle">
+          <UiIcon name="profile" size={34} />
+        </div>
+        <div className="profileHeroCopy">
+          <span>Yaşın</span>
+          <strong>{p.age || '—'}</strong>
+          <small>{p.age ? `${p.age} yaşında` : 'Yaş bilgisi eklenmedi'}</small>
+        </div>
+        <button className="profileEditPill" onClick={() => setEditing(true)}>Profili Düzenle</button>
       </section>
+
+      <section className="profileQuote card">
+        <span>“İyi beslenmek sadece bir hedef değil,<br />daha iyi bir yaşam biçimidir.”</span>
+        <b>♥</b>
+      </section>
+
+      {!editing ? (
+        <>
+          <div className="profileSectionTitle">
+            <h2>Kişisel Bilgiler</h2>
+            <button onClick={() => setEditing(true)}>Düzenle</button>
+          </div>
+
+          <section className="profileInfoCard card">
+            {rows.map((row) => (
+              <button className="profileInfoRow" key={row.key} onClick={() => setEditing(true)}>
+                <div className="profileInfoIcon"><UiIcon name={row.icon} size={19} /></div>
+                <span>{row.label}</span>
+                <strong>{row.value}</strong>
+                <UiIcon name="chevron" size={15} />
+              </button>
+            ))}
+          </section>
+
+          <section className="proteinGoalCard card">
+            <div className="profileInfoIcon goalLarge"><UiIcon name="goal" size={24} /></div>
+            <div>
+              <span>Günlük protein hedefin</span>
+              <strong>{p.proteinTarget} g</strong>
+            </div>
+            <button onClick={() => setEditing(true)}>Düzenle</button>
+          </section>
+
+          <section className="profileMotivation card">
+            <span>🌿</span>
+            <p>Daha sağlıklı,<br />daha güçlü bir sen ♡</p>
+          </section>
+        </>
+      ) : (
+        <section className="card profileEditCard">
+          <Field label="Yaşın">
+            <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
+          </Field>
+
+          <Field label="Cinsiyetin">
+            <select value={p.gender || ''} onChange={(e) => setP({ ...p, gender: e.target.value })}>
+              <option value="">Seç</option>
+              <option>Kadın</option>
+              <option>Erkek</option>
+              <option>Belirtmek istemiyorum</option>
+            </select>
+          </Field>
+
+          <Field label="Boyun (cm)">
+            <input type="number" value={p.height || ''} onChange={(e) => setP({ ...p, height: +e.target.value })} />
+          </Field>
+
+          <Field label="Kilon (kg)">
+            <input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} />
+          </Field>
+
+          <Field label="Hareket düzeyin">
+            <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
+              <option>Düşük</option>
+              <option>Orta</option>
+              <option>Yüksek</option>
+            </select>
+          </Field>
+
+          <Field label="Hedefin">
+            <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
+              <option>Genel sağlık</option>
+              <option>Kilo verme sürecinde</option>
+              <option>Kas koruma / geliştirme</option>
+            </select>
+          </Field>
+
+          <Field label="Günlük protein hedefin (g)">
+            <input
+              type="number"
+              value={p.proteinTarget}
+              onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
+            />
+          </Field>
+
+          <div className="profileEditActions">
+            <button className="secondaryButton" onClick={() => { setP(profile); setEditing(false) }}>İptal</button>
+            <button className="primary" onClick={saveProfile}>Kaydet</button>
+          </div>
+        </section>
+      )}
+
+      <BottomNav
+        active="profile"
+        onHome={onHome}
+        onHistory={onHistory}
+        onProfile={() => {}}
+      />
     </main>
   )
 }

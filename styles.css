@@ -1162,3 +1162,567 @@ button{cursor:pointer}
 .bottomNav.threeItems{
   grid-template-columns:repeat(3,1fr);
 }
+
+
+/* =========================================================
+   v0.22 – PROTIK MODERN MOR TASARIM SİSTEMİ
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --protik-purple:#6430B9;
+  --protik-purple-dark:#35134F;
+  --protik-purple-deep:#24102F;
+  --protik-lilac:#DCC5F6;
+  --protik-lilac-soft:#F4EDFB;
+  --protik-amber:#F4B740;
+  --protik-bg:#FBF8F3;
+  --protik-card:#FFFFFF;
+  --protik-text:#21152A;
+  --protik-muted:#817889;
+  --protik-line:#ECE4EF;
+  --protik-green:#4D9B74;
+  --protik-shadow:0 10px 28px rgba(53,19,79,.075);
+}
+
+html,body,#root{
+  min-height:100%;
+}
+body{
+  background:var(--protik-bg);
+  color:var(--protik-text);
+  font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+button,input,select{
+  font:inherit;
+}
+.appShell.themedShell,
+.profileShell{
+  background:
+    radial-gradient(circle at 92% 0%, rgba(220,197,246,.22), transparent 26%),
+    linear-gradient(180deg,#FEFCF9 0%,#FBF8F3 100%);
+}
+.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(89,52,108,.09);
+  box-shadow:var(--protik-shadow);
+}
+.brandName{
+  color:var(--protik-purple-dark);
+  letter-spacing:-.5px;
+}
+.brandSub{
+  color:#716779;
+}
+.logoMark{
+  background:linear-gradient(145deg,#5D20AC,#7A3BC7);
+  box-shadow:0 8px 18px rgba(100,48,185,.22);
+}
+.proTopbar{
+  padding-top:4px;
+}
+.roundIconButton,
+.settingsButton{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid #E9DFF0;
+  background:#F7F1FB;
+  color:var(--protik-purple);
+  display:grid;
+  place-items:center;
+}
+.proHello{
+  margin-top:14px;
+}
+.proHello h1{
+  color:var(--protik-purple-deep);
+  letter-spacing:-.7px;
+}
+.proHello p{
+  color:#756C7D;
+}
+.proHello p span{
+  color:#9C5AD8;
+}
+
+.proProgressCard{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  background:
+    linear-gradient(135deg,#FFFFFF 0%,#FDF9FF 100%);
+}
+.proProgressCard .eyebrow{
+  color:#423148;
+  font-weight:800;
+}
+.proProgressCard .proteinValue{
+  color:var(--protik-purple);
+  font-size:38px;
+  letter-spacing:-1.4px;
+}
+.proProgressCard .proteinValue small{
+  color:#5D5562;
+  font-size:17px;
+}
+.proProgressCard .remaining{
+  color:#C68808;
+  font-weight:800;
+}
+.proRing{
+  background:conic-gradient(var(--protik-amber) var(--pct),#EFE9DF 0);
+  box-shadow:inset 0 0 0 1px rgba(244,183,64,.12);
+}
+.proRing::before{
+  background:#FFF;
+}
+.proRing span{
+  color:var(--protik-purple-dark);
+  font-weight:900;
+}
+
+.warmSection{
+  background:#FFF;
+  border:1px solid rgba(89,52,108,.08);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--protik-shadow);
+}
+.warmSection .sectionTitle{
+  margin-bottom:10px;
+}
+.warmSection .sectionTitle h2{
+  color:var(--protik-purple-deep);
+  font-size:18px;
+}
+.proMealList{
+  gap:9px;
+}
+.proMealCard{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr);
+  align-items:center;
+  gap:11px;
+  border:1px solid #EEE6F1;
+  background:#FFF;
+  border-radius:17px;
+  padding:12px 13px;
+  box-shadow:0 4px 14px rgba(44,21,59,.035);
+}
+.mealGlyph{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+}
+.mealGlyph.breakfast{background:#FFF4D8;color:#E7A218}
+.mealGlyph.lunch{background:#F3E7FB;color:#8B48CE}
+.mealGlyph.snack{background:#FFF0D9;color:#E69A2E}
+.mealGlyph.dinner{background:#F1E6FA;color:#8B47C9}
+.mealCardBody{
+  min-width:0;
+}
+.proMealCard .mealSummaryTop{
+  padding:0;
+}
+.proMealCard .mealSummaryTop strong{
+  color:#291831;
+  font-size:14px;
+}
+.proMealCard .mealSummaryRight{
+  color:var(--protik-purple);
+  gap:5px;
+}
+.proMealCard .mealSummaryRight b{
+  color:var(--protik-purple);
+}
+.compactMealFoods{
+  border:0!important;
+  padding:3px 0 0!important;
+  color:#857B89;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.mealEmptyText{
+  color:#9A929D;
+  font-size:11px;
+  padding-top:3px;
+}
+.mealAddPrompt{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  background:#F2E8FA;
+  color:var(--protik-purple);
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:11px;
+}
+
+.proRecommendation{
+  border:1px solid #E7D9EE;
+  background:linear-gradient(135deg,#FFF,#F8F0FC);
+  border-radius:22px;
+  box-shadow:var(--protik-shadow);
+  overflow:hidden;
+  padding:0;
+}
+.recommendationToggle{
+  width:100%;
+  border:0;
+  background:transparent;
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) 24px;
+  align-items:center;
+  gap:12px;
+  padding:15px 16px;
+  text-align:left;
+}
+.recommendationIcon{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#FFF2CF;
+  color:#E4A217;
+}
+.recommendationToggleCopy strong{
+  display:block;
+  color:#2B1735;
+  font-size:14px;
+  line-height:1.25;
+}
+.recommendationToggleCopy span{
+  display:block;
+  margin-top:3px;
+  color:#837989;
+  font-size:11px;
+}
+.toggleChevron{
+  color:var(--protik-purple);
+  transition:transform .2s ease;
+}
+.toggleChevron.rotated{
+  transform:rotate(90deg);
+}
+.recommendationBody{
+  border-top:1px solid #EADFF0;
+  padding:14px 15px 15px;
+}
+.proPlanTabs .planTab{
+  border-color:#E3D6EB;
+  background:#FFF;
+}
+.proPlanTabs .planTab.selected{
+  background:linear-gradient(135deg,#5B20A7,#7638C2);
+  color:#FFF;
+  box-shadow:0 6px 14px rgba(100,48,185,.18);
+}
+.proPlanCard{
+  background:#FFF;
+  border-color:#EAE1EE;
+}
+.proSuccessBox{
+  background:#FFF7DC;
+  color:#8C6811;
+}
+
+.proNav{
+  grid-template-columns:repeat(3,1fr)!important;
+  background:rgba(255,255,255,.96);
+  border-top:1px solid #E9E0ED;
+  box-shadow:0 -8px 24px rgba(40,18,53,.055);
+  backdrop-filter:blur(14px);
+}
+.proNav button{
+  color:#918795;
+  gap:4px;
+}
+.proNav button.active{
+  color:var(--protik-purple);
+}
+.proNav button span{
+  font-size:10px;
+  font-weight:700;
+}
+
+/* Öğün detay */
+.proScreenHeader h1,
+.screenHeader h1{
+  color:var(--protik-purple-deep);
+  font-weight:800;
+}
+.proBack{
+  display:grid;
+  place-items:center;
+}
+.mealDetailRedesign{
+  border-radius:22px;
+}
+.mealSummaryText strong{
+  color:var(--protik-purple)!important;
+}
+.mealVisual{
+  background:#F4ECFA!important;
+  color:var(--protik-purple);
+}
+.mealVisual.breakfast{background:#FFF3D7!important;color:#E1A119}
+.mealVisual.lunch{background:#F2E8FA!important;color:#8D4ACC}
+.mealVisual.snack{background:#FFF0D8!important;color:#E39A2A}
+.mealVisual.dinner{background:#F1E6FA!important;color:#8544C4}
+.mealSearch{
+  border-radius:16px!important;
+  border:1px solid #E3D7E8!important;
+  background:#FFF!important;
+}
+.inlineSelectedFood{
+  border-color:#E9DDF0!important;
+  box-shadow:0 6px 18px rgba(49,23,62,.04);
+}
+
+/* Geçmiş */
+.weeklySummaryCard,
+.weeklyChartCard,
+.historyDayCard,
+.historyDaySummary,
+.historyMealCard{
+  border-radius:20px;
+}
+.summaryMetricIcon{
+  background:#F0E6F8!important;
+  color:var(--protik-purple)!important;
+}
+.historyProgressFill{
+  background:linear-gradient(90deg,#6B2CB2,#8E52D0)!important;
+}
+.chartBar,
+.chartBarWrap .chartBar{
+  background:linear-gradient(180deg,#8F52D4,#642AB0)!important;
+}
+.legendDot{
+  background:#6D2CB6!important;
+}
+.historyDayPercent,
+.historyTotal b,
+.historyMealTitle b,
+.historyCardFooter span:last-child{
+  color:var(--protik-purple)!important;
+}
+
+/* Profil */
+.profileShell{
+  padding-bottom:94px;
+}
+.profileHero{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  border-radius:22px;
+}
+.avatarCircle{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#6A2FB5;
+  background:linear-gradient(145deg,#E2CAF8,#F6EEFC);
+}
+.profileHeroCopy span{
+  display:block;
+  color:#766D7B;
+  font-size:11px;
+}
+.profileHeroCopy strong{
+  display:block;
+  color:#26152F;
+  font-size:20px;
+}
+.profileHeroCopy small{
+  color:#8A818E;
+}
+.profileEditPill{
+  border:1px solid #DDCBEA;
+  background:#F6EEFB;
+  color:var(--protik-purple);
+  padding:8px 10px;
+  border-radius:12px;
+  font-size:10px;
+  font-weight:800;
+}
+.profileQuote{
+  position:relative;
+  margin-top:12px;
+  padding:16px 18px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 100% 100%, rgba(220,197,246,.55), transparent 35%),
+    linear-gradient(135deg,#FFF,#FAF3FC);
+  color:#6A3B7E;
+  font-size:12px;
+  line-height:1.55;
+  font-style:italic;
+}
+.profileQuote b{
+  position:absolute;
+  right:18px;
+  top:16px;
+  color:#F1B43A;
+}
+.profileSectionTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:18px 2px 8px;
+}
+.profileSectionTitle h2{
+  margin:0;
+  font-size:15px;
+}
+.profileSectionTitle button,
+.proteinGoalCard button{
+  border:0;
+  background:transparent;
+  color:var(--protik-purple);
+  font-size:11px;
+  font-weight:800;
+}
+.profileInfoCard{
+  padding:0 14px;
+  border-radius:20px;
+  overflow:hidden;
+}
+.profileInfoRow{
+  width:100%;
+  border:0;
+  border-bottom:1px solid #EEE6F0;
+  background:transparent;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) auto 16px;
+  align-items:center;
+  gap:9px;
+  padding:12px 0;
+  text-align:left;
+}
+.profileInfoRow:last-child{
+  border-bottom:0;
+}
+.profileInfoIcon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:#F3EAF9;
+  color:var(--protik-purple);
+}
+.profileInfoRow > span{
+  color:#716876;
+  font-size:12px;
+}
+.profileInfoRow > strong{
+  color:#37273F;
+  font-size:12px;
+}
+.proteinGoalCard{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  padding:15px 16px;
+  border-radius:20px;
+}
+.goalLarge{
+  width:40px;
+  height:40px;
+}
+.proteinGoalCard span{
+  display:block;
+  color:#7C737F;
+  font-size:11px;
+}
+.proteinGoalCard strong{
+  color:var(--protik-purple);
+  font-size:22px;
+}
+.profileMotivation{
+  margin-top:12px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border-radius:20px;
+  background:
+    linear-gradient(135deg,#FFF2E8,#F8EEFB);
+  color:#6E3E7E;
+  font-size:12px;
+  font-style:italic;
+  text-align:center;
+}
+.profileMotivation p{
+  margin:0;
+}
+.profileEditCard{
+  margin-top:14px;
+  border-radius:22px;
+  padding:18px;
+}
+.profileEditActions{
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:10px;
+  margin-top:8px;
+}
+.profileEditActions .primary{
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#5E22AB,#7A3AC5);
+  color:#FFF;
+  font-weight:800;
+}
+.settingsButton{
+  justify-self:end;
+}
+
+/* Formlar */
+.field > span{
+  color:#665B6A;
+  font-weight:700;
+}
+.field input,
+.field select{
+  border:1px solid #E3D7E7;
+  border-radius:14px;
+  background:#FFF;
+}
+.primary{
+  background:linear-gradient(135deg,#5E22AB,#7A3AC5)!important;
+  color:#FFF!important;
+  box-shadow:0 7px 16px rgba(100,48,185,.16);
+}
+.secondaryButton{
+  border-color:#D8C4E5!important;
+  color:var(--protik-purple)!important;
+}
+
+/* Mobil incelik */
+@media(max-width:520px){
+  .profileHero{
+    grid-template-columns:56px minmax(0,1fr);
+  }
+  .profileEditPill{
+    grid-column:1 / -1;
+    width:100%;
+  }
+}
