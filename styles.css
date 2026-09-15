@@ -3331,3 +3331,136 @@ p, span, small, label, input, select, button{
     font-size:20px!important;
   }
 }
+
+/* =========================================================
+   v0.27 – ekran 1/2/3 düzeltmeleri
+   ========================================================= */
+
+/* 1) Ana ekran: protein özeti artık taşmıyor */
+.homeDashboard{
+  grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr)!important;
+}
+.heroRingPanel{
+  grid-template-columns:82px minmax(78px,1fr)!important;
+  gap:11px!important;
+  overflow:hidden!important;
+}
+.modernHeroRing{
+  width:82px!important;
+  height:82px!important;
+  flex:0 0 82px!important;
+}
+.modernHeroRing:before{
+  width:58px!important;
+  height:58px!important;
+}
+.modernHeroRing span{
+  font-size:15px!important;
+}
+.heroRingCopy{
+  min-width:0!important;
+  overflow:visible!important;
+}
+.heroRingValue{
+  font-size:31px!important;
+  line-height:1.02!important;
+  white-space:nowrap!important;
+  letter-spacing:-.7px!important;
+}
+.heroRingTarget{
+  font-size:18px!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+.heroRingPercent{display:none!important}
+
+/* 1) Aynı, daha tok ikon ailesi */
+.mealGlyph{
+  width:46px!important;
+  height:46px!important;
+  border-radius:16px!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.38);
+}
+.mealGlyph svg,
+.recommendationIcon svg,
+.profileInfoIcon svg{
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.35));
+}
+.mealGlyph.breakfast{
+  background:linear-gradient(145deg,#fff2c7,#ffe4a3)!important;
+  color:#f39a00!important;
+}
+.mealGlyph.lunch{
+  background:linear-gradient(145deg,#fff0ce,#ffddb0)!important;
+  color:#ee6c2b!important;
+}
+.mealGlyph.snack{
+  background:linear-gradient(145deg,#fff0cf,#ffd9aa)!important;
+  color:#e96f2b!important;
+}
+.mealGlyph.dinner{
+  background:linear-gradient(145deg,#f0dcff,#e4c7ff)!important;
+  color:#7d21c7!important;
+}
+.recommendationIcon{
+  width:50px!important;
+  height:50px!important;
+  border-radius:17px!important;
+  background:linear-gradient(145deg,#fff2c7,#ffe3a5)!important;
+  color:#ee9a00!important;
+}
+
+/* 2) Geçmiş – yalnızca metin düzeltmesi, mevcut görünüm korunur */
+.historyIntroCompact p{
+  color:#5f536b!important;
+  font-weight:600!important;
+}
+
+/* 3) Profil – ikonlar daha güçlü ve görünür */
+.profileInfoIcon{
+  width:48px!important;
+  height:48px!important;
+  border-radius:16px!important;
+  box-shadow:0 4px 10px rgba(56,26,82,.07);
+}
+.profileInfoIcon.violet{background:linear-gradient(145deg,#eee0ff,#dfc6ff)!important;color:#6d1fb4!important}
+.profileInfoIcon.pink{background:linear-gradient(145deg,#ffe5ee,#ffcddd)!important;color:#d82f68!important}
+.profileInfoIcon.blue{background:linear-gradient(145deg,#e5f1ff,#cfe5ff)!important;color:#1e73db!important}
+.profileInfoIcon.green{background:linear-gradient(145deg,#e2f8ef,#c9f0e1)!important;color:#0a9b79!important}
+.profileInfoIcon.orange{background:linear-gradient(145deg,#fff0dd,#ffdfbd)!important;color:#eb6818!important}
+.profileInfoIcon.purple{background:linear-gradient(145deg,#efe3ff,#ddc5ff)!important;color:#6d20b8!important}
+.targetTone{background:linear-gradient(145deg,#efe3ff,#dbc1ff)!important;color:#6b20b6!important}
+.profileInfoRow > span,
+.profileInfoRow > strong,
+.proteinGoalCard span{
+  opacity:1!important;
+}
+
+@media(max-width:520px){
+  .homeDashboard{
+    grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important;
+  }
+  .heroRingPanel{
+    grid-template-columns:76px minmax(72px,1fr)!important;
+    gap:9px!important;
+    padding:11px!important;
+  }
+  .modernHeroRing{
+    width:76px!important;
+    height:76px!important;
+  }
+  .modernHeroRing:before{
+    width:54px!important;
+    height:54px!important;
+  }
+  .heroRingValue{
+    font-size:29px!important;
+  }
+  .heroRingTarget{
+    font-size:17px!important;
+  }
+  .profileInfoIcon{
+    width:44px!important;
+    height:44px!important;
+  }
+}

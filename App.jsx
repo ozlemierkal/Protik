@@ -216,7 +216,7 @@ function UiIcon({ name, size = 20 }) {
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: 'currentColor',
-    strokeWidth: 2.35,
+    strokeWidth: 2.7,
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
     'aria-hidden': true,
@@ -227,17 +227,17 @@ function UiIcon({ name, size = 20 }) {
     history: <><path d="M4 20V11"/><path d="M9.4 20V5"/><path d="M14.8 20v-8"/><path d="M20.2 20V8"/></>,
     profile: <><circle cx="12" cy="7.5" r="3.5"/><path d="M4.8 20.5c.8-4.5 3.3-6.8 7.2-6.8s6.4 2.3 7.2 6.8"/></>,
     settings: <><circle cx="12" cy="12" r="3.1"/><path d="M19.3 14.8a1.8 1.8 0 0 0 .3 2l.1.1-2.8 2.8-.1-.1a1.8 1.8 0 0 0-2-.3 1.8 1.8 0 0 0-1 1.6v.2H10v-.2a1.8 1.8 0 0 0-1-1.6 1.8 1.8 0 0 0-2 .3l-.1.1-2.8-2.8.1-.1a1.8 1.8 0 0 0 .3-2 1.8 1.8 0 0 0-1.6-1H2.7V10h.2a1.8 1.8 0 0 0 1.6-1 1.8 1.8 0 0 0-.3-2l-.1-.1 2.8-2.8.1.1a1.8 1.8 0 0 0 2 .3 1.8 1.8 0 0 0 1-1.6v-.2h3.8v.2a1.8 1.8 0 0 0 1 1.6 1.8 1.8 0 0 0 2-.3l.1-.1 2.8 2.8-.1.1a1.8 1.8 0 0 0-.3 2 1.8 1.8 0 0 0 1.6 1h.2v3.8h-.2a1.8 1.8 0 0 0-1.6 1Z"/></>,
-    bulb: <><path d="M8.2 14.7a6.2 6.2 0 1 1 7.6 0c-1.1.8-1.6 1.7-1.7 2.7H9.9c-.1-1-.6-1.9-1.7-2.7Z"/><path d="M9.5 18.7h5M10.5 21.5h3"/></>,
-    breakfast: <><circle cx="12" cy="12" r="4.4"/><path d="M12 1.8v2.7M12 19.5v2.7M1.8 12h2.7M19.5 12h2.7M4.7 4.7l1.9 1.9M17.4 17.4l1.9 1.9M19.3 4.7l-1.9 1.9M6.6 17.4l-1.9 1.9"/></>,
-    lunch: <><path d="M4.7 3v7.2M8 3v7.2M4.7 6.4H8M6.4 10.2V21"/><path d="M15.2 3v18"/><path d="M19.2 3c0 4.2-1.4 6.4-4 7.2"/></>,
-    snack: <><path d="M6.2 7.2h9.5v11.3a2 2 0 0 1-2 2H8.2a2 2 0 0 1-2-2V7.2Z"/><path d="M15.7 10h1.5a3 3 0 0 1 0 6h-1.5"/><path d="M8.2 4.6h5.5"/></>,
-    dinner: <><path d="M15.6 3.7a7.8 7.8 0 1 0 4.7 13.8A8 8 0 0 1 15.6 3.7Z"/></>,
-    gender: <><circle cx="10" cy="10" r="4"/><path d="m13 7 5-5M14.5 2H18v3.5"/></>,
-    weight: <><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8.7 10a3.3 3.3 0 0 1 6.6 0"/><path d="M12 10l2.2-1.2"/></>,
-    height: <><path d="M8 3h8M8 21h8M12 3v18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3"/></>,
-    goal: <><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12 19 5"/></>,
-    activity: <><circle cx="12" cy="4" r="2"/><path d="m10 9 3-2 2 4 3 2"/><path d="m11 10-2 5-3 2M13 12l1 6 3 3"/></>,
-    age: <><circle cx="12" cy="8" r="3"/><path d="M8 21v-3a4 4 0 0 1 8 0v3"/></>,
+    bulb: <><path d="M8.3 14.8a6 6 0 1 1 7.4 0c-1 .8-1.5 1.6-1.6 2.5H9.9c-.1-.9-.6-1.7-1.6-2.5Z" strokeWidth="2.8"/><path d="M9.5 18.4h5M10.4 21h3.2" strokeWidth="2.8"/><circle cx="12" cy="8.5" r="1.4" fill="currentColor" stroke="none"/></>,
+    breakfast: <><circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/><path d="M12 1.7v2.8M12 19.5v2.8M1.7 12h2.8M19.5 12h2.8M4.6 4.6l2 2M17.4 17.4l2 2M19.4 4.6l-2 2M6.6 17.4l-2 2" strokeWidth="2.6"/></>,
+    lunch: <><path d="M4.5 2.5v7.2M8.1 2.5v7.2M4.5 6.2h3.6M6.3 9.7V21" strokeWidth="2.9"/><path d="M14.8 3v18" strokeWidth="3.2"/><path d="M19.4 3c0 4.1-1.5 6.5-4.6 7.2" strokeWidth="2.9"/></>,
+    snack: <><path d="M6.2 7.2h9.6v10.9a2.3 2.3 0 0 1-2.3 2.3H8.5a2.3 2.3 0 0 1-2.3-2.3V7.2Z" fill="currentColor" stroke="none"/><path d="M15.8 9.8h1.6a3.1 3.1 0 0 1 0 6.2h-1.6" strokeWidth="2.8"/><path d="M8.2 4.6h5.6" strokeWidth="2.8"/></>,
+    dinner: <path d="M15.8 3.3a8.2 8.2 0 1 0 5 14.5 7.7 7.7 0 0 1-5-14.5Z" fill="currentColor" stroke="none"/>,
+    gender: <><circle cx="12" cy="9" r="4.3" strokeWidth="2.8"/><path d="M12 13.5V22M8.8 18.3h6.4" strokeWidth="2.8"/></>,
+    weight: <><rect x="3.7" y="4.5" width="16.6" height="15.8" rx="3.2" strokeWidth="2.8"/><path d="M8.4 10a3.6 3.6 0 0 1 7.2 0M12 10l2.6-1.5" strokeWidth="2.8"/></>,
+    height: <><path d="M8 2.8h8M8 21.2h8M12 3v18" strokeWidth="2.8"/><path d="m8.8 6.2 3.2-3.2 3.2 3.2M8.8 17.8 12 21l3.2-3.2" strokeWidth="2.8"/></>,
+    goal: <><circle cx="12" cy="12" r="8.2" strokeWidth="2.7"/><circle cx="12" cy="12" r="4.2" strokeWidth="2.7"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></>,
+    activity: <><circle cx="12.4" cy="4" r="2.2" fill="currentColor" stroke="none"/><path d="m10.4 9.1 3-2 2.1 4.1 3 1.8M11.2 10.4 8.8 15l-3 2.3M13.4 12l1.1 5.8 3 3.2" strokeWidth="2.9"/></>,
+    age: <><circle cx="12" cy="7.8" r="3.1" fill="currentColor" stroke="none"/><path d="M7 21v-2.3a5 5 0 0 1 10 0V21" strokeWidth="2.8"/></>,
     trophy: <><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 12v5M8 21h8M9 17h6"/></>,
     chart: <><path d="M4 20V11M10 20V6M16 20v-9M22 20V3"/></>,
     info: <><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></>,
@@ -533,7 +533,6 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
             <div className="heroRingCopy">
               <div className="heroRingValue">{Math.round(total)} g</div>
               <div className="heroRingTarget">/ {target} g</div>
-              <div className="heroRingPercent">%{pct}</div>
             </div>
           </div>
 
@@ -808,7 +807,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
       </header>
 
       <div className="historyIntro historyIntroCompact">
-        <p>Son 7 günün protein özetini gör.</p>
+        <p>Son 7 günün protein özeti.</p>
       </div>
 
       <section className="card weeklySummaryCard">
@@ -1566,7 +1565,7 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
             {rows.map((row) => (
               <div className="profileInfoRow profileInfoStatic" key={row.key}>
                 <div className={`profileInfoIcon ${row.tone}`}>
-                  <UiIcon name={row.icon} size={20} />
+                  <UiIcon name={row.icon} size={24} />
                 </div>
                 <span>{row.label}</span>
                 <strong>{row.value}</strong>
