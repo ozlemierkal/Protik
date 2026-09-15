@@ -871,23 +871,35 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
         <span />
       </header>
 
-      <section className="card mealDetailCard">
-        <div className="mealDetailHeader">
-          <div>
+      <section className="card mealDetailCard mealDetailRedesign">
+        <div className="mealSummaryTop">
+          <div className="mealSummaryText">
             <span className="muted">Toplam protein</span>
             <strong>{total.toFixed(1)} g</strong>
+            {entries.length === 0 && (
+              <p className="mealEmptyMessage">Henüz protein eklenmedi.</p>
+            )}
+          </div>
+
+          <div className="mealVisual" aria-hidden="true">
+            <span>
+              {meal === 'Kahvaltı' ? '☕' :
+               meal === 'Öğle Yemeği' ? '🥗' :
+               meal === 'Ara Öğün' ? '🍎' :
+               '🍽️'}
+            </span>
           </div>
         </div>
 
         <div className="inlineAddArea">
-          <h2>Protein ekle</h2>
           <input
-            className="search"
+            className="search mealSearch"
             placeholder="Yiyecek ara veya yaz..."
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             onFocus={() => query && setShowResults(true)}
           />
+          <div className="mealSearchHint">Yazarak veya arayarak ekleyebilirsin.</div>
 
           {showResults && query && (
             <div className="searchResults inlineResults">
@@ -1004,11 +1016,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
 
         <div className="mealEntriesDivider" />
 
-        {entries.length === 0 ? (
-          <div className="emptyMeal compactEmpty">
-            <strong>Henüz protein eklenmedi.</strong>
-          </div>
-        ) : (
+        {entries.length > 0 && (
           <div className="entryList">
             {entries.map((entry) => (
               <div className="entryRow" key={entry.id}>
