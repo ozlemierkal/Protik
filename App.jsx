@@ -74,6 +74,33 @@ function App() {
   const remaining = Math.max(target - totalProtein, 0)
   const allFoods = useMemo(() => [...foods, ...customFoods], [customFoods])
 
+  const recentFoods = useMemo(() => {
+    const seen = new Set()
+    const sorted = [...entries].sort((a, b) => Number(b.id || 0) - Number(a.id || 0))
+    const result = []
+
+    for (const entry of sorted) {
+      const key = entry.foodId || entry.name
+      if (!key || seen.has(key)) continue
+
+      const food = allFoods.find((item) =>
+        item.food_id === entry.foodId ||
+        item.name?.toLocaleLowerCase('tr') === entry.name?.toLocaleLowerCase('tr')
+      )
+
+      if (!food) continue
+      seen.add(key)
+      result.push({
+        ...food,
+        recent_amount: Number(entry.amount || food.default_portion || 0),
+        recent_unit: entry.unit || food.default_unit || 'g',
+      })
+      if (result.length === 5) break
+    }
+
+    return result
+  }, [entries, allFoods])
+
   const recommendations = useMemo(() => {
     if (remaining <= 0) return []
     return buildCompletionPlans(allFoods, remaining)
@@ -157,6 +184,7 @@ function App() {
         meal={selectedMeal}
         entries={todayEntries.filter((entry) => entry.meal === selectedMeal)}
         foods={allFoods}
+        recentFoods={recentFoods}
         onBack={() => setScreen('home')}
         onDelete={deleteEntry}
         onSave={addEntry}
@@ -928,7 +956,7 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   const statusFor = (total, hasEntries) => {
     if (!hasEntries) return { text: 'Kayıt yok', className: 'historyStatus neutral' }
     const pct = target > 0 ? Math.round((total / target) * 100) : 0
-    if (total >= target) return { text: 'Hedef tamamlandı', className: 'historyStatus done' }
+    if (total >= target) return { text: 'Hedef tamam', className: 'historyStatus done' }
     if (pct >= 90) return { text: 'Hedefe yakın', className: 'historyStatus close' }
     if (pct >= 60) return { text: 'Biraz daha var', className: 'historyStatus more' }
     return { text: 'Eksik kaldı', className: 'historyStatus low' }
@@ -1370,7 +1398,7 @@ function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = nu
   )
 }
 
-function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, onSaveCustomFood, onHome, onHistory, onProfile }) {
+function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete, onEdit, onSave, onSaveCustomFood, onHome, onHistory, onProfile }) {
   const total = entries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
@@ -1576,7 +1604,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   function choose(food) {
     setSelected(food)
     setQuery(food.name)
-    setAmount(food.default_portion)
+    setAmount(food.recent_amount || food.default_portion)
     setShowResults(false)
     setShowProteinEditor(false)
     setCustomProteinPerBase(food.protein_per_base)
@@ -1663,6 +1691,31 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
             <strong>Proteinini nasıl eklemek istersin?</strong>
             <span>Yiyecek veya içeceğini listeden bulabilir ya da paketli ürünün barkodunu okutabilirsin.</span>
           </div>
+
+          {recentFoods.length > 0 && (
+            <section className="recentFoodsSection">
+              <div className="recentFoodsHead">
+                <div>
+                  <strong>Son kullandıkların</strong>
+                  <span>Tekrar eklemek için dokun.</span>
+                </div>
+              </div>
+              <div className="recentFoodsRow">
+                {recentFoods.map((food) => (
+                  <button
+                    type="button"
+                    key={food.food_id || food.name}
+                    className={`recentFoodChip ${selected?.food_id === food.food_id ? 'selected' : ''}`}
+                    onClick={() => choose(food)}
+                  >
+                    <span className="recentFoodPlus">+</span>
+                    <strong>{food.name}</strong>
+                    <small>{Number(food.recent_amount || food.default_portion || 0)} {food.recent_unit || food.default_unit || 'g'}</small>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="manualEntrySection">
             <div className="entryMethodHead">
