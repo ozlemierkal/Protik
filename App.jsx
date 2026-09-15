@@ -1772,6 +1772,139 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
             />
           </section>
 
+          {showResults && query && (
+            <div className="searchResults inlineResults">
+              {filtered.length > 0 ? (
+                filtered.map((food) => (
+                  <button key={food.food_id} onClick={() => choose(food)}>
+                    <span className="searchFoodName">
+                      {food.name}
+                      {food.is_custom && <small>Benim ürünüm</small>}
+                    </span>
+                    <span>{Number(food.protein_per_default_portion).toFixed(1)} g</span>
+                  </button>
+                ))
+              ) : (
+                <div className="emptySearch">Bu ürün henüz listede yok.</div>
+              )}
+            </div>
+          )}
+
+          {selected && !showResults && (
+            <div className="inlineSelectedFood">
+              <div className="selectedFood">
+                <div className="foodIcon big">{iconFor(selected.icon_name)}</div>
+                <div>
+                  <h2>{selected.name}</h2>
+                  <p>{selected.category}</p>
+                </div>
+              </div>
+
+              {naturalPortionsFor(selected).length > 0 && (
+                <div className="naturalPortionBox">
+                  <div className="naturalPortionHead">
+                    <strong>Kolay porsiyon seç</strong>
+                    <span>İstersen aşağıdan miktarı kendin de girebilirsin.</span>
+                  </div>
+                  <div className="naturalPortionChips">
+                    {naturalPortionsFor(selected).map((portion) => (
+                      <button
+                        type="button"
+                        key={`${portion.label}-${portion.amount}`}
+                        className={Number(amount) === Number(portion.amount) ? 'naturalPortionChip selected' : 'naturalPortionChip'}
+                        onClick={() => setAmount(portion.amount)}
+                      >
+                        {portion.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <Field label={`Miktar (${selected.default_unit})`}>
+                <input
+                  type="number"
+                  min="0.1"
+                  step="0.1"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </Field>
+
+              <div className="proteinResult">
+                <span>Protein</span>
+                <b>{protein.toFixed(1)} g</b>
+              </div>
+
+              <button
+                type="button"
+                className="textAction"
+                onClick={() => setShowProteinEditor((value) => !value)}
+              >
+                {showProteinEditor ? 'Protein değerini kapat' : 'Protein değerini değiştir'}
+              </button>
+
+              {showProteinEditor && (
+                <div className="proteinEditor">
+                  <div className="proteinEditorTitle">
+                    Bu ürünün etiketindeki değeri girebilirsin.
+                  </div>
+
+                  <Field label={`${selected.base_amount} ${selected.base_unit} protein (g)`}>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value={customProteinPerBase}
+                      onChange={(e) => setCustomProteinPerBase(e.target.value)}
+                    />
+                  </Field>
+
+                  <div className="proteinEditorHint">
+                    Standart değer: {selected.protein_per_base} g / {selected.base_amount} {selected.base_unit}
+                  </div>
+
+                  {proteinValueChanged && (
+                    <div className="customProductBox">
+                      <input
+                        className="customProductInput"
+                        type="text"
+                        placeholder="Örn. Benim yüksek proteinli yoğurdum"
+                        value={customProductName}
+                        onChange={(e) => setCustomProductName(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="secondaryButton"
+                        disabled={!customProductName.trim() || effectiveProteinPerBase <= 0}
+                        onClick={saveAsCustomProduct}
+                      >
+                        Bu ürünü kaydet
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="inlineAddActions">
+                <button type="button" className="smallAction" onClick={resetForm}>
+                  Vazgeç
+                </button>
+                <button
+                  type="button"
+                  className="primary inlineSaveButton"
+                  disabled={!selected || Number(amount) <= 0}
+                  onClick={saveEntryInline}
+                >
+                  {meal === 'Kahvaltı' ? 'Kahvaltıya Ekle' :
+                   meal === 'Öğle Yemeği' ? 'Öğle Yemeğine Ekle' :
+                   meal === 'Ara Öğün' ? 'Ara Öğüne Ekle' :
+                   'Akşam Yemeğine Ekle'}
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="entryMethodDivider"><span>veya</span></div>
 
           <section className="barcodeEntrySection">
@@ -1910,138 +2043,6 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
             </section>
           )}
 
-          {showResults && query && (
-            <div className="searchResults inlineResults">
-              {filtered.length > 0 ? (
-                filtered.map((food) => (
-                  <button key={food.food_id} onClick={() => choose(food)}>
-                    <span className="searchFoodName">
-                      {food.name}
-                      {food.is_custom && <small>Benim ürünüm</small>}
-                    </span>
-                    <span>{Number(food.protein_per_default_portion).toFixed(1)} g</span>
-                  </button>
-                ))
-              ) : (
-                <div className="emptySearch">Bu ürün henüz listede yok.</div>
-              )}
-            </div>
-          )}
-
-          {selected && !showResults && (
-            <div className="inlineSelectedFood">
-              <div className="selectedFood">
-                <div className="foodIcon big">{iconFor(selected.icon_name)}</div>
-                <div>
-                  <h2>{selected.name}</h2>
-                  <p>{selected.category}</p>
-                </div>
-              </div>
-
-              {naturalPortionsFor(selected).length > 0 && (
-                <div className="naturalPortionBox">
-                  <div className="naturalPortionHead">
-                    <strong>Kolay porsiyon seç</strong>
-                    <span>İstersen aşağıdan miktarı kendin de girebilirsin.</span>
-                  </div>
-                  <div className="naturalPortionChips">
-                    {naturalPortionsFor(selected).map((portion) => (
-                      <button
-                        type="button"
-                        key={`${portion.label}-${portion.amount}`}
-                        className={Number(amount) === Number(portion.amount) ? 'naturalPortionChip selected' : 'naturalPortionChip'}
-                        onClick={() => setAmount(portion.amount)}
-                      >
-                        {portion.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <Field label={`Miktar (${selected.default_unit})`}>
-                <input
-                  type="number"
-                  min="0.1"
-                  step="0.1"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                />
-              </Field>
-
-              <div className="proteinResult">
-                <span>Protein</span>
-                <b>{protein.toFixed(1)} g</b>
-              </div>
-
-              <button
-                type="button"
-                className="textAction"
-                onClick={() => setShowProteinEditor((value) => !value)}
-              >
-                {showProteinEditor ? 'Protein değerini kapat' : 'Protein değerini değiştir'}
-              </button>
-
-              {showProteinEditor && (
-                <div className="proteinEditor">
-                  <div className="proteinEditorTitle">
-                    Bu ürünün etiketindeki değeri girebilirsin.
-                  </div>
-
-                  <Field label={`${selected.base_amount} ${selected.base_unit} protein (g)`}>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      value={customProteinPerBase}
-                      onChange={(e) => setCustomProteinPerBase(e.target.value)}
-                    />
-                  </Field>
-
-                  <div className="proteinEditorHint">
-                    Standart değer: {selected.protein_per_base} g / {selected.base_amount} {selected.base_unit}
-                  </div>
-
-                  {proteinValueChanged && (
-                    <div className="customProductBox">
-                      <input
-                        className="customProductInput"
-                        type="text"
-                        placeholder="Örn. Benim yüksek proteinli yoğurdum"
-                        value={customProductName}
-                        onChange={(e) => setCustomProductName(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className="secondaryButton"
-                        disabled={!customProductName.trim() || effectiveProteinPerBase <= 0}
-                        onClick={saveAsCustomProduct}
-                      >
-                        Bu ürünü kaydet
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="inlineAddActions">
-                <button type="button" className="smallAction" onClick={resetForm}>
-                  Vazgeç
-                </button>
-                <button
-                  type="button"
-                  className="primary inlineSaveButton"
-                  disabled={!selected || Number(amount) <= 0}
-                  onClick={saveEntryInline}
-                >
-                  {meal === 'Kahvaltı' ? 'Kahvaltıya Ekle' :
-                   meal === 'Öğle Yemeği' ? 'Öğle Yemeğine Ekle' :
-                   meal === 'Ara Öğün' ? 'Ara Öğüne Ekle' :
-                   'Akşam Yemeğine Ekle'}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="mealEntriesDivider" />
