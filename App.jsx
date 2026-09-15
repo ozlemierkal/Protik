@@ -627,11 +627,26 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   })
 
   const days = Array.from({ length: 7 }, (_, index) => dateKeyOffset(index + 1))
+  const chartDays = [...days].reverse()
+  const chartValues = chartDays.map((date) => {
+    const dayEntries = historyEntries.filter((entry) => entry.date === date)
+    return {
+      date,
+      total: dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0),
+    }
+  })
+  const chartMax = Math.max(target, ...chartValues.map((item) => item.total), 1)
+  const weekdayShort = (dateKey) => {
+    const [year, month, day] = dateKey.split('-').map(Number)
+    return new Intl.DateTimeFormat('tr-TR', { weekday: 'short' })
+      .format(new Date(year, month - 1, day, 12))
+      .replace('.', '')
+  }
 
   return (
     <main className="appShell">
       <header className="screenHeader historyHeader">
-        <span />
+        <button className="back" onClick={onBackHome}>‹</button>
         <h1>Geçmiş</h1>
         <span />
       </header>
@@ -685,6 +700,40 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
             </button>
           )
         })}
+      </section>
+
+      <section className="card weeklyChartCard">
+        <div className="weeklyChartHeader">
+          <div>
+            <h2>Haftalık protein grafiği</h2>
+            <p>Günlük protein miktarın ve {target} g hedefin.</p>
+          </div>
+          <div className="chartLegend">
+            <span><i className="legendDot" /> Protein</span>
+            <span><i className="legendLine" /> Hedef</span>
+          </div>
+        </div>
+
+        <div className="weeklyChart">
+          <div
+            className="chartTargetLine"
+            style={{ bottom: `${Math.min((target / chartMax) * 100, 100)}%` }}
+          />
+          {chartValues.map((item) => {
+            const height = item.total > 0 ? Math.max((item.total / chartMax) * 100, 4) : 0
+            return (
+              <div className="chartColumn" key={item.date}>
+                <div className="chartBarArea">
+                  <div className="chartBarWrap" style={{ height: `${height}%` }}>
+                    {item.total > 0 && <span className="chartValue">{item.total.toFixed(0)} g</span>}
+                    <div className="chartBar" />
+                  </div>
+                </div>
+                <span className="chartDay">{weekdayShort(item.date)}</span>
+              </div>
+            )
+          })}
+        </div>
       </section>
 
       <nav className="bottomNav fourItems">
@@ -1294,11 +1343,28 @@ function Profile({ profile, onBack, onSave }) {
       </header>
 
       <section className="card">
-        <Field label="Kilo (kg)">
+        <Field label="Yaşın">
+          <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
+        </Field>
+
+        <Field label="Cinsiyetin">
+          <select value={p.gender || ''} onChange={(e) => setP({ ...p, gender: e.target.value })}>
+            <option value="">Seç</option>
+            <option>Kadın</option>
+            <option>Erkek</option>
+            <option>Belirtmek istemiyorum</option>
+          </select>
+        </Field>
+
+        <Field label="Boyun (cm)">
+          <input type="number" value={p.height || ''} onChange={(e) => setP({ ...p, height: +e.target.value })} />
+        </Field>
+
+        <Field label="Kilon (kg)">
           <input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} />
         </Field>
 
-        <Field label="Aktivite">
+        <Field label="Hareket düzeyin">
           <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
             <option>Düşük</option>
             <option>Orta</option>
@@ -1306,7 +1372,7 @@ function Profile({ profile, onBack, onSave }) {
           </select>
         </Field>
 
-        <Field label="Hedef">
+        <Field label="Hedefin">
           <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
             <option>Genel sağlık</option>
             <option>Kilo verme sürecinde</option>
@@ -1314,7 +1380,7 @@ function Profile({ profile, onBack, onSave }) {
           </select>
         </Field>
 
-        <Field label="Günlük protein hedefi (g)">
+        <Field label="Günlük protein hedefin (g)">
           <input
             type="number"
             value={p.proteinTarget}

@@ -799,3 +799,159 @@ button{cursor:pointer}
   color:#97909b;
   font-size:12px;
 }
+
+
+/* v0.19 - geçmiş grafik + net ana sayfa dönüşü + profil dili */
+.weeklyChartCard{
+  margin-top:16px;
+  margin-bottom:92px;
+  padding:18px 16px 16px;
+}
+.weeklyChartHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:16px;
+}
+.weeklyChartHeader h2{
+  margin:0 0 4px;
+  font-size:18px;
+}
+.weeklyChartHeader p{
+  margin:0;
+  color:#857d8c;
+  font-size:12px;
+}
+.chartLegend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  color:#766d7e;
+  font-size:10px;
+  white-space:nowrap;
+}
+.chartLegend span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.legendDot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#6d28a8;
+}
+.legendLine{
+  width:14px;
+  border-top:2px dashed #8e79ae;
+}
+.weeklyChart{
+  position:relative;
+  height:190px;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+  align-items:end;
+  padding:12px 4px 0;
+  border-bottom:1px solid #e9e3ed;
+}
+.chartTargetLine{
+  position:absolute;
+  left:0;
+  right:0;
+  border-top:2px dashed #9b8ab1;
+  opacity:.8;
+  z-index:1;
+}
+.chartColumn{
+  height:100%;
+  display:grid;
+  grid-template-rows:1fr 22px;
+  min-width:0;
+  position:relative;
+  z-index:2;
+}
+.chartBarArea{
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  height:100%;
+}
+.chartBar{
+  width:70%;
+  max-width:28px;
+  min-height:0;
+  border-radius:8px 8px 3px 3px;
+  background:linear-gradient(180deg,#7a32bd,#5f229b);
+  box-shadow:0 4px 10px rgba(95,34,155,.14);
+}
+.chartValue{
+  position:absolute;
+  bottom:calc(var(--bar-height, 0%) + 4px);
+  top:2px;
+  font-size:9px;
+  font-weight:800;
+  color:#5a218e;
+  white-space:nowrap;
+  transform:translateY(-2px);
+}
+.chartBarArea .chartValue{
+  top:auto;
+  bottom:auto;
+  align-self:flex-start;
+}
+.chartDay{
+  align-self:end;
+  text-align:center;
+  color:#756d7d;
+  font-size:10px;
+  text-transform:capitalize;
+  padding-top:6px;
+}
+.historyList{
+  padding-bottom:0;
+}
+.historyHeader .back{
+  visibility:visible;
+}
+
+@media (max-width:520px){
+  .weeklyChartHeader{
+    display:block;
+  }
+  .chartLegend{
+    margin-top:10px;
+    justify-content:flex-start;
+  }
+  .weeklyChart{
+    gap:5px;
+  }
+  .chartBar{
+    width:72%;
+  }
+}
+
+.chartBarWrap{
+  position:relative;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+}
+.chartBarWrap .chartBar{
+  width:70%;
+  height:100%;
+}
+.chartBarWrap .chartValue{
+  position:absolute;
+  top:-15px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  font-weight:800;
+  color:#5a218e;
+  white-space:nowrap;
+}
