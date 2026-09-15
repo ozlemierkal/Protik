@@ -586,3 +586,216 @@ button{cursor:pointer}
     font-size:32px;
   }
 }
+
+
+/* v0.18 - ana öğün kartı aksiyonu + Geçmiş */
+.mealAddPrompt{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#f5eefb;
+  color:#5b2290;
+  font-size:13px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.historyHeader{
+  margin-bottom:4px;
+}
+
+.historyIntro{
+  margin:4px 2px 14px;
+}
+.historyIntro h2{
+  margin:0 0 4px;
+  font-size:21px;
+}
+.historyIntro p{
+  margin:0;
+  color:#81798a;
+  font-size:14px;
+  line-height:1.45;
+}
+
+.historyTestNote{
+  margin:0 0 14px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#fff7da;
+  border:1px solid #f1df9c;
+  color:#756326;
+  font-size:12px;
+  font-weight:700;
+}
+
+.historyList{
+  display:grid;
+  gap:10px;
+  padding-bottom:86px;
+}
+
+.historyDayCard{
+  width:100%;
+  padding:15px 16px 13px;
+  border:1px solid #e9e1ec;
+  border-radius:18px;
+  background:#fff;
+  text-align:left;
+  box-shadow:0 5px 16px rgba(43,25,55,.035);
+}
+.historyDayCard:disabled{
+  opacity:.58;
+}
+
+.historyDayMain{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+.historyDayMain strong{
+  display:block;
+  color:#25162d;
+  font-size:16px;
+}
+.historyDateSmall{
+  display:block;
+  margin-top:3px;
+  color:#918997;
+  font-size:11px;
+}
+.historyTotal{
+  text-align:right;
+}
+.historyTotal b{
+  display:block;
+  color:#5b2290;
+  font-size:17px;
+}
+.historyTotal b small{
+  color:#6f6875;
+  font-size:12px;
+  font-weight:700;
+}
+.historyTotal span{
+  display:block;
+  margin-top:3px;
+  font-size:11px;
+  color:#8d8592;
+}
+.historyTotal .historyDone{
+  color:#8b6b00;
+  font-weight:800;
+}
+.historyTotal .historyMissing{
+  color:#8b6b00;
+  font-weight:700;
+}
+
+.historyProgressTrack{
+  height:7px;
+  margin-top:13px;
+  border-radius:999px;
+  background:#eee9ef;
+  overflow:hidden;
+}
+.historyProgressFill{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#67279c,#f4ad13);
+}
+.historyCardFooter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:7px;
+  color:#8d8592;
+  font-size:11px;
+}
+.historyCardFooter span:last-child{
+  color:#5b2290;
+  font-weight:800;
+}
+
+.historyDaySummary{
+  position:relative;
+  padding:20px;
+  margin-bottom:14px;
+}
+.historyDaySummary > span{
+  display:block;
+  color:#807887;
+  font-size:14px;
+}
+.historyDaySummary > strong{
+  display:block;
+  margin-top:6px;
+  color:#5b2290;
+  font-size:30px;
+}
+.historyDaySummary > strong small{
+  color:#706877;
+  font-size:14px;
+}
+.historyDayPercent{
+  position:absolute;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f6effb;
+  color:#5b2290;
+  font-weight:900;
+}
+
+.historyMealGroups{
+  display:grid;
+  gap:10px;
+}
+.historyMealCard{
+  padding:15px 16px;
+}
+.historyMealTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:9px;
+  border-bottom:1px solid #eee8f0;
+}
+.historyMealTitle strong{
+  font-size:15px;
+}
+.historyMealTitle b{
+  color:#5b2290;
+  font-size:14px;
+}
+.historyFoodRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-top:9px;
+}
+.historyFoodRow span{
+  color:#4f4654;
+  font-size:13px;
+}
+.historyFoodRow small{
+  color:#746c79;
+  font-size:11px;
+  text-align:right;
+}
+.historyReadonlyNote{
+  margin:14px 0 24px;
+  text-align:center;
+  color:#97909b;
+  font-size:12px;
+}

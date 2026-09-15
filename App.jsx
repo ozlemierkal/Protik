@@ -35,6 +35,7 @@ function App() {
   const [customFoods, setCustomFoods] = useState(loadCustomFoods)
   const [screen, setScreen] = useState(profile ? 'home' : 'onboarding')
   const [selectedMeal, setSelectedMeal] = useState(null)
+  const [selectedHistoryDate, setSelectedHistoryDate] = useState(null)
   const [editingEntry, setEditingEntry] = useState(null)
 
   const todayKey = new Date().toISOString().slice(0, 10)
@@ -134,6 +135,32 @@ function App() {
     )
   }
 
+  if (screen === 'history') {
+    return (
+      <History
+        entries={entries}
+        target={target}
+        onBackHome={() => setScreen('home')}
+        onOpenDay={(date) => {
+          setSelectedHistoryDate(date)
+          setScreen('history-day')
+        }}
+        onProfile={() => setScreen('profile')}
+      />
+    )
+  }
+
+  if (screen === 'history-day' && selectedHistoryDate) {
+    return (
+      <HistoryDay
+        date={selectedHistoryDate}
+        entries={entries}
+        target={target}
+        onBack={() => setScreen('history')}
+      />
+    )
+  }
+
   if (screen === 'profile') {
     return (
       <Profile
@@ -156,6 +183,7 @@ function App() {
       recommendations={recommendations}
       todayEntries={todayEntries}
       onProfile={() => setScreen('profile')}
+      onHistory={() => setScreen('history')}
       onMeal={(meal) => {
         setSelectedMeal(meal)
         setScreen('meal')
@@ -389,7 +417,7 @@ function Onboarding({ onFinish }) {
   )
 }
 
-function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onMeal }) {
+function Home({ target, total, remaining, recommendations, todayEntries, onProfile, onHistory, onMeal }) {
   const pct = Math.min(Math.round((total / target) * 100), 100)
   const [activePlan, setActivePlan] = useState(0)
   const selectedPlan = recommendations[activePlan] || recommendations[0]
@@ -429,8 +457,14 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
                 <div className="mealSummaryTop">
                   <strong>{meal}</strong>
                   <div className="mealSummaryRight">
-                    <b>{sum ? `${sum.toFixed(1)} g` : '—'}</b>
-                    <span className="mealChevron">›</span>
+                    {sum > 0 ? (
+                      <>
+                        <b>{sum.toFixed(1)} g</b>
+                        <span className="mealChevron">›</span>
+                      </>
+                    ) : (
+                      <span className="mealAddPrompt">Ekle +</span>
+                    )}
                   </div>
                 </div>
 
@@ -506,13 +540,215 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
 
       <nav className="bottomNav fourItems">
         <button className="active">⌂<span>Ana Sayfa</span></button>
-        <button>▥<span>Geçmiş</span></button>
+        <button onClick={onHistory}>▥<span>Geçmiş</span></button>
         <button>💡<span>Öneriler</span></button>
         <button onClick={onProfile}>◯<span>Profil</span></button>
       </nav>
     </main>
   )
 }
+
+function dateKeyOffset(daysAgo) {
+  const date = new Date()
+  date.setHours(12, 0, 0, 0)
+  date.setDate(date.getDate() - daysAgo)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function formatHistoryDate(dateKey, withYear = false) {
+  const [year, month, day] = dateKey.split('-').map(Number)
+  const date = new Date(year, month - 1, day, 12)
+  return new Intl.DateTimeFormat('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    ...(withYear ? { year: 'numeric' } : {}),
+  }).format(date)
+}
+
+function createHistoryTestEntries() {
+  const templates = [
+    {
+      day: 1,
+      rows: [
+        ['Kahvaltı', 'Yumurta', 2, 'adet', 13.0],
+        ['Kahvaltı', 'İnek sütü', 200, 'ml', 6.6],
+        ['Öğle Yemeği', 'Tavuk göğsü, pişmiş', 120, 'g', 37.2],
+        ['Akşam Yemeği', 'Süzme yoğurt', 200, 'g', 18.0],
+      ],
+    },
+    {
+      day: 2,
+      rows: [
+        ['Kahvaltı', 'Pınar protein yoğurt', 1, 'kase', 25.0],
+        ['Öğle Yemeği', 'Somon, pişmiş', 120, 'g', 26.4],
+        ['Ara Öğün', 'Badem', 30, 'g', 6.3],
+      ],
+    },
+    {
+      day: 3,
+      rows: [
+        ['Kahvaltı', 'Yumurta', 2, 'adet', 13.0],
+        ['Öğle Yemeği', 'Ton balığı, süzülmüş', 100, 'g', 25.0],
+        ['Akşam Yemeği', 'Tofu', 150, 'g', 19.5],
+        ['Akşam Yemeği', 'Süzme yoğurt', 150, 'g', 13.5],
+        ['Ara Öğün', 'İnek sütü', 250, 'ml', 8.3],
+      ],
+    },
+  ]
+
+  let id = 900000
+  return templates.flatMap((template) =>
+    template.rows.map(([meal, name, amount, unit, protein]) => ({
+      id: id++,
+      date: dateKeyOffset(template.day),
+      meal,
+      name,
+      amount,
+      unit,
+      protein,
+      foodId: `test-${id}`,
+      isHistoryTest: true,
+    }))
+  )
+}
+
+function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
+  const testEntries = createHistoryTestEntries()
+  const realPastEntries = entries.filter((entry) => entry.date < dateKeyOffset(0))
+
+  // Test aşamasında gerçek geçmiş olmayan günleri geçici örnek verilerle dolduruyoruz.
+  const historyEntries = [...realPastEntries]
+  testEntries.forEach((testEntry) => {
+    const hasRealDataForDay = realPastEntries.some((entry) => entry.date === testEntry.date)
+    if (!hasRealDataForDay) historyEntries.push(testEntry)
+  })
+
+  const days = Array.from({ length: 7 }, (_, index) => dateKeyOffset(index + 1))
+
+  return (
+    <main className="appShell">
+      <header className="screenHeader historyHeader">
+        <span />
+        <h1>Geçmiş</h1>
+        <span />
+      </header>
+
+      <div className="historyIntro">
+        <h2>Son 7 gün</h2>
+        <p>Günlük protein toplamını ve öğünlerini burada görebilirsin.</p>
+      </div>
+
+      <div className="historyTestNote">Test için geçmiş günlere örnek kayıtlar eklendi.</div>
+
+      <section className="historyList">
+        {days.map((date) => {
+          const dayEntries = historyEntries.filter((entry) => entry.date === date)
+          const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+          const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
+          const remaining = Math.max(target - total, 0)
+
+          return (
+            <button
+              key={date}
+              className="historyDayCard"
+              onClick={() => onOpenDay(date)}
+              disabled={dayEntries.length === 0}
+            >
+              <div className="historyDayMain">
+                <div>
+                  <strong>{date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}</strong>
+                  <span className="historyDateSmall">{formatHistoryDate(date, true)}</span>
+                </div>
+                <div className="historyTotal">
+                  <b>{total.toFixed(1)} <small>/ {target} g</small></b>
+                  {dayEntries.length > 0 ? (
+                    <span className={remaining <= 0 ? 'historyDone' : 'historyMissing'}>
+                      {remaining <= 0 ? 'Hedef tamamlandı' : `${remaining.toFixed(0)} g eksik`}
+                    </span>
+                  ) : (
+                    <span>Kayıt yok</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="historyProgressTrack" aria-hidden="true">
+                <div className="historyProgressFill" style={{ width: `${pct}%` }} />
+              </div>
+
+              <div className="historyCardFooter">
+                <span>%{pct}</span>
+                {dayEntries.length > 0 && <span>Detayı gör ›</span>}
+              </div>
+            </button>
+          )
+        })}
+      </section>
+
+      <nav className="bottomNav fourItems">
+        <button onClick={onBackHome}>⌂<span>Ana Sayfa</span></button>
+        <button className="active">▥<span>Geçmiş</span></button>
+        <button>💡<span>Öneriler</span></button>
+        <button onClick={onProfile}>◯<span>Profil</span></button>
+      </nav>
+    </main>
+  )
+}
+
+function HistoryDay({ date, entries, target, onBack }) {
+  const testEntries = createHistoryTestEntries()
+  const realDayEntries = entries.filter((entry) => entry.date === date)
+  const dayEntries = realDayEntries.length > 0
+    ? realDayEntries
+    : testEntries.filter((entry) => entry.date === date)
+
+  const total = dayEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+  const pct = target > 0 ? Math.min(Math.round((total / target) * 100), 100) : 0
+
+  return (
+    <main className="appShell">
+      <header className="screenHeader">
+        <button className="back" onClick={onBack}>‹</button>
+        <h1>{date === dateKeyOffset(1) ? 'Dün' : formatHistoryDate(date)}</h1>
+        <span />
+      </header>
+
+      <section className="card historyDaySummary">
+        <span>Toplam protein</span>
+        <strong>{total.toFixed(1)} <small>/ {target} g</small></strong>
+        <div className="historyDayPercent">%{pct}</div>
+      </section>
+
+      <section className="historyMealGroups">
+        {['Kahvaltı', 'Öğle Yemeği', 'Ara Öğün', 'Akşam Yemeği'].map((meal) => {
+          const mealEntries = dayEntries.filter((entry) => entry.meal === meal)
+          if (mealEntries.length === 0) return null
+          const mealTotal = mealEntries.reduce((sum, entry) => sum + Number(entry.protein || 0), 0)
+
+          return (
+            <div className="card historyMealCard" key={meal}>
+              <div className="historyMealTitle">
+                <strong>{meal}</strong>
+                <b>{mealTotal.toFixed(1)} g</b>
+              </div>
+              {mealEntries.map((entry) => (
+                <div className="historyFoodRow" key={entry.id}>
+                  <span>{entry.name}</span>
+                  <small>{entry.amount} {entry.unit} · {Number(entry.protein).toFixed(1)} g</small>
+                </div>
+              ))}
+            </div>
+          )
+        })}
+      </section>
+
+      <div className="historyReadonlyNote">Geçmiş kayıtlar yalnızca görüntülenir.</div>
+    </main>
+  )
+}
+
 
 function AddProtein({ foods, onBack, onSave, onSaveCustomFood, editingEntry = null, presetMeal = '' }) {
   const initialFood = editingEntry
