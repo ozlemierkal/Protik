@@ -4328,3 +4328,172 @@ p, span, small, label, input, select, button{
   .encouragementCard strong{font-size:16px!important;line-height:1.05!important}
   .encouragementCard span{font-size:10.5px!important;line-height:1.35!important}
 }
+
+/* v0.37 — öğün girişi ayrıştırıldı + barkod miktar akışı */
+.mealEntryChooser{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  padding-top:8px!important;
+}
+.mealEntryIntro{
+  padding:15px 16px 14px;
+  margin:2px 0 14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#f8f2fc 0%,#fffaf0 100%);
+  border:1px solid #eee1f5;
+}
+.mealEntryIntro strong{
+  display:block;
+  color:#311047;
+  font-size:16px;
+  line-height:1.25;
+  font-weight:800;
+  margin-bottom:5px;
+}
+.mealEntryIntro span{
+  display:block;
+  color:#796a83;
+  font-size:12.5px;
+  line-height:1.45;
+  font-weight:500;
+}
+.manualEntrySection,
+.barcodeEntrySection{
+  border:1px solid #eadff1;
+  border-radius:19px;
+  background:#fff;
+  padding:14px;
+  box-shadow:0 8px 20px rgba(70,30,96,.035);
+}
+.entryMethodHead,
+.barcodeEntryCopy{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:12px;
+}
+.entryMethodHead>div,
+.barcodeEntryCopy>div{
+  min-width:0;
+}
+.entryMethodHead strong,
+.barcodeEntryCopy strong{
+  display:block;
+  color:#35124e;
+  font-size:14.5px;
+  font-weight:800;
+  margin-bottom:2px;
+}
+.entryMethodHead span:not(.entryMethodIcon),
+.barcodeEntryCopy span:not(.barcodeGlyph){
+  display:block;
+  color:#85738f;
+  font-size:11.5px;
+  line-height:1.4;
+  font-weight:500;
+}
+.entryMethodIcon{
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#f0e4fa;
+  color:#6d25aa;
+  font-size:24px;
+  font-weight:700;
+}
+.manualEntrySection .mealSearch{
+  min-height:48px;
+  margin:0;
+  border-radius:14px;
+  background:#fbf9fc;
+  border:1px solid #e7dceb;
+}
+.entryMethodDivider{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:34px;
+  margin:3px 0;
+}
+.entryMethodDivider:before{
+  content:"";
+  position:absolute;
+  left:7%;
+  right:7%;
+  top:50%;
+  height:1px;
+  background:#eee6f2;
+}
+.entryMethodDivider span{
+  position:relative;
+  z-index:1;
+  padding:0 10px;
+  background:#fff;
+  color:#a092a7;
+  font-size:10.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.45px;
+}
+.barcodeEntrySection{
+  background:linear-gradient(145deg,#fff 0%,#fbf7ff 100%);
+  border-color:#e5d4f2;
+}
+.barcodeGlyphLarge{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border-radius:14px;
+  background:linear-gradient(145deg,#f1e3fb,#fff2d8);
+}
+.barcodePrimaryButton{
+  grid-template-columns:1fr auto!important;
+  min-height:50px;
+  border:0;
+  background:linear-gradient(135deg,#6e29aa,#9147cc);
+  color:#fff;
+  box-shadow:0 9px 18px rgba(108,40,166,.16);
+  padding:9px 14px;
+}
+.barcodePrimaryButton strong,
+.barcodePrimaryButton small,
+.barcodePrimaryButton>b{
+  color:#fff!important;
+}
+.barcodePrimaryButton small{opacity:.82}
+.barcodePrimaryButton>b{font-size:24px}
+.barcodeTestPanel{
+  margin-top:15px;
+}
+.barcodeAmountIntro{
+  margin:12px 0 8px;
+  padding:11px 12px;
+  border-radius:14px;
+  background:#f8f2fc;
+}
+.barcodeAmountIntro strong{
+  display:block;
+  font-size:13px;
+  color:#3a1450;
+  margin-bottom:4px;
+}
+.barcodeAmountIntro span{
+  display:block;
+  font-size:11.3px;
+  line-height:1.4;
+  color:#7e6c89;
+  font-weight:500;
+}
+.barcodeAmountField>div input::placeholder{color:#b2a4ba}
+@media(max-width:520px){
+  .mealEntryIntro{padding:13px 14px;margin-bottom:12px}
+  .manualEntrySection,.barcodeEntrySection{padding:13px;border-radius:17px}
+  .entryMethodHead,.barcodeEntryCopy{gap:10px;margin-bottom:10px}
+  .entryMethodIcon{width:38px;height:38px;flex-basis:38px}
+  .barcodeGlyphLarge{width:40px;height:40px;flex-basis:40px}
+}

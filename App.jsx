@@ -1384,7 +1384,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
   const [barcodeStatus, setBarcodeStatus] = useState('')
   const [barcodeError, setBarcodeError] = useState('')
   const [barcodeProduct, setBarcodeProduct] = useState(null)
-  const [barcodeAmount, setBarcodeAmount] = useState('100')
+  const [barcodeAmount, setBarcodeAmount] = useState('')
   const [barcodeManualName, setBarcodeManualName] = useState('')
   const [barcodeManualProtein, setBarcodeManualProtein] = useState('')
   const barcodeScannerRef = useRef(null)
@@ -1397,7 +1397,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
     setBarcodeProduct(null)
     setBarcodeManualName('')
     setBarcodeManualProtein('')
-    setBarcodeAmount('100')
+    setBarcodeAmount('')
 
     const localProduct = foods.find((food) => String(food.barcode || '') === normalized)
     if (localProduct) {
@@ -1658,20 +1658,42 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
           </div>
         </div>
 
-        <div className="inlineAddArea">
-          <input
-            className="search mealSearch"
-            placeholder="Yiyecek ara veya yaz..."
-            value={query}
-            onChange={(e) => handleQueryChange(e.target.value)}
-            onFocus={() => query && setShowResults(true)}
-          />
-          <div className="mealSearchHint">Yazarak veya arayarak ekleyebilirsin.</div>
+        <div className="inlineAddArea mealEntryChooser">
+          <div className="mealEntryIntro">
+            <strong>Proteinini nasıl eklemek istersin?</strong>
+            <span>Yiyeceğini listeden bulabilir ya da paketli ürünün barkodunu okutabilirsin.</span>
+          </div>
 
-          <div className="barcodeTestEntry">
+          <section className="manualEntrySection">
+            <div className="entryMethodHead">
+              <span className="entryMethodIcon" aria-hidden="true">⌕</span>
+              <div>
+                <strong>Yiyecek ara</strong>
+                <span>Listeden seç, yediğin miktarı gir.</span>
+              </div>
+            </div>
+            <input
+              className="search mealSearch"
+              placeholder="Örn. tavuk, yoğurt, yumurta..."
+              value={query}
+              onChange={(e) => handleQueryChange(e.target.value)}
+              onFocus={() => query && setShowResults(true)}
+            />
+          </section>
+
+          <div className="entryMethodDivider"><span>veya</span></div>
+
+          <section className="barcodeEntrySection">
+            <div className="barcodeEntryCopy">
+              <span className="barcodeGlyph barcodeGlyphLarge" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+              <div>
+                <strong>Paketli ürün mü yedin?</strong>
+                <span>Barkodu tara; ürünün protein değerini bulalım. Sen sadece ne kadar yediğini yaz.</span>
+              </div>
+            </div>
             <button
               type="button"
-              className="barcodeTestButton"
+              className="barcodeTestButton barcodePrimaryButton"
               onClick={() => {
                 setBarcodeResult('')
                 setBarcodeError('')
@@ -1679,18 +1701,17 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                 setBarcodeProduct(null)
                 setBarcodeManualName('')
                 setBarcodeManualProtein('')
-                setBarcodeAmount('100')
+                setBarcodeAmount('')
                 setBarcodeOpen(true)
               }}
             >
-              <span className="barcodeGlyph" aria-hidden="true"><i /><i /><i /><i /><i /></span>
               <span>
-                <strong>Barkod Tara</strong>
-                <small>Ürünü bul ve proteini ekle</small>
+                <strong>Barkodu Tara</strong>
+                <small>Kamerayı aç</small>
               </span>
               <b>›</b>
             </button>
-          </div>
+          </section>
 
           {barcodeOpen && (
             <section className="barcodeTestPanel" aria-label="Barkod tarama testi">
@@ -1746,9 +1767,13 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                     </div>
                   )}
 
+                  <div className="barcodeAmountIntro">
+                    <strong>Ne kadar yedin?</strong>
+                    <span>100 g yalnızca ürünün referans değeridir. Öğüne eklenecek protein, yazdığın miktara göre hesaplanır.</span>
+                  </div>
                   <label className="barcodeAmountField">
                     <span>Yediğin miktar</span>
-                    <div><input type="number" inputMode="decimal" min="1" step="1" value={barcodeAmount} onChange={(e) => setBarcodeAmount(e.target.value)} /><b>g</b></div>
+                    <div><input type="number" inputMode="decimal" min="1" step="1" value={barcodeAmount} onChange={(e) => setBarcodeAmount(e.target.value)} placeholder="Örn. 30" /><b>g</b></div>
                   </label>
 
                   {(barcodeProduct || (barcodeManualName.trim() && Number(barcodeManualProtein) >= 0 && barcodeManualProtein !== '')) && (
@@ -1776,7 +1801,7 @@ function MealDetails({ meal, entries, foods, onBack, onDelete, onEdit, onSave, o
                         setBarcodeProduct(null)
                         setBarcodeManualName('')
                         setBarcodeManualProtein('')
-                        setBarcodeAmount('100')
+                        setBarcodeAmount('')
                         setBarcodeOpen(true)
                       }, 80)
                     }}
