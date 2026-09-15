@@ -73,6 +73,21 @@ function App() {
   const [selectedHistoryDate, setSelectedHistoryDate] = useState(null)
   const [editingEntry, setEditingEntry] = useState(null)
 
+  useEffect(() => {
+    // Ana ekran / Geçmiş / Profil / detay ekranları arasında geçerken
+    // önceki ekranın scroll konumu yeni ekrana taşınmasın.
+    const resetScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0
+      document.body.scrollTop = 0
+      document.documentElement.scrollTop = 0
+    }
+
+    resetScroll()
+    const frame = requestAnimationFrame(resetScroll)
+    return () => cancelAnimationFrame(frame)
+  }, [screen, selectedMeal, selectedHistoryDate])
+
   const todayKey = localDateKey()
   const todayEntries = entries.filter((e) => e.date === todayKey)
   const totalProtein = todayEntries.reduce((sum, e) => sum + Number(e.protein || 0), 0)
