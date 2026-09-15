@@ -3639,3 +3639,92 @@ p, span, small, label, input, select, button{
   .onboardingPreviewBox{align-items:flex-start;flex-direction:column}
   .onboardingPreviewBox .secondaryButton{width:100%}
 }
+
+
+/* v0.29 — onboarding yerleşim düzeltmesi */
+.modernOnboarding{
+  background:#f7f3fb;
+}
+.modernOnboarding .onboardingTopline{
+  min-height:72px;
+  padding:calc(14px + env(safe-area-inset-top)) 20px 16px;
+  background:linear-gradient(135deg,#4d138d 0%,#6d25b6 100%);
+  box-shadow:0 10px 26px rgba(69,18,126,.16);
+  position:relative;
+  z-index:2;
+}
+.modernOnboarding .panel{
+  position:relative;
+  z-index:1;
+  margin-top:-8px;
+  padding:18px 20px 10px;
+  border-radius:28px 28px 0 0;
+  background:
+    linear-gradient(180deg,rgba(111,39,184,.055) 0,rgba(111,39,184,0) 155px),
+    #f7f3fb;
+  box-shadow:none;
+}
+.modernOnboarding .welcomeStep{
+  min-height:0;
+  justify-content:flex-start;
+  padding:54px 0 12px;
+}
+.modernOnboarding .welcomeArt{
+  margin-bottom:24px;
+}
+.modernOnboarding .welcomeGlow{
+  width:180px;
+  height:180px;
+}
+.modernOnboarding .welcomeLogoWrap{
+  padding:17px 21px;
+  border-radius:22px;
+}
+.modernOnboarding .welcomeStep h1{
+  font-size:36px;
+  max-width:390px;
+  margin-bottom:10px;
+}
+.modernOnboarding .welcomeStep p{
+  font-size:16px;
+  line-height:1.45;
+  max-width:390px;
+}
+.modernOnboarding .miniFeatureRow{
+  margin-top:20px;
+  gap:8px;
+}
+.modernOnboarding .miniFeature{
+  padding:9px 12px;
+  font-size:13px;
+}
+.modernOnboarding .stepIntro{
+  margin-top:0;
+  margin-bottom:16px;
+}
+.modernOnboarding .stepIntro h2{
+  font-size:31px;
+}
+.modernOnboarding .choiceStep{
+  max-width:430px;
+  padding-top:16px;
+  justify-content:flex-start;
+}
+.modernOnboarding .richChoices{
+  max-width:430px;
+}
+.modernOnboarding .richChoiceCard{
+  padding:16px;
+  border-radius:20px;
+}
+.modernOnboarding .onboardingActions{
+  padding-top:11px;
+}
+
+@media (max-width:390px){
+  .modernOnboarding .onboardingTopline{padding-left:16px;padding-right:16px}
+  .modernOnboarding .panel{padding:16px 16px 8px}
+  .modernOnboarding .welcomeStep{padding-top:40px}
+  .modernOnboarding .welcomeStep h1{font-size:32px}
+  .modernOnboarding .stepIntro h2{font-size:27px}
+}

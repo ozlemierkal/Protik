@@ -291,8 +291,8 @@ function Onboarding({ onFinish, initialProfile = null, onExit = null }) {
     gender: initialProfile?.gender || '',
     height: initialProfile?.height || '',
     weight: initialProfile?.weight || '',
-    activity: initialProfile?.activity || '',
-    goal: initialProfile?.goal || '',
+    activity: '',
+    goal: '',
   })
   const [manualTarget, setManualTarget] = useState(initialProfile?.proteinTarget || null)
 
