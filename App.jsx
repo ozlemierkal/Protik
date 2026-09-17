@@ -2161,6 +2161,17 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
             <button className="goalEditPill" onClick={() => setEditing(true)}>Düzenle <UiIcon name="chevron" size={15} /></button>
           </section>
 
+          <section className="privacyCard card">
+            <div className="privacyCardIcon">
+              <UiIcon name="settings" size={22} />
+            </div>
+            <div className="privacyCardCopy">
+              <strong>Veri ve Gizlilik</strong>
+              <span>Profilin ve protein kayıtların bu cihazda saklanır. Protik şu anda hesap veya bulut senkronizasyonu kullanmaz.</span>
+              <a className="privacyLinkButton" href="./privacy.html" target="_blank" rel="noreferrer">Gizlilik Politikasını Gör <UiIcon name="chevron" size={15} /></a>
+            </div>
+          </section>
+
           <section className="profileMotivation profileMotivationLarge card">
             <div className="motivationLeaf">🌿</div>
             <div>

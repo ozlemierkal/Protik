@@ -4934,3 +4934,51 @@ input,select,button{
     padding-right:16px!important;
   }
 }
+
+/* =========================================================
+   v0.52 – Profil / Veri ve Gizlilik
+   ========================================================= */
+.privacyCard{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+  padding:18px!important;
+}
+.privacyCardIcon{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#efe3ff,#ddc7ff);
+  color:#6b27b1;
+}
+.privacyCardCopy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.privacyCardCopy strong{
+  font-size:17px;
+  color:#2f193f;
+}
+.privacyCardCopy span{
+  font-size:13px;
+  line-height:1.5;
+  color:#6e6378;
+  font-weight:500;
+}
+.privacyLinkButton{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  width:max-content;
+  max-width:100%;
+  margin-top:2px;
+  color:#6b27b1;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+}
