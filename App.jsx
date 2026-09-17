@@ -2138,19 +2138,52 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
   const [editing, setEditing] = useState(false)
   const [profileError, setProfileError] = useState('')
 
+  const calculateSuggestedTarget = (draft) => {
+    const weight = Number(draft.weight)
+    const multiplier = getProteinMultiplier(draft.activity, draft.goal)
+    if (!(weight > 0) || !(multiplier > 0)) return 0
+    return Math.max(40, Math.round((weight * multiplier) / 5) * 5)
+  }
+
+  const inferredMode = profile.proteinTargetMode ||
+    (Number(profile.proteinTarget) === calculateSuggestedTarget(profile) ? 'suggested' : 'custom')
+  const [proteinTargetMode, setProteinTargetMode] = useState(inferredMode)
+
+  const suggestedProfileTarget = calculateSuggestedTarget(p)
+  const effectiveProteinTarget = proteinTargetMode === 'suggested'
+    ? suggestedProfileTarget
+    : Number(p.proteinTarget)
+
   const requiredProfileValid =
     Number(p.age) > 0 &&
     Number(p.height) > 0 &&
     Number(p.weight) > 0 &&
-    Number(p.proteinTarget) > 0
+    Boolean(p.activity) &&
+    Boolean(p.goal) &&
+    Number(effectiveProteinTarget) > 0
+
+  const startEditing = () => {
+    const mode = profile.proteinTargetMode ||
+      (Number(profile.proteinTarget) === calculateSuggestedTarget(profile) ? 'suggested' : 'custom')
+    setP(profile)
+    setProteinTargetMode(mode)
+    setProfileError('')
+    setEditing(true)
+  }
 
   const saveProfile = () => {
     if (!requiredProfileValid) {
-      setProfileError('Yaş, boy, kilo ve günlük protein hedefi zorunludur.')
+      setProfileError('Yaş, boy, kilo, hareket düzeni, hedef ve protein hedefi zorunludur.')
       return
     }
     setProfileError('')
-    onSave(p)
+    const nextProfile = {
+      ...p,
+      proteinTarget: effectiveProteinTarget,
+      proteinTargetMode,
+    }
+    setP(nextProfile)
+    onSave(nextProfile)
     setEditing(false)
   }
 
@@ -2174,8 +2207,13 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
         <button
           className={`settingsButton ${editing ? 'active' : ''}`}
           onClick={() => {
-            setProfileError('')
-            setEditing((v) => !v)
+            if (editing) {
+              setP(profile)
+              setProfileError('')
+              setEditing(false)
+            } else {
+              startEditing()
+            }
           }}
           aria-label="Profili düzenle"
         >
@@ -2218,7 +2256,7 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
               <span>Günlük protein hedefin</span>
               <strong>{p.proteinTarget} g</strong>
             </div>
-            <button className="goalEditPill" onClick={() => setEditing(true)}>Düzenle <UiIcon name="chevron" size={15} /></button>
+            <button className="goalEditPill" onClick={startEditing}>Düzenle <UiIcon name="chevron" size={15} /></button>
           </section>
 
           <section className="privacyCard card">
@@ -2309,7 +2347,13 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           </Field>
 
           <Field label="Hareket düzeyin">
-            <select value={p.activity} onChange={(e) => setP({ ...p, activity: e.target.value })}>
+            <select
+              value={p.activity}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, activity: e.target.value })
+              }}
+            >
               <option>Düşük</option>
               <option>Orta</option>
               <option>Yüksek</option>
@@ -2317,29 +2361,91 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           </Field>
 
           <Field label="Hedefin">
-            <select value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })}>
+            <select
+              value={p.goal}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, goal: e.target.value })
+              }}
+            >
               <option>Genel sağlık</option>
               <option>Kilo verme sürecinde</option>
               <option>Kas koruma / geliştirme</option>
             </select>
           </Field>
 
-          <Field label="Günlük protein hedefin (g)">
-            <input
-              type="number"
-              inputMode="numeric"
-              min="1"
-              required
-              value={p.proteinTarget || ''}
-              onChange={(e) => {
-                setProfileError('')
-                setP({ ...p, proteinTarget: e.target.value === '' ? '' : Number(e.target.value) })
-              }}
-            />
-          </Field>
+          <div className="proteinTargetModeBlock">
+            <div className="proteinTargetModeIntro">
+              <strong>Günlük protein hedefin</strong>
+              <span>İstersen Protik hesaplasın, istersen kendi hedefini kullan.</span>
+            </div>
+
+            <div className="proteinTargetModeChoices" role="radiogroup" aria-label="Protein hedefi yöntemi">
+              <button
+                type="button"
+                className={`proteinTargetModeChoice ${proteinTargetMode === 'suggested' ? 'active' : ''}`}
+                onClick={() => {
+                  setProfileError('')
+                  setProteinTargetMode('suggested')
+                }}
+                role="radio"
+                aria-checked={proteinTargetMode === 'suggested'}
+              >
+                <span className="modeRadio" aria-hidden="true" />
+                <span>
+                  <strong>Önerilen hedef</strong>
+                  <small>Kilo, hareket düzeni ve amacına göre otomatik güncellenir.</small>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                className={`proteinTargetModeChoice ${proteinTargetMode === 'custom' ? 'active' : ''}`}
+                onClick={() => {
+                  setProfileError('')
+                  setProteinTargetMode('custom')
+                  if (!(Number(p.proteinTarget) > 0)) {
+                    setP({ ...p, proteinTarget: suggestedProfileTarget || '' })
+                  }
+                }}
+                role="radio"
+                aria-checked={proteinTargetMode === 'custom'}
+              >
+                <span className="modeRadio" aria-hidden="true" />
+                <span>
+                  <strong>Özel hedef</strong>
+                  <small>Protein hedefini kendin belirle.</small>
+                </span>
+              </button>
+            </div>
+
+            {proteinTargetMode === 'suggested' ? (
+              <div className="suggestedTargetPreview">
+                <div>
+                  <span>Yeni önerilen hedefin</span>
+                  <strong>{suggestedProfileTarget || '—'} g</strong>
+                </div>
+                <small>Kilo, hareket düzeni veya hedefin değişirse bu değer otomatik değişir.</small>
+              </div>
+            ) : (
+              <Field label="Özel protein hedefin (g)">
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  required
+                  value={p.proteinTarget || ''}
+                  onChange={(e) => {
+                    setProfileError('')
+                    setP({ ...p, proteinTarget: e.target.value === '' ? '' : Number(e.target.value) })
+                  }}
+                />
+              </Field>
+            )}
+          </div>
 
           {!requiredProfileValid && (
-            <p className="profileRequiredNote">Yaş, boy, kilo ve günlük protein hedefi zorunludur.</p>
+            <p className="profileRequiredNote">Yaş, boy, kilo, hareket düzeni, hedef ve protein hedefi zorunludur.</p>
           )}
           {profileError && <p className="profileFormError" role="alert">{profileError}</p>}
 
@@ -2348,6 +2454,7 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
               className="secondaryButton"
               onClick={() => {
                 setP(profile)
+                setProteinTargetMode(profile.proteinTargetMode || (Number(profile.proteinTarget) === calculateSuggestedTarget(profile) ? 'suggested' : 'custom'))
                 setProfileError('')
                 setEditing(false)
               }}

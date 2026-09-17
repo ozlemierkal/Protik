@@ -5046,3 +5046,111 @@ input,select,button{
   cursor:not-allowed;
   transform:none;
 }
+
+/* =========================================================
+   v0.54 – profil protein hedefi sadeleştirme
+   ========================================================= */
+.proteinTargetModeBlock{
+  margin-top:18px;
+  padding-top:18px;
+  border-top:1px solid #eee6f4;
+}
+.proteinTargetModeIntro{
+  display:grid;
+  gap:5px;
+  margin-bottom:12px;
+}
+.proteinTargetModeIntro strong{
+  font-size:17px;
+  color:#2e1c3f;
+}
+.proteinTargetModeIntro span{
+  font-size:13px;
+  line-height:1.45;
+  color:#71677b;
+}
+.proteinTargetModeChoices{
+  display:grid;
+  gap:10px;
+}
+.proteinTargetModeChoice{
+  width:100%;
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr);
+  align-items:start;
+  gap:10px;
+  text-align:left;
+  border:1px solid #e8deef;
+  background:#fff;
+  border-radius:17px;
+  padding:13px 14px;
+  color:#2e1c3f;
+}
+.proteinTargetModeChoice.active{
+  border-color:#8a4bc6;
+  background:#f7f0ff;
+  box-shadow:0 0 0 2px rgba(107,39,177,.07);
+}
+.proteinTargetModeChoice > span:last-child{
+  display:grid;
+  gap:3px;
+}
+.proteinTargetModeChoice strong{
+  font-size:14px;
+  font-weight:800;
+}
+.proteinTargetModeChoice small{
+  font-size:12px;
+  line-height:1.4;
+  color:#756b7e;
+}
+.modeRadio{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:2px solid #b9abc7;
+  margin-top:1px;
+  position:relative;
+}
+.proteinTargetModeChoice.active .modeRadio{
+  border-color:#6b27b1;
+}
+.proteinTargetModeChoice.active .modeRadio:after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#6b27b1;
+  inset:3px;
+}
+.suggestedTargetPreview{
+  margin-top:12px;
+  padding:15px 16px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#f2e7ff,#ead9ff);
+  border:1px solid #dfc9f6;
+  display:grid;
+  gap:8px;
+}
+.suggestedTargetPreview > div{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+}
+.suggestedTargetPreview span{
+  font-size:13px;
+  color:#65566f;
+  font-weight:650;
+}
+.suggestedTargetPreview strong{
+  font-size:26px;
+  line-height:1;
+  color:#6825aa;
+}
+.suggestedTargetPreview small{
+  font-size:11px;
+  line-height:1.4;
+  color:#75677f;
+}
