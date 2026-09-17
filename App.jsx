@@ -280,6 +280,10 @@ function App() {
     )
   }
 
+  if (screen === 'privacy') {
+    return <PrivacyPolicy onBack={() => setScreen('profile')} />
+  }
+
   if (screen === 'profile') {
     return (
       <Profile
@@ -287,6 +291,7 @@ function App() {
         onBack={() => setScreen('home')}
         onHome={() => setScreen('home')}
         onHistory={() => setScreen('history')}
+        onPrivacy={() => setScreen('privacy')}
         onSave={(next) => {
           save('protik_profile', next)
           setProfile(next)
@@ -2087,7 +2092,47 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
   )
 }
 
-function Profile({ profile, onBack, onHome, onHistory, onSave }) {
+function PrivacyPolicy({ onBack }) {
+  const topRef = useScreenTop()
+  return (
+    <main className="appShell privacyPolicyShell" ref={topRef}>
+      <header className="screenHeader proScreenHeader">
+        <button className="back" onClick={onBack} aria-label="Geri">‹</button>
+        <h1>Gizlilik Politikası</h1>
+        <div style={{ width: 42 }} />
+      </header>
+
+      <section className="privacyPolicyCard card">
+        <p className="privacyUpdated">Son güncelleme: 17 Eylül 2026</p>
+        <h2>Protik verilerinizi nasıl kullanır?</h2>
+        <p>Protik, günlük protein takibi yapmanıza yardımcı olan bir uygulamadır. Profil bilgileriniz, protein hedefiniz ve eklediğiniz protein kayıtları bu sürümde cihazınızın tarayıcı depolamasında saklanır.</p>
+
+        <h3>Cihazda saklanan bilgiler</h3>
+        <p>Ad, yaş, cinsiyet, boy, kilo, hedef ve aktivite gibi profil bilgileri ile öğün ve protein kayıtları cihazınızda tutulur. Protik şu anda kullanıcı hesabı veya bulut senkronizasyonu kullanmaz.</p>
+
+        <h3>Verilerin silinmesi</h3>
+        <p>Tarayıcı veya uygulama verilerini temizlerseniz cihazda saklanan Protik kayıtları silinebilir. Bu sürümde otomatik bulut yedeği bulunmaz.</p>
+
+        <h3>Kamera ve barkod</h3>
+        <p>Barkod tarama özelliğini kullandığınızda kamera yalnızca barkodu okumak için kullanılır. Kamera görüntüsü Protik tarafından saklanmaz.</p>
+
+        <h3>Open Food Facts</h3>
+        <p>Barkod ile ürün aradığınızda okunan barkod numarası ürün bilgisini bulmak amacıyla Open Food Facts hizmetine gönderilebilir. Bu hizmetin kendi gizlilik koşulları geçerlidir.</p>
+
+        <h3>Reklam ve analitik</h3>
+        <p>Bu sürümde Protik reklam ağı veya kullanıcı davranışını izleyen bir analitik hizmeti kullanmaz.</p>
+
+        <h3>Sağlık bilgisi</h3>
+        <p>Protik tıbbi cihaz değildir ve tıbbi tavsiye vermez. Uygulamadaki protein hedefleri genel bilgilendirme amacıyla sunulur.</p>
+
+        <h3>Değişiklikler</h3>
+        <p>Uygulamanın özellikleri değiştikçe bu gizlilik politikası da güncellenebilir.</p>
+      </section>
+    </main>
+  )
+}
+
+function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
   const screenTopRef = useScreenTop()
   const [p, setP] = useState(profile)
   const [editing, setEditing] = useState(false)
@@ -2168,7 +2213,7 @@ function Profile({ profile, onBack, onHome, onHistory, onSave }) {
             <div className="privacyCardCopy">
               <strong>Veri ve Gizlilik</strong>
               <span>Profilin ve protein kayıtların bu cihazda saklanır. Protik şu anda hesap veya bulut senkronizasyonu kullanmaz.</span>
-              <a className="privacyLinkButton" href="./privacy.html" target="_blank" rel="noreferrer">Gizlilik Politikasını Gör <UiIcon name="chevron" size={15} /></a>
+              <button type="button" className="privacyLinkButton" onClick={onPrivacy}>Gizlilik Politikasını Gör <UiIcon name="chevron" size={15} /></button>
             </div>
           </section>
 
