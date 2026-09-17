@@ -5019,3 +5019,30 @@ input,select,button{
   color:#8c8095;
   margin-bottom:10px;
 }
+
+
+/* =========================================================
+   v0.53 – profil zorunlu alan doğrulaması
+   ========================================================= */
+.profileRequiredNote{
+  margin:14px 2px 0;
+  padding:11px 13px;
+  border-radius:14px;
+  background:#fff7e7;
+  border:1px solid #f2dfb0;
+  color:#6f551c;
+  font-size:13px;
+  font-weight:650;
+  line-height:1.4;
+}
+.profileFormError{
+  margin:8px 2px 0;
+  color:#b42318;
+  font-size:13px;
+  font-weight:700;
+}
+.profileEditActions .primary:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}

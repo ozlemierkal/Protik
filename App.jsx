@@ -2136,8 +2136,20 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
   const screenTopRef = useScreenTop()
   const [p, setP] = useState(profile)
   const [editing, setEditing] = useState(false)
+  const [profileError, setProfileError] = useState('')
+
+  const requiredProfileValid =
+    Number(p.age) > 0 &&
+    Number(p.height) > 0 &&
+    Number(p.weight) > 0 &&
+    Number(p.proteinTarget) > 0
 
   const saveProfile = () => {
+    if (!requiredProfileValid) {
+      setProfileError('Yaş, boy, kilo ve günlük protein hedefi zorunludur.')
+      return
+    }
+    setProfileError('')
     onSave(p)
     setEditing(false)
   }
@@ -2161,7 +2173,10 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
         <h1>Profil</h1>
         <button
           className={`settingsButton ${editing ? 'active' : ''}`}
-          onClick={() => setEditing((v) => !v)}
+          onClick={() => {
+            setProfileError('')
+            setEditing((v) => !v)
+          }}
           aria-label="Profili düzenle"
         >
           <UiIcon name="settings" size={21} />
@@ -2242,7 +2257,17 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           </Field>
 
           <Field label="Yaşın">
-            <input type="number" value={p.age || ''} onChange={(e) => setP({ ...p, age: +e.target.value })} />
+            <input
+              type="number"
+              inputMode="numeric"
+              min="1"
+              required
+              value={p.age || ''}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, age: e.target.value === '' ? '' : Number(e.target.value) })
+              }}
+            />
           </Field>
 
           <Field label="Cinsiyetin">
@@ -2255,11 +2280,32 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           </Field>
 
           <Field label="Boyun (cm)">
-            <input type="number" value={p.height || ''} onChange={(e) => setP({ ...p, height: +e.target.value })} />
+            <input
+              type="number"
+              inputMode="numeric"
+              min="1"
+              required
+              value={p.height || ''}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, height: e.target.value === '' ? '' : Number(e.target.value) })
+              }}
+            />
           </Field>
 
           <Field label="Kilon (kg)">
-            <input type="number" value={p.weight} onChange={(e) => setP({ ...p, weight: +e.target.value })} />
+            <input
+              type="number"
+              inputMode="decimal"
+              min="1"
+              step="0.1"
+              required
+              value={p.weight || ''}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, weight: e.target.value === '' ? '' : Number(e.target.value) })
+              }}
+            />
           </Field>
 
           <Field label="Hareket düzeyin">
@@ -2281,14 +2327,34 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           <Field label="Günlük protein hedefin (g)">
             <input
               type="number"
-              value={p.proteinTarget}
-              onChange={(e) => setP({ ...p, proteinTarget: +e.target.value })}
+              inputMode="numeric"
+              min="1"
+              required
+              value={p.proteinTarget || ''}
+              onChange={(e) => {
+                setProfileError('')
+                setP({ ...p, proteinTarget: e.target.value === '' ? '' : Number(e.target.value) })
+              }}
             />
           </Field>
 
+          {!requiredProfileValid && (
+            <p className="profileRequiredNote">Yaş, boy, kilo ve günlük protein hedefi zorunludur.</p>
+          )}
+          {profileError && <p className="profileFormError" role="alert">{profileError}</p>}
+
           <div className="profileEditActions">
-            <button className="secondaryButton" onClick={() => { setP(profile); setEditing(false) }}>İptal</button>
-            <button className="primary" onClick={saveProfile}>Kaydet</button>
+            <button
+              className="secondaryButton"
+              onClick={() => {
+                setP(profile)
+                setProfileError('')
+                setEditing(false)
+              }}
+            >
+              İptal
+            </button>
+            <button className="primary" onClick={saveProfile} disabled={!requiredProfileValid}>Kaydet</button>
           </div>
         </section>
       )}
