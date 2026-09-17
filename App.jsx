@@ -2394,7 +2394,7 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
                 <span className="modeRadio" aria-hidden="true" />
                 <span>
                   <strong>Önerilen hedef</strong>
-                  <small>Kilo, hareket düzeni ve amacına göre otomatik güncellenir.</small>
+                  <small>Kilo, hareket düzeni ve hedefine göre otomatik güncellenir.</small>
                 </span>
               </button>
 
