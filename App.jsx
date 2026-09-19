@@ -1585,47 +1585,69 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         })
         barcodeScannerRef.current = scanner
 
-        await scanner.start(
-          {
-            facingMode: 'environment',
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-          },
-          {
-            fps: 18,
-            qrbox: (viewfinderWidth, viewfinderHeight) => ({
-              width: Math.max(240, Math.floor(viewfinderWidth * 0.90)),
-              height: Math.max(96, Math.min(140, Math.floor(viewfinderHeight * 0.34))),
-            }),
-            aspectRatio: 1.777778,
-            experimentalFeatures: { useBarCodeDetectorIfSupported: true },
-          },
-          async (decodedText) => {
-            if (!decodedText || cancelled) return
-            setBarcodeResult(decodedText)
-            setBarcodeStatus('Barkod okundu ✓')
-            lookupBarcode(decodedText)
-            try {
-              if (scanner.isScanning) await scanner.stop()
-              scanner.clear()
-            } catch {
-              // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
-            }
-          },
-          () => {}
-        )
-
-        // iPhone/iPad destekliyorsa sürekli odaklamayı özellikle iste.
-        try {
-          const video = document.querySelector('#protik-barcode-reader video')
-          const track = video?.srcObject?.getVideoTracks?.()[0]
-          const capabilities = track?.getCapabilities?.() || {}
-          if (track && Array.isArray(capabilities.focusMode) && capabilities.focusMode.includes('continuous')) {
-            await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] })
-          }
-        } catch {
-          // Odak iyileştirmesi desteklenmiyorsa normal tarama devam eder.
+        const scanConfig = {
+          fps: 12,
+          qrbox: (viewfinderWidth, viewfinderHeight) => ({
+            width: Math.max(220, Math.floor(viewfinderWidth * 0.88)),
+            height: Math.max(90, Math.min(130, Math.floor(viewfinderHeight * 0.30))),
+          }),
         }
+
+        const onDecoded = async (decodedText) => {
+          if (!decodedText || cancelled) return
+          setBarcodeResult(decodedText)
+          setBarcodeStatus('Barkod okundu ✓')
+          lookupBarcode(decodedText)
+          try {
+            if (scanner.isScanning) await scanner.stop()
+            scanner.clear()
+          } catch {
+            // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
+          }
+        }
+
+        const onScanFailure = () => {}
+
+        try {
+          // iPhone/iPad için en uyumlu başlangıç: sadece arka kamera iste.
+          await scanner.start(
+            { facingMode: 'environment' },
+            scanConfig,
+            onDecoded,
+            onScanFailure
+          )
+        } catch (primaryError) {
+          // Safari bazı cihazlarda facingMode isteğini reddedebiliyor.
+          // Böyle durumda kameraları listeleyip arka kameraya yakın olanı doğrudan aç.
+          const cameras = await window.Html5Qrcode.getCameras()
+          if (!cameras?.length) throw primaryError
+
+          const rearCamera =
+            cameras.find((camera) => /back|rear|arka/i.test(camera.label || '')) ||
+            cameras[cameras.length - 1]
+
+          await scanner.start(
+            rearCamera.id,
+            scanConfig,
+            onDecoded,
+            onScanFailure
+          )
+        }
+
+        // Kamera açıldıktan sonra cihaz destekliyorsa sürekli odaklamayı dene.
+        // Başarısız olursa taramayı etkilemez.
+        window.setTimeout(async () => {
+          try {
+            const video = document.querySelector('#protik-barcode-reader video')
+            const track = video?.srcObject?.getVideoTracks?.()[0]
+            const capabilities = track?.getCapabilities?.() || {}
+            if (track && Array.isArray(capabilities.focusMode) && capabilities.focusMode.includes('continuous')) {
+              await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] })
+            }
+          } catch {
+            // Desteklenmiyorsa normal tarama devam eder.
+          }
+        }, 350)
 
         if (!cancelled) setBarcodeStatus('Barkodu yatay tutup geniş çerçevenin içine getir.')
       } catch (error) {
