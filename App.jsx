@@ -6,25 +6,14 @@ import foods from './foods.json'
 let barcodeLibraryPromise = null
 
 function loadBarcodeLibrary() {
-  if (window.Html5Qrcode) return Promise.resolve(window.Html5Qrcode)
   if (barcodeLibraryPromise) return barcodeLibraryPromise
 
-  barcodeLibraryPromise = new Promise((resolve, reject) => {
-    const existing = document.querySelector('script[data-protik-barcode]')
-    if (existing) {
-      existing.addEventListener('load', () => resolve(window.Html5Qrcode), { once: true })
-      existing.addEventListener('error', () => reject(new Error('Barkod kütüphanesi yüklenemedi.')), { once: true })
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js'
-    script.async = true
-    script.dataset.protikBarcode = 'true'
-    script.onload = () => resolve(window.Html5Qrcode)
-    script.onerror = () => reject(new Error('Barkod kütüphanesi yüklenemedi.'))
-    document.head.appendChild(script)
-  })
+  const moduleUrl = 'https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/+esm'
+  barcodeLibraryPromise = import(/* @vite-ignore */ moduleUrl)
+    .catch(() => {
+      barcodeLibraryPromise = null
+      throw new Error('Barkod kütüphanesi yüklenemedi.')
+    })
 
   return barcodeLibraryPromise
 }
@@ -1558,71 +1547,94 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
     if (!barcodeOpen) return undefined
 
     let cancelled = false
+    let controls = null
+    let reader = null
     let startTimer = null
 
     async function bootScanner() {
       try {
         setBarcodeError('')
         setBarcodeStatus('Kamera hazırlanıyor…')
-        await loadBarcodeLibrary()
-        if (cancelled || !window.Html5Qrcode) return
 
-        const scanner = new window.Html5Qrcode('protik-barcode-reader')
-        barcodeScannerRef.current = scanner
+        const zxing = await loadBarcodeLibrary()
+        if (cancelled) return
 
-        await scanner.start(
-          { facingMode: 'environment' },
-          {
-            fps: 10,
-            qrbox: { width: 260, height: 150 },
-            aspectRatio: 1.777778,
+        const { BrowserMultiFormatReader } = zxing
+        reader = new BrowserMultiFormatReader(undefined, {
+          delayBetweenScanAttempts: 80,
+          delayBetweenScanSuccess: 450,
+        })
+
+        const video = document.getElementById('protik-barcode-video')
+        if (!video) throw new Error('Kamera alanı bulunamadı.')
+
+        const constraints = {
+          audio: false,
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
           },
-          async (decodedText) => {
-            if (!decodedText || cancelled) return
+        }
+
+        controls = await reader.decodeFromConstraints(
+          constraints,
+          video,
+          async (result) => {
+            if (!result || cancelled) return
+
+            const decodedText = result.getText?.() || String(result.text || '')
+            if (!decodedText) return
+
             setBarcodeResult(decodedText)
             setBarcodeStatus('Barkod okundu ✓')
             lookupBarcode(decodedText)
+
             try {
-              if (scanner.isScanning) await scanner.stop()
-              scanner.clear()
+              controls?.stop()
             } catch {
-              // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
+              // Sonuç alındı; kamera kapatma hatası akışı bozmaz.
             }
-          },
-          () => {}
+          }
         )
 
-        if (!cancelled) {
-          setBarcodeStatus('Barkodu çerçevenin içine getir ve 1–2 saniye sabit tut.')
+        barcodeScannerRef.current = {
+          stop: () => {
+            try { controls?.stop() } catch {}
+          },
         }
 
+        if (!cancelled) {
+          setBarcodeStatus('Barkodun tamamını kamerada göster ve 1–2 saniye sabit tut.')
+        }
       } catch (error) {
         if (cancelled) return
+
         const message = String(error?.message || error || '')
         const permissionDenied = /permission|notallowed|denied/i.test(message)
+        const noCamera = /notfound|devicesnotfound|camera.*not.*found/i.test(message)
+
         setBarcodeError(
           permissionDenied
             ? 'Kamera izni verilmedi. Safari ayarlarından kamera iznini açıp tekrar deneyebilirsin.'
-            : 'Kamera başlatılamadı. Sayfayı yenileyip tekrar deneyebilirsin.'
+            : noCamera
+              ? 'Kamera bulunamadı. Cihazın kamera iznini kontrol edip tekrar deneyebilirsin.'
+              : 'Kamera başlatılamadı. Sayfayı yenileyip tekrar deneyebilirsin.'
         )
         setBarcodeStatus('')
       }
     }
 
-    startTimer = window.setTimeout(bootScanner, 60)
+    startTimer = window.setTimeout(bootScanner, 80)
 
     return () => {
       cancelled = true
       if (startTimer) window.clearTimeout(startTimer)
-      const scanner = barcodeScannerRef.current
+
+      try { controls?.stop() } catch {}
+      try { barcodeScannerRef.current?.stop?.() } catch {}
       barcodeScannerRef.current = null
-      if (scanner) {
-        Promise.resolve(scanner.isScanning ? scanner.stop() : null)
-          .catch(() => null)
-          .finally(() => {
-            try { scanner.clear() } catch {}
-          })
-      }
+      reader = null
     }
   }, [barcodeOpen])
 
@@ -1994,7 +2006,15 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
               {!barcodeResult && !barcodeError && (
                 <>
                   <div className="barcodeCameraFrame">
-                    <div id="protik-barcode-reader" />
+                    <video
+                      id="protik-barcode-video"
+                      className="barcodeVideo"
+                      playsInline
+                      muted
+                    />
+                    <div className="barcodeGuide" aria-hidden="true">
+                      <span />
+                    </div>
                   </div>
                   <div className="barcodeManualCodeFallback">
                     <span>Okumazsa barkod numarasını yazabilirsin.</span>

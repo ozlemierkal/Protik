@@ -5216,3 +5216,46 @@ input,select,button{
   color:#fff;
   font-weight:800;
 }
+
+
+/* =========================================================
+   v0.57 – ZXing barkod motoru
+   ========================================================= */
+.barcodeCameraFrame{
+  position:relative;
+  overflow:hidden;
+  min-height:280px;
+  border-radius:18px;
+  background:#1e1426;
+}
+.barcodeVideo{
+  display:block;
+  width:100%;
+  min-height:280px;
+  max-height:360px;
+  object-fit:cover;
+  background:#1e1426;
+}
+.barcodeGuide{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  display:grid;
+  place-items:center;
+}
+.barcodeGuide::before{
+  content:"";
+  width:min(84%, 330px);
+  height:118px;
+  border:2px solid rgba(255,255,255,.92);
+  border-radius:18px;
+  box-shadow:0 0 0 999px rgba(19,9,28,.18);
+}
+.barcodeGuide span{
+  position:absolute;
+  width:min(74%, 285px);
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,transparent,#f1b522 18%,#f1b522 82%,transparent);
+  box-shadow:0 0 10px rgba(241,181,34,.7);
+}
