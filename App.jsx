@@ -1586,11 +1586,8 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         barcodeScannerRef.current = scanner
 
         const scanConfig = {
-          fps: 12,
-          qrbox: (viewfinderWidth, viewfinderHeight) => ({
-            width: Math.max(220, Math.floor(viewfinderWidth * 0.88)),
-            height: Math.max(90, Math.min(130, Math.floor(viewfinderHeight * 0.30))),
-          }),
+          fps: 10,
+          disableFlip: true,
         }
 
         const onDecoded = async (decodedText) => {
@@ -1608,22 +1605,45 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
 
         const onScanFailure = () => {}
 
+        let started = false
+
+        // 1) Önce arka kamerayı, daha iyi çözünürlük isteyerek açmayı dene.
         try {
-          // iPhone/iPad için en uyumlu başlangıç: sadece arka kamera iste.
           await scanner.start(
-            { facingMode: 'environment' },
+            {
+              facingMode: { ideal: 'environment' },
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+            },
             scanConfig,
             onDecoded,
             onScanFailure
           )
-        } catch (primaryError) {
-          // Safari bazı cihazlarda facingMode isteğini reddedebiliyor.
-          // Böyle durumda kameraları listeleyip arka kameraya yakın olanı doğrudan aç.
+          started = true
+        } catch {
+          // 2) iOS bazı cihazlarda width/height isteğini sevmiyor.
+        }
+
+        if (!started) {
+          try {
+            await scanner.start(
+              { facingMode: 'environment' },
+              scanConfig,
+              onDecoded,
+              onScanFailure
+            )
+            started = true
+          } catch {
+            // 3) Son çare: kamera listesinden arka kameraya en yakın olanı seç.
+          }
+        }
+
+        if (!started) {
           const cameras = await window.Html5Qrcode.getCameras()
-          if (!cameras?.length) throw primaryError
+          if (!cameras?.length) throw new Error('Kamera bulunamadı.')
 
           const rearCamera =
-            cameras.find((camera) => /back|rear|arka/i.test(camera.label || '')) ||
+            cameras.find((camera) => /back|rear|arka|wide/i.test(camera.label || '')) ||
             cameras[cameras.length - 1]
 
           await scanner.start(
@@ -1649,7 +1669,7 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
           }
         }, 350)
 
-        if (!cancelled) setBarcodeStatus('Barkodu yatay tutup geniş çerçevenin içine getir.')
+        if (!cancelled) setBarcodeStatus('Barkodun tamamını kamerada göster ve 1–2 saniye sabit tut.')
       } catch (error) {
         if (cancelled) return
         const message = String(error?.message || error || '')
@@ -2046,9 +2066,43 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
               </div>
 
               {!barcodeResult && !barcodeError && (
-                <div className="barcodeCameraFrame">
-                  <div id="protik-barcode-reader" />
-                </div>
+                <>
+                  <div className="barcodeCameraFrame">
+                    <div id="protik-barcode-reader" />
+                  </div>
+                  <div className="barcodeManualCodeFallback">
+                    <span>Okumazsa barkod numarasını yazabilirsin.</span>
+                    <div>
+                      <input
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="Örn. 869..."
+                        aria-label="Barkod numarası"
+                        onKeyDown={(e) => {
+                          if (e.key !== 'Enter') return
+                          const value = e.currentTarget.value.replace(/\D/g, '')
+                          if (value.length < 6) return
+                          setBarcodeResult(value)
+                          setBarcodeStatus('Barkod numarası girildi')
+                          lookupBarcode(value)
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const input = e.currentTarget.parentElement?.querySelector('input')
+                          const value = String(input?.value || '').replace(/\D/g, '')
+                          if (value.length < 6) return
+                          setBarcodeResult(value)
+                          setBarcodeStatus('Barkod numarası girildi')
+                          lookupBarcode(value)
+                        }}
+                      >
+                        Bul
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
 
               {barcodeStatus && <div className="barcodeStatus">{barcodeStatus}</div>}

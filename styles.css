@@ -5166,3 +5166,53 @@ input,select,button{
   min-height:230px!important;
   object-fit:cover!important;
 }
+
+
+/* =========================================================
+   v0.56.2 – barkod tarama güvenilirliği + manuel barkod fallback
+   ========================================================= */
+#protik-barcode-reader{
+  width:100%;
+  min-height:260px;
+}
+#protik-barcode-reader video{
+  width:100%!important;
+  height:auto!important;
+  object-fit:cover!important;
+  border-radius:16px;
+}
+.barcodeManualCodeFallback{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid #eadff1;
+  border-radius:14px;
+  background:#fbf8fd;
+}
+.barcodeManualCodeFallback > span{
+  display:block;
+  margin-bottom:7px;
+  color:#6d6274;
+  font-size:12px;
+  font-weight:600;
+}
+.barcodeManualCodeFallback > div{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+.barcodeManualCodeFallback input{
+  min-width:0;
+  width:100%;
+  border:1px solid #ddd2e6;
+  border-radius:12px;
+  padding:10px 11px;
+  background:#fff;
+}
+.barcodeManualCodeFallback button{
+  border:0;
+  border-radius:12px;
+  padding:0 15px;
+  background:#6b27b1;
+  color:#fff;
+  font-weight:800;
+}
