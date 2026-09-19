@@ -1567,109 +1567,35 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         await loadBarcodeLibrary()
         if (cancelled || !window.Html5Qrcode) return
 
-        const F = window.Html5QrcodeSupportedFormats
-        const preferredFormats = F
-          ? [
-              F.EAN_13,
-              F.EAN_8,
-              F.UPC_A,
-              F.UPC_E,
-              F.CODE_128,
-              F.CODE_39,
-            ].filter(Boolean)
-          : undefined
-
-        const scanner = new window.Html5Qrcode('protik-barcode-reader', {
-          ...(preferredFormats ? { formatsToSupport: preferredFormats } : {}),
-          verbose: false,
-        })
+        const scanner = new window.Html5Qrcode('protik-barcode-reader')
         barcodeScannerRef.current = scanner
 
-        const scanConfig = {
-          fps: 10,
-          disableFlip: true,
-        }
-
-        const onDecoded = async (decodedText) => {
-          if (!decodedText || cancelled) return
-          setBarcodeResult(decodedText)
-          setBarcodeStatus('Barkod okundu ✓')
-          lookupBarcode(decodedText)
-          try {
-            if (scanner.isScanning) await scanner.stop()
-            scanner.clear()
-          } catch {
-            // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
-          }
-        }
-
-        const onScanFailure = () => {}
-
-        let started = false
-
-        // 1) Önce arka kamerayı, daha iyi çözünürlük isteyerek açmayı dene.
-        try {
-          await scanner.start(
-            {
-              facingMode: { ideal: 'environment' },
-              width: { ideal: 1280 },
-              height: { ideal: 720 },
-            },
-            scanConfig,
-            onDecoded,
-            onScanFailure
-          )
-          started = true
-        } catch {
-          // 2) iOS bazı cihazlarda width/height isteğini sevmiyor.
-        }
-
-        if (!started) {
-          try {
-            await scanner.start(
-              { facingMode: 'environment' },
-              scanConfig,
-              onDecoded,
-              onScanFailure
-            )
-            started = true
-          } catch {
-            // 3) Son çare: kamera listesinden arka kameraya en yakın olanı seç.
-          }
-        }
-
-        if (!started) {
-          const cameras = await window.Html5Qrcode.getCameras()
-          if (!cameras?.length) throw new Error('Kamera bulunamadı.')
-
-          const rearCamera =
-            cameras.find((camera) => /back|rear|arka|wide/i.test(camera.label || '')) ||
-            cameras[cameras.length - 1]
-
-          await scanner.start(
-            rearCamera.id,
-            scanConfig,
-            onDecoded,
-            onScanFailure
-          )
-        }
-
-        // Kamera açıldıktan sonra cihaz destekliyorsa sürekli odaklamayı dene.
-        // Başarısız olursa taramayı etkilemez.
-        window.setTimeout(async () => {
-          try {
-            const video = document.querySelector('#protik-barcode-reader video')
-            const track = video?.srcObject?.getVideoTracks?.()[0]
-            const capabilities = track?.getCapabilities?.() || {}
-            if (track && Array.isArray(capabilities.focusMode) && capabilities.focusMode.includes('continuous')) {
-              await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] })
+        await scanner.start(
+          { facingMode: 'environment' },
+          {
+            fps: 10,
+            qrbox: { width: 260, height: 150 },
+            aspectRatio: 1.777778,
+          },
+          async (decodedText) => {
+            if (!decodedText || cancelled) return
+            setBarcodeResult(decodedText)
+            setBarcodeStatus('Barkod okundu ✓')
+            lookupBarcode(decodedText)
+            try {
+              if (scanner.isScanning) await scanner.stop()
+              scanner.clear()
+            } catch {
+              // Tarama sonucu alındı; kapatma hatası kullanıcı akışını etkilemez.
             }
-          } catch {
-            // Desteklenmiyorsa normal tarama devam eder.
-          }
-        }, 350)
+          },
+          () => {}
+        )
 
-        if (!cancelled) setBarcodeStatus('Barkodun tamamını kamerada göster ve 1–2 saniye sabit tut.')
+        if (!cancelled) {
+          setBarcodeStatus('Barkodu çerçevenin içine getir ve 1–2 saniye sabit tut.')
+        }
+
       } catch (error) {
         if (cancelled) return
         const message = String(error?.message || error || '')
