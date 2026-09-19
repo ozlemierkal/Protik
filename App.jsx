@@ -1567,15 +1567,38 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         await loadBarcodeLibrary()
         if (cancelled || !window.Html5Qrcode) return
 
-        const scanner = new window.Html5Qrcode('protik-barcode-reader')
+        const F = window.Html5QrcodeSupportedFormats
+        const preferredFormats = F
+          ? [
+              F.EAN_13,
+              F.EAN_8,
+              F.UPC_A,
+              F.UPC_E,
+              F.CODE_128,
+              F.CODE_39,
+            ].filter(Boolean)
+          : undefined
+
+        const scanner = new window.Html5Qrcode('protik-barcode-reader', {
+          ...(preferredFormats ? { formatsToSupport: preferredFormats } : {}),
+          verbose: false,
+        })
         barcodeScannerRef.current = scanner
 
         await scanner.start(
-          { facingMode: 'environment' },
           {
-            fps: 10,
-            qrbox: { width: 260, height: 150 },
+            facingMode: 'environment',
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+          },
+          {
+            fps: 18,
+            qrbox: (viewfinderWidth, viewfinderHeight) => ({
+              width: Math.max(240, Math.floor(viewfinderWidth * 0.90)),
+              height: Math.max(96, Math.min(140, Math.floor(viewfinderHeight * 0.34))),
+            }),
             aspectRatio: 1.777778,
+            experimentalFeatures: { useBarCodeDetectorIfSupported: true },
           },
           async (decodedText) => {
             if (!decodedText || cancelled) return
@@ -1592,7 +1615,19 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
           () => {}
         )
 
-        if (!cancelled) setBarcodeStatus('Barkodu çerçevenin içine getir.')
+        // iPhone/iPad destekliyorsa sürekli odaklamayı özellikle iste.
+        try {
+          const video = document.querySelector('#protik-barcode-reader video')
+          const track = video?.srcObject?.getVideoTracks?.()[0]
+          const capabilities = track?.getCapabilities?.() || {}
+          if (track && Array.isArray(capabilities.focusMode) && capabilities.focusMode.includes('continuous')) {
+            await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] })
+          }
+        } catch {
+          // Odak iyileştirmesi desteklenmiyorsa normal tarama devam eder.
+        }
+
+        if (!cancelled) setBarcodeStatus('Barkodu yatay tutup geniş çerçevenin içine getir.')
       } catch (error) {
         if (cancelled) return
         const message = String(error?.message || error || '')

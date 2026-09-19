@@ -5154,3 +5154,15 @@ input,select,button{
   line-height:1.4;
   color:#75677f;
 }
+
+/* v0.56 – barkod tarama güvenilirliği */
+.barcodeCameraFrame{
+  min-height:230px!important;
+}
+#protik-barcode-reader{
+  min-height:230px!important;
+}
+#protik-barcode-reader video{
+  min-height:230px!important;
+  object-fit:cover!important;
+}
