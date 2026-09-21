@@ -1,0 +1,48 @@
+name: Protik Certificate CSR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  create-csr:
+    runs-on: ubuntu-latest
+
+    env:
+      KEY_PASSWORD: ${{ secrets.PROTIK_P12_PASSWORD }}
+
+    steps:
+      - name: Check password secret
+        shell: bash
+        run: |
+          if [ -z "$KEY_PASSWORD" ]; then
+            echo "PROTIK_P12_PASSWORD secret is missing."
+            exit 1
+          fi
+
+      - name: Create encrypted private key
+        shell: bash
+        run: |
+          openssl genrsa             -aes256             -passout env:KEY_PASSWORD             -out Protik_private_key.pem             2048
+
+      - name: Create certificate signing request
+        shell: bash
+        run: |
+          openssl req             -new             -sha256             -key Protik_private_key.pem             -passin env:KEY_PASSWORD             -out Protik_Distribution.csr             -subj "/CN=Protik Distribution/C=TR"
+
+      - name: Verify CSR
+        shell: bash
+        run: |
+          openssl req             -in Protik_Distribution.csr             -noout             -verify
+
+      - name: Upload CSR and encrypted private key
+        uses: actions/upload-artifact@v4
+        with:
+          name: protik-certificate-request
+          path: |
+            Protik_Distribution.csr
+            Protik_private_key.pem
+          if-no-files-found: error
+          retention-days: 7
