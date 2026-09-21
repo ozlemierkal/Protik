@@ -1,0 +1,9 @@
+{
+  "appId": "com.ozlemierkal.protik",
+  "appName": "Protik",
+  "webDir": "dist",
+  "ios": {
+    "contentInset": "automatic",
+    "preferredContentMode": "mobile"
+  }
+}
