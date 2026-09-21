@@ -1,0 +1,299 @@
+name: Protik iOS / TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_to_testflight:
+        description: "Apple imzalama ayarları hazırsa TestFlight'a yükle"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: protik-ios-testflight
+  cancel-in-progress: false
+
+env:
+  IOS_BUNDLE_ID: com.ozlemierkal.protik
+  APP_VERSION: 1.0.0
+  CAPACITOR_VERSION: 8.5.2
+
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v6
+
+      - name: Node.js 22 kur
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Web bağımlılıklarını yükle
+        run: npm install
+
+      - name: iOS build araçlarını geçici yükle
+        run: |
+          npm install --no-save \
+            @capacitor/core@${CAPACITOR_VERSION} \
+            @capacitor/ios@${CAPACITOR_VERSION} \
+            @capacitor/cli@${CAPACITOR_VERSION} \
+            @zxing/browser@0.1.5
+
+      - name: iOS buildinde ZXing'i bundle içine al
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          p = Path('App.jsx')
+          text = p.read_text(encoding='utf-8')
+
+          if "from '@zxing/browser'" not in text:
+              react_import = "import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'\n"
+              if react_import not in text:
+                  raise SystemExit('App.jsx React import satırı bulunamadı.')
+              text = text.replace(
+                  react_import,
+                  react_import + "import { BrowserMultiFormatReader } from '@zxing/browser'\n",
+                  1,
+              )
+
+          start = text.find('let barcodeLibraryPromise = null')
+          end = text.find('function loadProfile()', start)
+          if start != -1 and end != -1:
+              local_loader = """function loadBarcodeLibrary() {\n  return Promise.resolve({ BrowserMultiFormatReader })\n}\n\n"""
+              text = text[:start] + local_loader + text[end:]
+
+          p.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Web uygulamasını iOS için derle
+        run: npx vite build --base=./
+
+      - name: Temiz iOS projesi oluştur
+        run: |
+          rm -rf ios
+          npx cap add ios
+          npx cap sync ios
+
+      - name: Kamera izni, uygulama adı ve şifreleme bilgisini ayarla
+        shell: bash
+        run: |
+          set -euo pipefail
+          PLIST="ios/App/App/Info.plist"
+
+          /usr/libexec/PlistBuddy -c "Delete :NSCameraUsageDescription" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string Protik, paketli ürünlerin barkodunu okuyarak protein bilgisini bulmak için kamerayı kullanır." "$PLIST"
+
+          /usr/libexec/PlistBuddy -c "Delete :ITSAppUsesNonExemptEncryption" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"
+
+          /usr/libexec/PlistBuddy -c "Delete :CFBundleDisplayName" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string Protik" "$PLIST"
+
+      - name: Protik ikonlarını iPhone ve iPad için oluştur
+        shell: bash
+        run: |
+          set -euo pipefail
+          ICON_DIR="ios/App/App/Assets.xcassets/AppIcon.appiconset"
+          mkdir -p "$ICON_DIR"
+          rm -f "$ICON_DIR"/*.png
+
+          make_icon() {
+            size="$1"
+            file="$2"
+            sips -z "$size" "$size" protik-icon.png --out "$ICON_DIR/$file" >/dev/null
+          }
+
+          make_icon 20   icon-20.png
+          make_icon 40   icon-20@2x.png
+          make_icon 60   icon-20@3x.png
+          make_icon 29   icon-29.png
+          make_icon 58   icon-29@2x.png
+          make_icon 87   icon-29@3x.png
+          make_icon 40   icon-40.png
+          make_icon 80   icon-40@2x.png
+          make_icon 120  icon-40@3x.png
+          make_icon 120  icon-60@2x.png
+          make_icon 180  icon-60@3x.png
+          make_icon 76   icon-76.png
+          make_icon 152  icon-76@2x.png
+          make_icon 167  icon-83.5@2x.png
+          make_icon 1024 icon-1024.png
+
+          cat > "$ICON_DIR/Contents.json" <<'JSON'
+          {
+            "images" : [
+              {"filename":"icon-20@2x.png","idiom":"iphone","scale":"2x","size":"20x20"},
+              {"filename":"icon-20@3x.png","idiom":"iphone","scale":"3x","size":"20x20"},
+              {"filename":"icon-29@2x.png","idiom":"iphone","scale":"2x","size":"29x29"},
+              {"filename":"icon-29@3x.png","idiom":"iphone","scale":"3x","size":"29x29"},
+              {"filename":"icon-40@2x.png","idiom":"iphone","scale":"2x","size":"40x40"},
+              {"filename":"icon-40@3x.png","idiom":"iphone","scale":"3x","size":"40x40"},
+              {"filename":"icon-60@2x.png","idiom":"iphone","scale":"2x","size":"60x60"},
+              {"filename":"icon-60@3x.png","idiom":"iphone","scale":"3x","size":"60x60"},
+              {"filename":"icon-20.png","idiom":"ipad","scale":"1x","size":"20x20"},
+              {"filename":"icon-20@2x.png","idiom":"ipad","scale":"2x","size":"20x20"},
+              {"filename":"icon-29.png","idiom":"ipad","scale":"1x","size":"29x29"},
+              {"filename":"icon-29@2x.png","idiom":"ipad","scale":"2x","size":"29x29"},
+              {"filename":"icon-40.png","idiom":"ipad","scale":"1x","size":"40x40"},
+              {"filename":"icon-40@2x.png","idiom":"ipad","scale":"2x","size":"40x40"},
+              {"filename":"icon-76.png","idiom":"ipad","scale":"1x","size":"76x76"},
+              {"filename":"icon-76@2x.png","idiom":"ipad","scale":"2x","size":"76x76"},
+              {"filename":"icon-83.5@2x.png","idiom":"ipad","scale":"2x","size":"83.5x83.5"},
+              {"filename":"icon-1024.png","idiom":"ios-marketing","scale":"1x","size":"1024x1024"}
+            ],
+            "info" : {"author":"xcode","version":1}
+          }
+          JSON
+
+      - name: İmzalama olmadan iOS derleme kontrolü
+        if: ${{ !inputs.upload_to_testflight }}
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            PRODUCT_BUNDLE_IDENTIFIER="$IOS_BUNDLE_ID" \
+            build
+
+      - name: Apple Distribution sertifikasını yükle
+        if: ${{ inputs.upload_to_testflight }}
+        uses: apple-actions/import-codesign-certs@v7
+        with:
+          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
+          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
+
+      - name: Protik provisioning profile indir
+        if: ${{ inputs.upload_to_testflight }}
+        uses: apple-actions/download-provisioning-profiles@v5
+        with:
+          bundle-id: ${{ env.IOS_BUNDLE_ID }}
+          profile-type: IOS_APP_STORE
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+      - name: Provisioning profile bilgilerini oku
+        if: ${{ inputs.upload_to_testflight }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROFILE_PATH=$(find "$HOME/Library/MobileDevice/Provisioning Profiles" -name '*.mobileprovision' -type f -print0 | xargs -0 ls -t | head -n 1)
+          if [ -z "${PROFILE_PATH:-}" ]; then
+            echo "Protik için App Store provisioning profile bulunamadı."
+            exit 1
+          fi
+
+          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist"
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" "$RUNNER_TEMP/profile.plist")
+          TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" "$RUNNER_TEMP/profile.plist")
+
+          echo "PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
+          echo "APPLE_TEAM_ID=$TEAM_ID" >> "$GITHUB_ENV"
+
+      - name: ExportOptions oluştur
+        if: ${{ inputs.upload_to_testflight }}
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>destination</key>
+            <string>export</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>signingCertificate</key>
+            <string>Apple Distribution</string>
+            <key>teamID</key>
+            <string>${APPLE_TEAM_ID}</string>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${IOS_BUNDLE_ID}</key>
+              <string>${PROFILE_NAME}</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Protik arşivini oluştur
+        if: ${{ inputs.upload_to_testflight }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/export
+
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$PWD/build/Protik.xcarchive" \
+            archive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+            PRODUCT_BUNDLE_IDENTIFIER="$IOS_BUNDLE_ID" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" \
+            MARKETING_VERSION="$APP_VERSION"
+
+      - name: IPA oluştur
+        if: ${{ inputs.upload_to_testflight }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -exportArchive \
+            -archivePath "$PWD/build/Protik.xcarchive" \
+            -exportPath "$PWD/build/export" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+
+          IPA_PATH=$(find "$PWD/build/export" -maxdepth 1 -name '*.ipa' -type f | head -n 1)
+          if [ -z "${IPA_PATH:-}" ]; then
+            echo "IPA oluşturulamadı."
+            exit 1
+          fi
+          cp "$IPA_PATH" "$PWD/build/Protik.ipa"
+
+      - name: IPA dosyasını Actions çıktısı olarak sakla
+        if: ${{ inputs.upload_to_testflight }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Protik-iOS-${{ github.run_number }}
+          path: build/Protik.ipa
+          if-no-files-found: error
+
+      - name: TestFlight'a yükle
+        if: ${{ inputs.upload_to_testflight }}
+        uses: apple-actions/upload-testflight-build@v4
+        with:
+          app-path: build/Protik.ipa
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+          uses-non-exempt-encryption: 'false'
+          wait-for-processing: 'false'
+          backend: AppStoreAPI
