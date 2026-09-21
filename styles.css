@@ -5298,3 +5298,53 @@ input,select,button{
     padding:14px!important;
   }
 }
+
+
+/* =========================================================
+   v0.59 – iPad ana ekran genişliği / motivasyon kartı
+   ========================================================= */
+@media (min-width:768px){
+  .appShell{
+    max-width:620px!important;
+  }
+
+  .bottomNav,
+  .proNav{
+    width:min(620px,100%)!important;
+  }
+
+  .modernHomeShell{
+    max-width:620px!important;
+  }
+
+  .homeHeroPanel{
+    padding:18px 18px 18px!important;
+  }
+
+  .homeDashboard{
+    grid-template-columns:minmax(0,1.18fr) minmax(190px,.82fr)!important;
+    gap:12px!important;
+  }
+
+  .heroRingPanel{
+    grid-template-columns:96px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+
+  .encouragementCard{
+    min-width:0!important;
+    padding:14px 16px!important;
+  }
+
+  .encouragementCard strong{
+    font-size:18px!important;
+    line-height:1.12!important;
+    max-width:132px!important;
+  }
+
+  .encouragementCard span{
+    font-size:11px!important;
+    line-height:1.35!important;
+    max-width:132px!important;
+  }
+}
