@@ -5259,3 +5259,42 @@ input,select,button{
   background:linear-gradient(90deg,transparent,#f1b522 18%,#f1b522 82%,transparent);
   box-shadow:0 0 10px rgba(241,181,34,.7);
 }
+
+
+/* =========================================================
+   v0.58 – iPad/tablet ana ekran hero metin dengesi
+   ========================================================= */
+@media (min-width:521px) and (max-width:900px){
+  .homeDashboard{
+    grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;
+    gap:12px!important;
+  }
+  .encouragementCard{
+    min-height:148px!important;
+    padding:14px!important;
+    gap:10px!important;
+  }
+  .encouragementCard .insightIcon{
+    width:36px!important;
+    height:36px!important;
+    flex:0 0 36px!important;
+    font-size:19px!important;
+  }
+  .encouragementCard strong{
+    font-size:19px!important;
+    line-height:1.12!important;
+    letter-spacing:-.2px!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+    hyphens:none!important;
+  }
+  .encouragementCard span{
+    font-size:11.5px!important;
+    line-height:1.35!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+  .remainingCard{
+    padding:14px!important;
+  }
+}
