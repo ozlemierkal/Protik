@@ -1,0 +1,97 @@
+name: Protik P12 Oluştur - Basit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  make-p12:
+    runs-on: ubuntu-latest
+
+    env:
+      KEY_PASSWORD: ${{ secrets.PROTIK_P12_PASSWORD }}
+      PRIVATE_KEY_PEM: ${{ secrets.PROTIK_PRIVATE_KEY_PEM }}
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Secret'ları kontrol et
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${KEY_PASSWORD:-}" ]; then
+            echo "PROTIK_P12_PASSWORD secret eksik."
+            exit 1
+          fi
+          if [ -z "${PRIVATE_KEY_PEM:-}" ]; then
+            echo "PROTIK_PRIVATE_KEY_PEM secret eksik."
+            exit 1
+          fi
+
+      - name: Private key'i hazırla
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$PRIVATE_KEY_PEM" > Protik_private_key.pem
+          chmod 600 Protik_private_key.pem
+
+      - name: CER dosyasını bul
+        shell: bash
+        run: |
+          set -euo pipefail
+          CER_FILE="$(find . -maxdepth 1 -type f \( -iname '*.cer' -o -iname '*.crt' \) | head -n 1)"
+          if [ -z "$CER_FILE" ]; then
+            echo "Repo ana dizininde .cer dosyası bulunamadı."
+            exit 1
+          fi
+          echo "CERT_FILE=$CER_FILE" >> "$GITHUB_ENV"
+          echo "Sertifika: $CER_FILE"
+
+      - name: Sertifikayı PEM'e çevir
+        shell: bash
+        run: |
+          set -euo pipefail
+          openssl x509 -inform DER -in "$CERT_FILE" -out Protik_distribution.pem
+
+      - name: Sertifika ve private key eşleşmesini doğrula
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CERT_PUB="$(openssl x509 -in Protik_distribution.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl sha256)"
+          KEY_PUB="$(openssl pkey -in Protik_private_key.pem -passin env:KEY_PASSWORD -pubout -outform DER | openssl sha256)"
+
+          if [ "$CERT_PUB" != "$KEY_PUB" ]; then
+            echo "Sertifika ile private key eşleşmiyor."
+            exit 1
+          fi
+
+          echo "Sertifika ve private key eşleşiyor."
+
+      - name: P12 oluştur
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          openssl pkcs12 -export \
+            -inkey Protik_private_key.pem \
+            -passin env:KEY_PASSWORD \
+            -in Protik_distribution.pem \
+            -name "Protik Distribution" \
+            -out Protik_Distribution.p12 \
+            -passout env:KEY_PASSWORD
+
+          base64 -w 0 Protik_Distribution.p12 > Protik_Distribution.p12.base64.txt
+
+      - name: P12 çıktısını sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: protik-p12-ready
+          path: |
+            Protik_Distribution.p12
+            Protik_Distribution.p12.base64.txt
+          if-no-files-found: error
+          retention-days: 3
