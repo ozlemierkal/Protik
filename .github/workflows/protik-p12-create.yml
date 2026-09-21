@@ -1,0 +1,195 @@
+name: Protik P12 Oluştur
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  make-p12:
+    runs-on: ubuntu-latest
+
+    env:
+      KEY_PASSWORD: ${{ secrets.PROTIK_P12_PASSWORD }}
+      ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+      API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+      API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Secret'ları kontrol et
+        shell: bash
+        run: |
+          set -euo pipefail
+          for var in KEY_PASSWORD ISSUER_ID API_KEY_ID API_PRIVATE_KEY; do
+            if [ -z "${!var:-}" ]; then
+              echo "$var eksik."
+              exit 1
+            fi
+          done
+
+      - name: CSR workflow artifact'ındaki private key'i indir
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json, os, urllib.request, zipfile, io
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          url = f"https://api.github.com/repos/{repo}/actions/artifacts?name=protik-certificate-request&per_page=100"
+
+          req = urllib.request.Request(
+              url,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          with urllib.request.urlopen(req) as r:
+              data = json.load(r)
+
+          artifacts = [a for a in data.get("artifacts", []) if not a.get("expired")]
+          if not artifacts:
+              raise SystemExit("protik-certificate-request artifact bulunamadı veya süresi dolmuş.")
+
+          artifact = sorted(artifacts, key=lambda a: a["created_at"], reverse=True)[0]
+          archive_url = artifact["archive_download_url"]
+
+          req = urllib.request.Request(
+              archive_url,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          with urllib.request.urlopen(req) as r:
+              content = r.read()
+
+          with zipfile.ZipFile(io.BytesIO(content)) as z:
+              names = z.namelist()
+              if "Protik_private_key.pem" not in names:
+                  raise SystemExit("Artifact içinde Protik_private_key.pem bulunamadı.")
+              z.extract("Protik_private_key.pem", ".")
+
+          print("Private key artifact'tan alındı.")
+          PY
+
+      - name: App Store Connect API anahtarını hazırla
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s' "$API_PRIVATE_KEY" > AuthKey.p8
+          chmod 600 AuthKey.p8
+
+      - name: Apple API'den en yeni Distribution sertifikasını al
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 -m pip install --quiet pyjwt cryptography requests
+
+          python3 - <<'PY'
+          import base64, datetime, json, os, time
+          import jwt, requests
+          from cryptography.hazmat.primitives import serialization
+
+          issuer = os.environ["ISSUER_ID"]
+          key_id = os.environ["API_KEY_ID"]
+
+          with open("AuthKey.p8", "rb") as f:
+              private_key = serialization.load_pem_private_key(f.read(), password=None)
+
+          now = int(time.time())
+          token = jwt.encode(
+              {
+                  "iss": issuer,
+                  "iat": now,
+                  "exp": now + 20 * 60,
+                  "aud": "appstoreconnect-v1",
+              },
+              private_key,
+              algorithm="ES256",
+              headers={"kid": key_id, "typ": "JWT"},
+          )
+
+          headers = {"Authorization": f"Bearer {token}"}
+          url = "https://api.appstoreconnect.apple.com/v1/certificates"
+          params = {"filter[certificateType]": "DISTRIBUTION", "limit": "200"}
+
+          r = requests.get(url, headers=headers, params=params, timeout=60)
+          if r.status_code >= 400:
+              raise SystemExit(f"Apple API certificate list error {r.status_code}: {r.text[:1000]}")
+
+          certs = r.json().get("data", [])
+          if not certs:
+              raise SystemExit("Apple API'de Distribution sertifikası bulunamadı.")
+
+          def expiry(c):
+              return c.get("attributes", {}).get("expirationDate", "")
+
+          cert = sorted(certs, key=expiry, reverse=True)[0]
+          attrs = cert["attributes"]
+
+          print("Seçilen sertifika sona erme:", attrs.get("expirationDate"))
+          content = attrs.get("certificateContent")
+          if not content:
+              raise SystemExit("certificateContent bulunamadı.")
+
+          raw = base64.b64decode(content)
+          with open("distribution.cer", "wb") as f:
+              f.write(raw)
+          PY
+
+      - name: Sertifika ile private key'in eşleştiğini doğrula
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          openssl x509 -inform DER -in distribution.cer -out distribution.pem
+
+          CERT_PUB="$(openssl x509 -in distribution.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl sha256)"
+          KEY_PUB="$(openssl pkey -in Protik_private_key.pem -passin env:KEY_PASSWORD -pubout -outform DER | openssl sha256)"
+
+          echo "Certificate public key: $CERT_PUB"
+          echo "Private key public key:  $KEY_PUB"
+
+          if [ "$CERT_PUB" != "$KEY_PUB" ]; then
+            echo "Yeni Apple Distribution sertifikası bu private key ile eşleşmiyor."
+            exit 1
+          fi
+
+          echo "Sertifika ve private key eşleşiyor."
+
+      - name: P12 oluştur
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          openssl pkcs12 -export \
+            -inkey Protik_private_key.pem \
+            -passin env:KEY_PASSWORD \
+            -in distribution.pem \
+            -name "Protik Distribution" \
+            -out Protik_Distribution.p12 \
+            -passout env:KEY_PASSWORD
+
+          base64 -w 0 Protik_Distribution.p12 > Protik_Distribution.p12.base64.txt
+
+          echo
+          echo "P12 ve Base64 metni hazır."
+
+      - name: Dosyaları artifact olarak sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: protik-p12-ready
+          path: |
+            Protik_Distribution.p12
+            Protik_Distribution.p12.base64.txt
+          if-no-files-found: error
+          retention-days: 3
