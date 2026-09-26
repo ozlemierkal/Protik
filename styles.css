@@ -5448,3 +5448,61 @@ input,select,button{
     scroll-margin-bottom:96px!important;
   }
 }
+
+
+/* =========================================================
+   v0.63 – iPhone native alt menüyü safe-area'dan ayır
+   Alt bar artık home indicator alanının üstünde yüzen ayrı
+   bir karttır; sistem boşluğu menünün parçası gibi görünmez.
+   ========================================================= */
+@media (max-width:520px){
+  .proNav,
+  .bottomNav{
+    left:50%!important;
+    transform:translateX(-50%)!important;
+    bottom:max(8px, env(safe-area-inset-bottom))!important;
+    width:calc(100% - 28px)!important;
+    max-width:492px!important;
+    height:58px!important;
+    min-height:58px!important;
+    padding:4px 8px!important;
+    border-radius:20px!important;
+    background:rgba(255,255,255,.97)!important;
+    box-shadow:0 8px 26px rgba(54,28,76,.14)!important;
+    border:1px solid rgba(111,58,151,.08)!important;
+    overflow:hidden!important;
+  }
+
+  .proNav button,
+  .bottomNav button{
+    height:100%!important;
+    min-height:0!important;
+    gap:2px!important;
+    padding:2px 0 1px!important;
+    justify-content:center!important;
+  }
+
+  .proNav button svg,
+  .bottomNav button svg{
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+  }
+
+  .proNav button span,
+  .bottomNav button span{
+    font-size:10.5px!important;
+    line-height:1!important;
+    margin:0!important;
+  }
+
+  .appShell{
+    padding-bottom:calc(82px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:94px!important;
+  }
+
+  html,
+  body{
+    background:#f7f3fb!important;
+  }
+}
