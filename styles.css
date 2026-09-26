@@ -5506,3 +5506,19 @@ input,select,button{
     background:#f7f3fb!important;
   }
 }
+
+
+/* =========================================================
+   v0.64 – alt menü son konum rötuşu
+   ========================================================= */
+@media (max-width:520px){
+  .proNav,
+  .bottomNav{
+    bottom:max(2px, calc(env(safe-area-inset-bottom) - 6px))!important;
+  }
+
+  .appShell{
+    padding-bottom:calc(92px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:104px!important;
+  }
+}
