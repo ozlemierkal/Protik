@@ -5522,3 +5522,28 @@ input,select,button{
     scroll-padding-bottom:104px!important;
   }
 }
+
+
+/* =========================================================
+   v0.65 – alt menü ile içerik çakışmasını gider
+   Menü görünümü korunur; sayfa içeriğine altta gerçek boşluk eklenir.
+   ========================================================= */
+@media (max-width:520px){
+  .appShell{
+    padding-bottom:calc(132px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:144px!important;
+  }
+
+  .modernHomeShell,
+  .historyScreen,
+  .profileScreen,
+  .mealScreen{
+    padding-bottom:34px!important;
+  }
+
+  .mealList,
+  .historyList,
+  .profileContent{
+    margin-bottom:28px!important;
+  }
+}
