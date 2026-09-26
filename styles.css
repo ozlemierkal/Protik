@@ -5348,3 +5348,53 @@ input,select,button{
     max-width:132px!important;
   }
 }
+
+
+/* =========================================================
+   v0.61 – iPhone native alt menü / safe-area dengesi
+   Görsel tasarım korunur; yalnızca alt menü yüksekliği ve
+   içerik alt boşluğu sıkılaştırılır.
+   ========================================================= */
+@media (max-width:520px){
+  .proNav,
+  .bottomNav{
+    height:76px!important;
+    min-height:76px!important;
+    padding-top:6px!important;
+    padding-bottom:max(5px, env(safe-area-inset-bottom))!important;
+    border-top-left-radius:22px!important;
+    border-top-right-radius:22px!important;
+  }
+
+  .proNav button,
+  .bottomNav button{
+    gap:3px!important;
+    padding-top:3px!important;
+    padding-bottom:1px!important;
+    align-self:stretch!important;
+    justify-content:center!important;
+  }
+
+  .proNav button svg,
+  .bottomNav button svg{
+    width:22px!important;
+    height:22px!important;
+  }
+
+  .proNav button span,
+  .bottomNav button span{
+    font-size:11.5px!important;
+    line-height:1.05!important;
+  }
+
+  .appShell{
+    padding-bottom:calc(84px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:96px!important;
+  }
+
+  input,
+  select,
+  button{
+    scroll-margin-bottom:112px;
+  }
+}
