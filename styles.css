@@ -5398,3 +5398,53 @@ input,select,button{
     scroll-margin-bottom:112px;
   }
 }
+
+
+/* =========================================================
+   v0.62 – iPhone native alt menü daha kompakt
+   ========================================================= */
+@media (max-width:520px){
+  .proNav,
+  .bottomNav{
+    height:64px!important;
+    min-height:64px!important;
+    padding-top:2px!important;
+    padding-bottom:max(2px, env(safe-area-inset-bottom))!important;
+    border-top-left-radius:18px!important;
+    border-top-right-radius:18px!important;
+  }
+
+  .proNav button,
+  .bottomNav button{
+    min-height:0!important;
+    height:100%!important;
+    gap:1px!important;
+    padding:1px 0 0!important;
+    justify-content:center!important;
+  }
+
+  .proNav button svg,
+  .bottomNav button svg{
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+  }
+
+  .proNav button span,
+  .bottomNav button span{
+    font-size:10.5px!important;
+    line-height:1!important;
+    margin:0!important;
+  }
+
+  .appShell{
+    padding-bottom:calc(70px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:82px!important;
+  }
+
+  input,
+  select,
+  button{
+    scroll-margin-bottom:96px!important;
+  }
+}
