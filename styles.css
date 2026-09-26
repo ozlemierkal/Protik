@@ -5351,101 +5351,88 @@ input,select,button{
 
 
 /* =========================================================
-   v0.66 – TEMİZ iPhone alt navigasyon düzeni
-   v0.61–v0.65 yamaları kullanılmaz.
-   Scroll alanı alt navigasyonun ÜSTÜNDE biter; nav artık
-   hiçbir kartın üstüne binmez.
+   v0.67 – iPhone alt menü: SADECE görsel küçültme
+   v0.59 yerleşimi korunur. Scroll/viewport yapısına dokunulmaz.
    ========================================================= */
 @media (max-width:520px){
 
-  /* Alt navigasyon: kompakt, sabit ve safe-area üzerinde */
-  .bottomNav,
-  .proNav{
-    position:fixed!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
-    bottom:max(6px, env(safe-area-inset-bottom))!important;
+  /*
+    Nav'ın gerçek alanı v0.59'daki gibi kalır.
+    Böylece içerik üstüne binmez ve sayfa yüksekliği bozulmaz.
+    Sadece büyük beyaz zemin görünmez yapılır.
+  */
+  .proNav,
+  .bottomNav{
+    background:transparent!important;
+    border-top:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
 
-    width:calc(100% - 24px)!important;
-    max-width:496px!important;
+    height:90px!important;
+    min-height:90px!important;
+    width:100%!important;
+
+    padding:0 12px max(8px, env(safe-area-inset-bottom))!important;
+    border-radius:0!important;
+    overflow:visible!important;
+  }
+
+  /* Görünen küçük beyaz navigasyon kartı */
+  .proNav::before,
+  .bottomNav::before{
+    content:"";
+    position:absolute;
+    z-index:0;
+    top:0;
+    left:12px;
+    right:12px;
+    height:58px;
+
+    background:rgba(255,255,255,.98);
+    border:1px solid rgba(111,58,151,.09);
+    border-radius:20px;
+    box-shadow:0 8px 24px rgba(54,28,76,.13);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    pointer-events:none;
+  }
+
+  .proNav button,
+  .bottomNav button{
+    position:relative!important;
+    z-index:1!important;
 
     height:58px!important;
     min-height:58px!important;
+    align-self:start!important;
 
-    padding:4px 8px!important;
-    border-radius:20px!important;
-
-    background:rgba(255,255,255,.98)!important;
-    border:1px solid rgba(111,58,151,.09)!important;
-    box-shadow:0 8px 24px rgba(54,28,76,.13)!important;
-    backdrop-filter:blur(16px)!important;
-    -webkit-backdrop-filter:blur(16px)!important;
-
-    z-index:50!important;
-    overflow:hidden!important;
-  }
-
-  .bottomNav button,
-  .proNav button{
-    height:100%!important;
-    min-height:0!important;
-    padding:2px 0 1px!important;
-    gap:2px!important;
-    align-self:stretch!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
     justify-content:center!important;
+
+    gap:2px!important;
+    padding:2px 0 1px!important;
   }
 
-  .bottomNav button svg,
-  .proNav button svg{
+  .proNav button svg,
+  .bottomNav button svg{
     width:20px!important;
     height:20px!important;
     margin:0!important;
   }
 
-  .bottomNav button span,
-  .proNav button span{
+  .proNav button span,
+  .bottomNav button span{
     margin:0!important;
     font-size:10.5px!important;
     line-height:1!important;
   }
 
   /*
-    Kritik düzeltme:
-    Alt nav bulunan ekranların scroll viewport'u nav'ın başladığı
-    yerde biter. Böylece sabit nav içeriği örtemez.
+    ÖNEMLİ:
+    appShell / hero / scroll yüksekliği değiştirilmez.
+    v0.59'un çalışan 100dvh + alt padding düzeni aynen kalır.
   */
-  .appShell.modernHomeShell,
-  .appShell.historyShell,
-  .appShell.detailShell,
-  .appShell.profileShell{
-    box-sizing:border-box!important;
-
-    height:calc(100dvh - 66px - env(safe-area-inset-bottom))!important;
-    min-height:0!important;
-    max-height:calc(100dvh - 66px - env(safe-area-inset-bottom))!important;
-
-    overflow-y:auto!important;
-    overflow-x:hidden!important;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-y:contain;
-
-    padding-bottom:28px!important;
-    scroll-padding-bottom:28px!important;
-  }
-
-  /* Önceki genel mobile padding'in nav için bıraktığı dev boşluğu kaldır */
-  .appShell.modernHomeShell,
-  .appShell.historyShell,
-  .appShell.detailShell,
-  .appShell.profileShell{
-    margin-bottom:0!important;
-  }
-
-  /* Son eleman nav'a yapışmasın */
-  .modernHomeShell > :not(.proNav):last-of-type,
-  .historyShell > :not(.proNav):last-of-type,
-  .detailShell > :not(.proNav):last-of-type,
-  .profileShell > :not(.proNav):last-of-type{
-    margin-bottom:18px!important;
-  }
 }
