@@ -738,7 +738,8 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
   const dateLabel = formatLongDateTR(new Date())
 
   return (
-    <main className="appShell themedShell modernHomeShell" ref={screenTopRef}>
+    <main className="appShell themedShell modernHomeShell navLayoutShell">
+      <div className="screenScrollArea" ref={screenTopRef}>
       <section className="homeHeroPanel">
         <header className="topbar proTopbar homeTopbarDark">
           <Logo />
@@ -891,6 +892,8 @@ function Home({ target, total, remaining, recommendations, todayEntries, onProfi
         )}
       </section>
 
+      </div>
+
       <BottomNav
         active="home"
         onHome={() => {}}
@@ -966,7 +969,8 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
   const lastDate = chartDays[chartDays.length - 1]
 
   return (
-    <main className="appShell historyShell" ref={screenTopRef}>
+    <main className="appShell historyShell navLayoutShell">
+      <div className="screenScrollArea" ref={screenTopRef}>
       <header className="screenHeader historyHeader">
         <button className="back" onClick={onBackHome}>‹</button>
         <h1>Geçmiş</h1>
@@ -1082,6 +1086,8 @@ function History({ entries, target, onBackHome, onOpenDay, onProfile }) {
           })}
         </div>
       </section>
+
+      </div>
 
       <BottomNav
         active="history"
@@ -1726,7 +1732,8 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
   }
 
   return (
-    <main className="appShell detailShell" ref={screenTopRef}>
+    <main className="appShell detailShell navLayoutShell">
+      <div className="screenScrollArea" ref={screenTopRef}>
       <header className="screenHeader">
         <button className="back" onClick={onBack}>‹</button>
         <h1>{meal}</h1>
@@ -2139,6 +2146,8 @@ function MealDetails({ meal, entries, foods, recentFoods = [], onBack, onDelete,
         </div>
 
       </section>
+      </div>
+
       <BottomNav
         active=""
         onHome={onHome}
@@ -2255,7 +2264,8 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
   ]
 
   return (
-    <main className="appShell themedShell profileShell" ref={screenTopRef}>
+    <main className="appShell themedShell profileShell navLayoutShell">
+      <div className="screenScrollArea" ref={screenTopRef}>
       <header className="screenHeader proScreenHeader profileHeaderClean">
         <button className="back" onClick={onBack} aria-label="Geri">
           ‹
@@ -2522,6 +2532,8 @@ function Profile({ profile, onBack, onHome, onHistory, onPrivacy, onSave }) {
           </div>
         </section>
       )}
+
+      </div>
 
       <BottomNav
         active="profile"
