@@ -5351,199 +5351,101 @@ input,select,button{
 
 
 /* =========================================================
-   v0.61 – iPhone native alt menü / safe-area dengesi
-   Görsel tasarım korunur; yalnızca alt menü yüksekliği ve
-   içerik alt boşluğu sıkılaştırılır.
+   v0.66 – TEMİZ iPhone alt navigasyon düzeni
+   v0.61–v0.65 yamaları kullanılmaz.
+   Scroll alanı alt navigasyonun ÜSTÜNDE biter; nav artık
+   hiçbir kartın üstüne binmez.
    ========================================================= */
 @media (max-width:520px){
-  .proNav,
-  .bottomNav{
-    height:76px!important;
-    min-height:76px!important;
-    padding-top:6px!important;
-    padding-bottom:max(5px, env(safe-area-inset-bottom))!important;
-    border-top-left-radius:22px!important;
-    border-top-right-radius:22px!important;
+
+  /* Alt navigasyon: kompakt, sabit ve safe-area üzerinde */
+  .bottomNav,
+  .proNav{
+    position:fixed!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+    bottom:max(6px, env(safe-area-inset-bottom))!important;
+
+    width:calc(100% - 24px)!important;
+    max-width:496px!important;
+
+    height:58px!important;
+    min-height:58px!important;
+
+    padding:4px 8px!important;
+    border-radius:20px!important;
+
+    background:rgba(255,255,255,.98)!important;
+    border:1px solid rgba(111,58,151,.09)!important;
+    box-shadow:0 8px 24px rgba(54,28,76,.13)!important;
+    backdrop-filter:blur(16px)!important;
+    -webkit-backdrop-filter:blur(16px)!important;
+
+    z-index:50!important;
+    overflow:hidden!important;
   }
 
-  .proNav button,
-  .bottomNav button{
-    gap:3px!important;
-    padding-top:3px!important;
-    padding-bottom:1px!important;
+  .bottomNav button,
+  .proNav button{
+    height:100%!important;
+    min-height:0!important;
+    padding:2px 0 1px!important;
+    gap:2px!important;
     align-self:stretch!important;
     justify-content:center!important;
   }
 
-  .proNav button svg,
-  .bottomNav button svg{
-    width:22px!important;
-    height:22px!important;
-  }
-
-  .proNav button span,
-  .bottomNav button span{
-    font-size:11.5px!important;
-    line-height:1.05!important;
-  }
-
-  .appShell{
-    padding-bottom:calc(84px + env(safe-area-inset-bottom))!important;
-    scroll-padding-bottom:96px!important;
-  }
-
-  input,
-  select,
-  button{
-    scroll-margin-bottom:112px;
-  }
-}
-
-
-/* =========================================================
-   v0.62 – iPhone native alt menü daha kompakt
-   ========================================================= */
-@media (max-width:520px){
-  .proNav,
-  .bottomNav{
-    height:64px!important;
-    min-height:64px!important;
-    padding-top:2px!important;
-    padding-bottom:max(2px, env(safe-area-inset-bottom))!important;
-    border-top-left-radius:18px!important;
-    border-top-right-radius:18px!important;
-  }
-
-  .proNav button,
-  .bottomNav button{
-    min-height:0!important;
-    height:100%!important;
-    gap:1px!important;
-    padding:1px 0 0!important;
-    justify-content:center!important;
-  }
-
-  .proNav button svg,
-  .bottomNav button svg{
+  .bottomNav button svg,
+  .proNav button svg{
     width:20px!important;
     height:20px!important;
     margin:0!important;
   }
 
-  .proNav button span,
-  .bottomNav button span{
+  .bottomNav button span,
+  .proNav button span{
+    margin:0!important;
     font-size:10.5px!important;
     line-height:1!important;
-    margin:0!important;
   }
 
-  .appShell{
-    padding-bottom:calc(70px + env(safe-area-inset-bottom))!important;
-    scroll-padding-bottom:82px!important;
-  }
+  /*
+    Kritik düzeltme:
+    Alt nav bulunan ekranların scroll viewport'u nav'ın başladığı
+    yerde biter. Böylece sabit nav içeriği örtemez.
+  */
+  .appShell.modernHomeShell,
+  .appShell.historyShell,
+  .appShell.detailShell,
+  .appShell.profileShell{
+    box-sizing:border-box!important;
 
-  input,
-  select,
-  button{
-    scroll-margin-bottom:96px!important;
-  }
-}
-
-
-/* =========================================================
-   v0.63 – iPhone native alt menüyü safe-area'dan ayır
-   Alt bar artık home indicator alanının üstünde yüzen ayrı
-   bir karttır; sistem boşluğu menünün parçası gibi görünmez.
-   ========================================================= */
-@media (max-width:520px){
-  .proNav,
-  .bottomNav{
-    left:50%!important;
-    transform:translateX(-50%)!important;
-    bottom:max(8px, env(safe-area-inset-bottom))!important;
-    width:calc(100% - 28px)!important;
-    max-width:492px!important;
-    height:58px!important;
-    min-height:58px!important;
-    padding:4px 8px!important;
-    border-radius:20px!important;
-    background:rgba(255,255,255,.97)!important;
-    box-shadow:0 8px 26px rgba(54,28,76,.14)!important;
-    border:1px solid rgba(111,58,151,.08)!important;
-    overflow:hidden!important;
-  }
-
-  .proNav button,
-  .bottomNav button{
-    height:100%!important;
+    height:calc(100dvh - 66px - env(safe-area-inset-bottom))!important;
     min-height:0!important;
-    gap:2px!important;
-    padding:2px 0 1px!important;
-    justify-content:center!important;
+    max-height:calc(100dvh - 66px - env(safe-area-inset-bottom))!important;
+
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+
+    padding-bottom:28px!important;
+    scroll-padding-bottom:28px!important;
   }
 
-  .proNav button svg,
-  .bottomNav button svg{
-    width:20px!important;
-    height:20px!important;
-    margin:0!important;
+  /* Önceki genel mobile padding'in nav için bıraktığı dev boşluğu kaldır */
+  .appShell.modernHomeShell,
+  .appShell.historyShell,
+  .appShell.detailShell,
+  .appShell.profileShell{
+    margin-bottom:0!important;
   }
 
-  .proNav button span,
-  .bottomNav button span{
-    font-size:10.5px!important;
-    line-height:1!important;
-    margin:0!important;
-  }
-
-  .appShell{
-    padding-bottom:calc(82px + env(safe-area-inset-bottom))!important;
-    scroll-padding-bottom:94px!important;
-  }
-
-  html,
-  body{
-    background:#f7f3fb!important;
-  }
-}
-
-
-/* =========================================================
-   v0.64 – alt menü son konum rötuşu
-   ========================================================= */
-@media (max-width:520px){
-  .proNav,
-  .bottomNav{
-    bottom:max(2px, calc(env(safe-area-inset-bottom) - 6px))!important;
-  }
-
-  .appShell{
-    padding-bottom:calc(92px + env(safe-area-inset-bottom))!important;
-    scroll-padding-bottom:104px!important;
-  }
-}
-
-
-/* =========================================================
-   v0.65 – alt menü ile içerik çakışmasını gider
-   Menü görünümü korunur; sayfa içeriğine altta gerçek boşluk eklenir.
-   ========================================================= */
-@media (max-width:520px){
-  .appShell{
-    padding-bottom:calc(132px + env(safe-area-inset-bottom))!important;
-    scroll-padding-bottom:144px!important;
-  }
-
-  .modernHomeShell,
-  .historyScreen,
-  .profileScreen,
-  .mealScreen{
-    padding-bottom:34px!important;
-  }
-
-  .mealList,
-  .historyList,
-  .profileContent{
-    margin-bottom:28px!important;
+  /* Son eleman nav'a yapışmasın */
+  .modernHomeShell > :not(.proNav):last-of-type,
+  .historyShell > :not(.proNav):last-of-type,
+  .detailShell > :not(.proNav):last-of-type,
+  .profileShell > :not(.proNav):last-of-type{
+    margin-bottom:18px!important;
   }
 }
